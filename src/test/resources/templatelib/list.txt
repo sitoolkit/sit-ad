@@ -1,0 +1,2 @@
+TemplateFile1.txt
+templatedir/TemplateFile2.txt

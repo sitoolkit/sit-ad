@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<xs:schema version="1.0"
+		   elementFormDefault="qualified" targetNamespace="http://www.sitoolkit.org/schema/documentMapping" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sitoolkit.org/schema/documentMapping">
+    <xs:complexType name="column">
+    	<xs:attribute name="property" type="xs:string"></xs:attribute>
+    	<xs:attribute name="name" type="xs:string"></xs:attribute>
+    	<xs:attribute name="pattern" type="xs:string"></xs:attribute>
+    	<xs:attribute name="flag" type="xs:string"></xs:attribute>
+    	<xs:attribute name="readOnly" type="xs:boolean"></xs:attribute>
+    	<xs:attribute name="min" type="xs:int"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="table">
+    	<xs:sequence>
+    		<xs:element name="column" type="column"
+    			maxOccurs="unbounded" minOccurs="1">
+    		</xs:element>
+    	</xs:sequence>
+    	<xs:attribute name="beanId" type="xs:string"></xs:attribute>
+    	<xs:attribute name="name" type="xs:string"></xs:attribute>
+    	<xs:attribute name="cornerTop" type="xs:int"></xs:attribute>
+    	<xs:attribute name="cornerLeft" type="xs:int"></xs:attribute>
+    </xs:complexType>
+
+
+    <xs:element name="document">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element name="table" type="table" maxOccurs="unbounded" minOccurs="0"></xs:element>
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
+</xs:schema>

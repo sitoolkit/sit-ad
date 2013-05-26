@@ -1,0 +1,29 @@
+package jp.monocrea.sitoolkit.archetype.domain.group;
+
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
+import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseDao;;
+import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseService;
+
+/**
+ * このクラスは、グループマスターのサービスです。
+ * @author 
+ **/
+@Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+public class GroupService extends AbstractBaseService<GroupEntity, String> {
+
+	@Inject
+	GroupDao dao;
+
+	@Override
+	public AbstractBaseDao<GroupEntity, String> getDao() {
+		return dao;
+	}
+
+}

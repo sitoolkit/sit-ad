@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:cmp="http://java.sun.com/jsf/composite/cmp">
+	<ui:composition template="/WEB-INF/templates/template.xhtml">
+		<ui:define name="content">
+
+			<h:panelGroup id="ユーザー登録" styleClass="area" layout="block">
+				<h1>ユーザー登録</h1>
+				<p></p>
+
+				<h:panelGrid styleClass="formtable" columns="2" columnClasses="header data">
+
+					<h:outputLabel for="user-userId" value="ユーザーID" styleClass="requred "/>
+					<h:panelGroup>
+						<h:inputText id="user-userId" value="#{userInputModel.entity.userId}" label="ユーザーID" disabled="#{userInputModel.mode.update}" styleClass="ime-disabled" maxlength="8">
+							<f:validateRequired />
+						</h:inputText>
+						<h:message for="user-userId" errorClass="errmsg" showDetail="true" showSummary="false"/>
+						<div class="guidance"></div>
+					</h:panelGroup>
+
+					<h:outputLabel for="user-password" value="パスワード" styleClass="requred "/>
+					<h:panelGroup>
+						<h:inputSecret id="user-password" value="#{userInputModel.entity.password}" label="パスワード"  styleClass="ime-disabled" maxlength="127" redisplay="true">
+							<f:validateRequired />
+							<f:converter converterId="passwordConverter"/>
+						</h:inputSecret>
+						<h:message for="user-password" errorClass="errmsg" showDetail="true" showSummary="false"/>
+						<div class="guidance"></div>
+					</h:panelGroup>
+
+					<h:outputLabel for="user-lastName" value="姓" styleClass=""/>
+					<h:panelGroup>
+						<h:inputText id="user-lastName" value="#{userInputModel.entity.lastName}" label="姓"  styleClass="ime-on" maxlength="32">
+						</h:inputText>
+						<h:message for="user-lastName" errorClass="errmsg" showDetail="true" showSummary="false"/>
+						<div class="guidance"></div>
+					</h:panelGroup>
+
+					<h:outputLabel for="user-firstName" value="名" styleClass=""/>
+					<h:panelGroup>
+						<h:inputText id="user-firstName" value="#{userInputModel.entity.firstName}" label="名"  styleClass="ime-on" maxlength="32">
+						</h:inputText>
+						<h:message for="user-firstName" errorClass="errmsg" showDetail="true" showSummary="false"/>
+						<div class="guidance"></div>
+					</h:panelGroup>
+
+					<h:outputLabel for="user-gender" value="性別" styleClass=""/>
+					<h:panelGroup>
+						<h:selectOneMenu id="user-gender" value="#{userInputModel.entity.gender}" label="性別">
+							<f:selectItems var="cd" value="#{codeService.values('性別Vo')}" itemValue="#{cd.value}" itemLabel="#{cd.label}"/>
+						</h:selectOneMenu>
+						<h:message for="user-gender" errorClass="errmsg" showDetail="true" showSummary="false"/>
+						<div class="guidance"></div>
+					</h:panelGroup>
+ 				</h:panelGrid>
+				<h:panelGroup styleClass="form-footer" layout="block">
+					<h:commandButton id="user-create" action="#{userInputModel.create}" 
+						value="作成" rendered="#{userInputModel.mode.create}" immediate="false">
+					</h:commandButton>
+					<h:commandButton id="user-update" action="#{userInputModel.update}" 
+						value="更新" rendered="#{userInputModel.mode.update}" immediate="false">
+					</h:commandButton>
+					<h:commandButton id="user-delete" action="#{userInputModel.delete}" 
+						value="削除" rendered="#{userInputModel.mode.update}" immediate="false">
+					</h:commandButton>
+					<h:link outcome="userList" value="一覧へ戻る">
+ 						<f:param name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+					</h:link>
+				</h:panelGroup>
+			</h:panelGroup>
+
+	</ui:define>
+</ui:composition>
+</html>
+
+
+
+
+
+
+
+
+
+

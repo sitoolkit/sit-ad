@@ -1,0 +1,17 @@
+CREATE TABLE $table.pname (
+
+#foreach ($column in $table.columns)
+	$column.pname $column.type $column.declareLength $column.delareNotNull,
+#end
+	deleted BOOLEAN NOT NULL DEFAULT FALSE,
+	version INTEGER NOT NULL DEFAULT 0,
+	created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	created_by VARCHAR(64) NOT NULL DEFAULT 'system',
+	updated TIMESTAMP NOT NULL ,
+	updated_by VARCHAR(64) DEFAULT 'system',
+#foreach ($mapEntry in $table.fkMap.entrySet())
+	FOREIGN KEY ($mapEntry.value.srcCols) REFERENCES $mapEntry.key ($mapEntry.value.dstCols) ,
+#end
+	PRIMARY KEY (#foreach ($column in $table.pks) #if ($velocityCount > 1), #end $column.pname #end)
+);
+

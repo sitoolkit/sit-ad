@@ -1,0 +1,38 @@
+#parse("/java-class.vm")
+package $entity.pkg;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+#import($entity)
+import ${entity.appRootPkg}.infra.layer.AbstractBaseEntity;
+
+/**
+ * このクラスは、$entity.nameを表すエンティティです。
+ * @author 
+ */
+@Entity
+@Table(name="$entity.tablePname")
+public class $entity.pname extends AbstractBaseEntity implements Serializable {
+
+#foreach ($field in $entity.ids)
+#field($field "jpa")
+#end
+
+#foreach ($field in $entity.fields)
+#field($field "jpa")
+#end
+
+#foreach ($field in $entity.fields)
+#accessor($field)
+#end
+
+#foreach ($field in $entity.ids)
+#accessor($field)
+#end
+
+#equals($entity)
+
+#hashcode($entity)
+
+}

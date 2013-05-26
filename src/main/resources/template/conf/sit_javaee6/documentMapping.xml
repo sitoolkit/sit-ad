@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document
+	xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+	xmlns='http://www.sitoolkit.org/schema/documentMapping'
+	xsi:schemaLocation='http://www.sitoolkit.org/schema/documentMapping jaxb/document/documentMapping_1_0.xsd'>
+	<table beanId="codeDef" name="コード定義">
+		<column property="no" name="No."/>
+		<column property="name" name="コード名"/>
+		<column property="codeDef" name="コード定義"/>
+	</table>
+	<table beanId="tableDef" name="テーブル定義">
+		<column property="no" name="No."/>
+		<column property="name" name="テーブル名"/>
+		<column property="pname" name="テーブル物理名"/>
+		<column property="domain" name="ドメイン"/>
+		<column property="domainPname" name="ドメイン物理名"/>
+	</table>
+	<table beanId="columnDef" name="カラム定義">
+		<column property="no" name="No."/>
+		<column property="name" name="カラム名"/>
+		<column property="pname" name="物理名"/>
+		<column property="type" name="データ型"/>
+		<column property="format" name="書式"/>
+		<column property="defaultValue" name="初期値"/>
+		<column property="length" name="長さ"/>
+		<column property="notnull" name="必須" flag="○"/>
+		<column property="pk" name="主キー"/>
+		<column property="fkStr" name="外部キー"/>
+		<column property="codeSpec" name="コード仕様"/>
+		<column property="remark" name="説明"/>
+	</table>
+	<table beanId="formatDef" name="書式定義">
+		<column property="no" name="No."/>
+		<column property="name" name="書式名"/>
+		<column property="inputFormat" name="入力書式"/>
+		<column property="outputFormat" name="表示書式"/>
+		<column property="pgType" name="Java Type"/>
+		<column property="converter" name="Converter"/>
+		<column property="validator" name="Validator"/>
+		<column property="dbType" name="DB Type"/>
+		<column property="cssClass" name="CSS Class"/>
+	</table>
+	<table beanId="itemDef,viewItemDef" name="項目定義">
+		<column property="no" name="No." readOnly="true"/>
+		<column property="areaStr" name="領域"/>
+		<column property="itemStr" name="項目"/>
+		<column property="label" name="ラベル"/>
+		<column property="controlStr" name="コントロール"/>
+		<column property="guidance" name="ガイダンス"/>
+		<column property="choice" name="選択肢"/>
+		<column property="displayLength" name="表示桁数" min="0"/>
+		<column property="inputLength" name="入力桁数" min="0"/>
+		<column property="required" name="入力必須" flag="○"/>
+		<column property="ioformat" name="入出力書式"/>
+		<column property="pname" name="項目物理名"/>
+		<column property="dataBindList" name="データバインド"/>
+		<column property="designInfoMap" name="その他設計情報"/>
+	</table>
+
+	<table beanId="nodeDef" name="ノード定義">
+		<column property="no" name="No."/>
+		<column property="name" name="画面名/階層名"/>
+		<column property="type" name="画面/階層"/>
+		<column property="pname" name="物理名"/>
+		<column property="domain" name="ドメイン"/>
+		<column property="dirs" name="階層" pattern="階層_[0-9]*$"/>
+	</table>
+
+</document>

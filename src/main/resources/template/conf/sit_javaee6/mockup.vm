@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" href="${mock.base}css/style.css"/>
+<link rel="stylesheet" href="${mock.base}css/side-nav.css"/>
+<link rel="stylesheet" href="${mock.base}css/mockup.css"/>
+<link rel="stylesheet" href="${mock.base}css/${mock.pname}.css"/>
+<script src="${mock.base}js/jquery.js"></script>
+<script src="${mock.base}js/menu.js"></script>
+<script src="${mock.base}js/mockup.js"></script>
+<script>
+$(function() {
+#set ($D = "$")
+	${D}.getScript("${mock.base}js/${mock.pname}.js");
+});
+</script>
+<title>$mock.name</title>
+</head>
+<body>
+<hr class="full"/>
+<div id="header" class="container">
+	<img src="${mock.base}img/logo.png" alt="SIToolkit" style="margin: 1em;"/>
+	<table id="submenu">
+		<tr>
+			<td>
+				<a href="">
+					<img src="${mock.base}img/head_submenu_manual.png" alt="マニュアルダウンロード" style="vertical-align:-4px;"/>
+					マニュアルダウンロード
+				</a>
+			</td>
+			<td>
+				<a href="">
+					<img src="${mock.base}img/head_submenu_loagin.png" alt="ログアウト" style="vertical-align:-4px;"/>
+					<span>ログアウト</span>
+				</a>
+			</td>
+		</tr>
+	</table>
+</div>
+<hr class="full"/>
+<div id="content" class="container">
+<div id="side-nav">
+	<a id="top-back" href="">トップ</a>
+	<ul id="menu">
+		#navTree($tree.list)
+	</ul>
+</div>
+#foreach ($area in $mock.areas)
+		#area($area)
+#end		
+	</div>
+	<hr class="full"/>
+	<div id="footer" class="container">Powered by SIToolkit</div>
+</body>
+</html>
+##
+##
+#macro (navTree $nodes)
+	#foreach ($node in $nodes)
+	<li>
+		#if ($node.isPage())
+			<a href="${node.parentPath}/${node.page.fileName}">$node.name</a>
+		#else
+			<a href="">$node.name</a>
+		#end
+		#if (not $node.children.isEmpty())
+		<ul>
+			#navTree ($node.children)
+		</ul>
+		#end
+	</li>
+	#end
+#end
+##
+##
+#macro(area $area)
+	<div id="$area.id" class="area $area.type.styleClass">
+		<h1>$area.name</h1>
+		<p></p>
+	#if ($area.type == "フォーム")
+		<form action="#">
+			<table class="form">
+				<tbody>
+					<tr>
+		#set ($lane = 0)
+		#foreach ($item in $area.items)
+			#if ($velocityCount > 1 && $lane >= $area.formLane)
+					</tr><tr>
+				#set ($lane = 0)
+			#end
+						<th>
+							<label for="$item.id" #if ($item.required) class="required" #end>$item.label</label>
+						</th>
+						<td>
+							#item($item)
+							<div class="guidance">$item.guidance</div>
+			#foreach ($subItem in $item.bottomSubItems)
+							#item($subItem)
+			#end
+						</td>
+		
+			#set ($lane = $lane + 1)
+		#end
+					</tr>
+				</tbody>
+			</table>
+			<div class="form-footer">
+		#foreach ($item in $area.footerItems)
+			#item($item)
+		#end
+			</div>
+		</form>
+	#elseif ($area.type == "テーブル")
+		<table class="datatable">
+			<thead>
+				<tr>
+		#foreach ($item in $area.items)
+					<th><a href="">$item.label</a></th>
+		#end
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+		#foreach ($item in $area.items)
+					<td>#item($item)</td>
+		#end
+				</tr>
+			</tbody>
+		</table>
+
+	
+	#elseif ($area.type == "ボックス")
+		<div class="box $area.id">
+		#foreach ($item in $area.items)
+			<div class="box-item $item.id">#itemWithLabel($item)</div> 
+		#end
+		</div>
+		
+	#else
+	
+	#end
+	</div>
+#end
+##
+##
+#macro(itemWithLabel $item)
+	<label for="$item.id">$item.label</label>
+	
+	#item($item)
+#end
+##
+##
+#macro(item $item)
+
+	#if ($item.control == "テキスト")
+		<span id="$item.id" class="shownum">$item.label</span>
+
+	#elseif ($item.control == "テキストボックス")
+		<input id="$item.id" name="$item.id" type="text" maxlength="$item.inputLength" size="$item.displayLength" class="shownum"/>	
+
+	#elseif ($item.control == "パスワード")
+		<input id="$item.id" name="$item.id" type="password" maxlength="$item.inputLength" size="$item.displayLength" class="shownum"/>	
+
+	#elseif ($item.control == "テキストボックス")
+		<input id="$item.id" name="$item.id" type="password" maxlength="$item.inputLength" size="$item.displayLength" class="shownum"/>	
+
+	#elseif ($item.control == "ラジオボタン")
+		#foreach ($code in $item.options)
+		<input id="$item.id$velocityCount" name="$item.id" type="radio" #if ($item.deginInfoMap.DefaultValue.value == $code.label) checked="checked" #end class="shownum"/>
+		<label for="$item.id$velocityCount">$code.label</label>	
+		#end
+
+	#elseif ($item.control == "単一チェックボックス")
+		<input id="$item.id" name="$item.id" type="checkbox" #if ($item.deginInfoMap.DefaultValue.value == "チェックあり") checked="checked" #end class="shownum"/>
+		<label for="$item.id">$item.label</label>	
+
+	#elseif ($item.control == "複数チェックボックス")
+		#foreach ($code in $item.options)
+		<span>
+			<input id="$item.id$velocityCount" name="$item.id" type="checkbox" #if ($item.deginInfoMap.DefaultValue.value == $code.label) checked="checked" #end class="shownum"/>
+			<label for="$item.id$velocityCount">$code.label</label>	
+		</span>
+		#end
+		
+	#elseif ($item.control == "ボタン")
+		<input id="$item.id" name="$item.id" type="button" value="$item.label" class="shownum"/>	
+
+	#elseif ($item.control == "セレクトボックス")
+		<select id="$item.id" name="$item.id" class="shownum">
+		#foreach ($code in $item.options)
+			<option value="$code.code">$code.label</option>
+		#end
+		</select>
+	
+	#elseif ($item.control == "リンク")
+		<a id="$item.id" href="" class="shownum">$item.label</a>	
+	
+	#elseif ($item.control == "イメージ")
+		<img id="$item.id" src="$item.designInfoMap.File.value" class="shownum" alt="$item.label" title="$item.label"/>
+
+	#else
+	
+	#end
+
+	#foreach ($subItem in $item.rightSubItems)
+		#item($subItem)
+	#end
+#end

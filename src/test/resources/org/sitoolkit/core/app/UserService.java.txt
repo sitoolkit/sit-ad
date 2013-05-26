@@ -1,0 +1,29 @@
+package jp.monocrea.sitoolkit.archetype.domain.user;
+
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
+import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseDao;;
+import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseService;
+
+/**
+ * このクラスは、ユーザーマスターのサービスです。
+ * @author 
+ **/
+@Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+public class UserService extends AbstractBaseService<UserEntity, String> {
+
+	@Inject
+	UserDao dao;
+
+	@Override
+	public AbstractBaseDao<UserEntity, String> getDao() {
+		return dao;
+	}
+
+}

@@ -1,0 +1,30 @@
+package jp.monocrea.sitoolkit.archetype.domain.code;
+
+import jp.monocrea.sitoolkit.archetype.infra.code.ICode;
+
+/**
+ * 
+ * @auther 
+ **/
+public enum 性別Vo implements ICode{
+		男性("1", "男性"),
+		女性("2", "女性"),
+	;
+	
+	private 性別Vo(String value, String label) {
+		this.value = value;
+		this.label = label;
+	}
+	private String value;
+	private String label;
+	public String getValue() {
+		return value;
+	}
+	public String getLabel() {
+		return label;
+	}
+	@Override
+	public String toString() {
+		return getLabel();
+	}
+}

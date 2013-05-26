@@ -1,0 +1,31 @@
+package $code.pkg;
+
+import ${code.appRootPkg}.infra.code.ICode;
+
+/**
+ * 
+ * @auther 
+ **/
+public enum $code.pname implements ICode{
+#foreach ($item in $code.items)
+		${item.escapedLabel}("$item.code", "$item.label"),
+#end
+	;
+	
+	private ${code.pname}(String value, String label) {
+		this.value = value;
+		this.label = label;
+	}
+	private String value;
+	private String label;
+	public String getValue() {
+		return value;
+	}
+	public String getLabel() {
+		return label;
+	}
+	@Override
+	public String toString() {
+		return getLabel();
+	}
+}

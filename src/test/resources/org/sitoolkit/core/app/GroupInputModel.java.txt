@@ -1,0 +1,50 @@
+package jp.monocrea.sitoolkit.archetype.web.model;
+
+import java.io.Serializable;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
+import jp.monocrea.sitoolkit.archetype.domain.group.*;
+import jp.monocrea.sitoolkit.archetype.web.infra.AbstractBaseInputModel;
+import jp.monocrea.sitoolkit.archetype.web.infra.RequestParam;
+
+@ManagedBean
+@ViewScoped
+public class GroupInputModel extends AbstractBaseInputModel<GroupEntity, String, GroupService> implements Serializable {
+
+	@Inject
+	GroupService service;
+
+	/**
+	 * グループID
+	 */
+	@Inject
+	@RequestParam
+ 	private String groupId;
+
+	/**
+	 * グループIDを返却する。
+	 * @return グループID
+	 */
+	public String getGroupId() {
+		return this.groupId;
+	}
+
+	/**
+	 * グループIDを設定する。
+	 * @param groupId グループID
+	 */
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	@Override
+	protected GroupService getService() {
+		return service;
+	}
+
+	@Override
+	protected String getEntityId() {
+		return getGroupId();
+	}
+}

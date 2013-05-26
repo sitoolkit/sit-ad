@@ -1,0 +1,83 @@
+package jp.monocrea.sitoolkit.archetype.domain.group;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
+
+/**
+ * このクラスは、グループマスターを表すエンティティです。
+ * @author 
+ */
+@Entity
+@Table(name="m_group")
+public class GroupEntity extends AbstractBaseEntity implements Serializable {
+
+	/**
+	 * グループID
+	 */
+	@Id
+	@Column(name="group_id")
+ 	private String groupId;
+
+	/**
+	 * グループ名
+	 */
+	@Column(name="group_name")
+ 	private String groupName;
+
+	/**
+	 * グループ名を返却する。
+	 * @return グループ名
+	 */
+	public String getGroupName() {
+		return this.groupName;
+	}
+
+	/**
+	 * グループ名を設定する。
+	 * @param groupName グループ名
+	 */
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	/**
+	 * グループIDを返却する。
+	 * @return グループID
+	 */
+	public String getGroupId() {
+		return this.groupId;
+	}
+
+	/**
+	 * グループIDを設定する。
+	 * @param groupId グループID
+	 */
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof GroupEntity)) {
+			return false;
+		}
+		GroupEntity castOther = (GroupEntity)other;
+		return  this.groupId.equals(castOther.groupId) 
+ 			;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime +  (this.groupId != null ? this.groupId.hashCode() : 0);
+ 		return hash;
+    }
+
+
+}

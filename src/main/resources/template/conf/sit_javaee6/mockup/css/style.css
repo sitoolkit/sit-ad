@@ -1,0 +1,188 @@
+body {
+	background-image: url("../img/head_back.gif");
+	margin: 0;
+}
+
+body, input, textarea {
+	font-size: small;
+	color: #000000;
+}
+
+h1 {
+	font-size: 150%;
+	border-bottom: solid 2px #000000;
+	padding-left: 1em;
+	padding-bottom: 0.5em;
+	background-image: url("../img/title_arrow.gif");
+	background-repeat: no-repeat;
+}
+
+
+a {
+	color: gray;
+}
+
+table.form, table.datatable {
+	width: 100%;
+	border: solid 0 #000000;
+	border-width: 1px 0 0 1px;
+	border-collapse: collapse;
+}
+
+th{
+	background-color: #efefef;
+	font-weight: normal;
+}
+
+table.form tbody tr th, table.form tbody tr td.header {
+	text-align: left;
+}
+
+table.datatable thead tr th {
+	text-align: center;
+}
+
+table.form tbody tr th, table.form * tr td, 
+table.datatable thead tr th, table.datatable tbody tr td {
+	border: solid 0 #000000;
+	border-width: 0 1px 1px 0;
+	padding: 0.5em;
+}
+
+table.form tfoot tr td {
+	text-align: center;
+}
+
+table.datatable tbody tr:hover {
+	background-color: #f5f5f5;
+}
+
+table.jsf-select {
+	border-collapse: collapse;
+}
+
+table.jsf-select tbody tr td {
+	border: none;
+}
+
+div.form-footer {
+	text-align: center;
+	margin-top:1em;
+}
+
+label.required:after {
+	content: "*";
+	color: red;
+	margin-left:0.5em;
+}
+
+/*
+input[type='text']:focus, select:focus {
+	border: dashed 2px green;
+}
+*/
+
+.guidance {
+	font-size: smaller;
+	color: gray;
+}
+/*
+.guidance:before {
+	content: "(";
+}
+
+.guidance:after {
+	content: ")";
+}
+*/
+.paging {
+	padding: 0.5em;
+	text-align: right;
+}
+.paging span, .paging a {
+	margin: 0 0.5em;
+}
+
+.errmsg {
+	color: red;
+}
+
+.infomsg {
+	color: green;
+}
+
+.center-box {
+	display: block;
+	text-align: center;
+	margin-top: 6em;
+	margin-bottom: 6em;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
+
+.right {
+	text-align: right;
+}
+
+#header {
+/*	padding: 1em;*/
+}
+
+#header a {
+	text-decoration: inherit;
+}
+
+#submenu {
+	background-image: url('../img/head_submenu_back.gif');
+	width: 290px;
+	height: 28px;
+	float:right;
+}
+
+#submenu a {
+	color: #ffffff;
+}
+
+#footer {
+	font-size: x-small;
+	color: gray;
+	text-align: right;
+	padding: 0.5em;
+	font-family: 'Times New Roman', serif;
+}
+
+#content {
+	background-color: #ffffff;
+}
+
+#side-nav {
+	width: 200px;
+	height: 100%;
+	float:left;
+}
+
+div.container {
+	width: 820px;
+	margin:0 auto;
+}
+
+div.container:after {
+	content: "";
+	display: block;
+	clear:both;
+}
+
+div.area {
+	padding: 10px;
+	width: 600px;
+	float: right;
+}
+
+hr.full {
+	border: solid 2px #000000;
+	margin: 0;
+}
+

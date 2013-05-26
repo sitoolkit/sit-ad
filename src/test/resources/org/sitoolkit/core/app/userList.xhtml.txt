@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:cmp="http://java.sun.com/jsf/composite/cmp">
+	<ui:composition template="/WEB-INF/templates/template.xhtml">
+		<ui:define name="content">
+
+			<h:panelGroup id="検索条件" styleClass="area" layout="block">
+				<h1>検索条件</h1>
+				<p></p>
+
+				<h:panelGrid styleClass="formtable" columns="2" columnClasses="header data">
+
+					<h:outputLabel for="user-userId" value="ユーザーID" styleClass=""/>
+					<h:panelGroup>
+						<h:inputText id="user-userId" value="#{userListModel.condition.params.sw_userId}" label="ユーザーID"  styleClass="" maxlength="8">
+						</h:inputText>
+						<h:message for="user-userId" errorClass="errmsg" showDetail="true" showSummary="false"/>
+						<div class="guidance"></div>
+					</h:panelGroup>
+ 				</h:panelGrid>
+				<h:panelGroup styleClass="form-footer" layout="block">
+					<h:commandButton id="user-search" action="#{userListModel.search}" 
+						value="検索"  immediate="false">
+						<f:ajax execute="@form" render="@form"/>
+					</h:commandButton>
+					<h:commandButton id="user-clear" action="#{userListModel.clear}" 
+						value="クリア"  immediate="true">
+						<f:ajax execute="@form" render="@form"/>
+					</h:commandButton>
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup id="ユーザー一覧" styleClass="area" layout="block">
+				<h1>ユーザー一覧</h1>
+				<p></p>
+
+				<h:dataTable var="u" value="#{userListModel.list}" rendered="#{not empty userListModel.list}" styleClass="datatable">
+					<f:facet name="caption">
+						<cmp:pageCtrl model="#{userListModel}"/>
+					</f:facet>
+				
+					<h:column>
+						<f:facet name="header">
+							表示
+						</f:facet>
+						<h:link outcome="userInput" value="表示">
+							<f:param name="userId" value="#{u.userId}" />
+ 							<f:param name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</h:link>
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:commandLink action="#{userListModel.sort('userId')}" value="ユーザーID">
+								<f:ajax render="@form"/>
+							</h:commandLink>
+						</f:facet>
+						<h:outputText id="user-userId" value="#{u.userId}" styleClass="">
+						</h:outputText>
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:commandLink action="#{userListModel.sort('lastName')}" value="姓">
+								<f:ajax render="@form"/>
+							</h:commandLink>
+						</f:facet>
+						<h:outputText id="user-lastName" value="#{u.lastName}" styleClass="">
+						</h:outputText>
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:commandLink action="#{userListModel.sort('firstName')}" value="名">
+								<f:ajax render="@form"/>
+							</h:commandLink>
+						</f:facet>
+						<h:outputText id="user-firstName" value="#{u.firstName}" styleClass="">
+						</h:outputText>
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:commandLink action="#{userListModel.sort('gender')}" value="性別">
+								<f:ajax render="@form"/>
+							</h:commandLink>
+						</f:facet>
+						<h:outputText id="user-gender" value="#{u.genderVo}" styleClass="">
+						</h:outputText>
+					</h:column>
+
+ 				</h:dataTable>
+
+			</h:panelGroup>
+
+	</ui:define>
+</ui:composition>
+</html>
+
+
+
+
+
+
+
+
+
+

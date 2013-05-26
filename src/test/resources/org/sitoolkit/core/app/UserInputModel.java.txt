@@ -1,0 +1,50 @@
+package jp.monocrea.sitoolkit.archetype.web.model;
+
+import java.io.Serializable;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
+import jp.monocrea.sitoolkit.archetype.domain.user.*;
+import jp.monocrea.sitoolkit.archetype.web.infra.AbstractBaseInputModel;
+import jp.monocrea.sitoolkit.archetype.web.infra.RequestParam;
+
+@ManagedBean
+@ViewScoped
+public class UserInputModel extends AbstractBaseInputModel<UserEntity, String, UserService> implements Serializable {
+
+	@Inject
+	UserService service;
+
+	/**
+	 * ユーザーID
+	 */
+	@Inject
+	@RequestParam
+ 	private String userId;
+
+	/**
+	 * ユーザーIDを返却する。
+	 * @return ユーザーID
+	 */
+	public String getUserId() {
+		return this.userId;
+	}
+
+	/**
+	 * ユーザーIDを設定する。
+	 * @param userId ユーザーID
+	 */
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@Override
+	protected UserService getService() {
+		return service;
+	}
+
+	@Override
+	protected String getEntityId() {
+		return getUserId();
+	}
+}

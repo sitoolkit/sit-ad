@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy/MM/dd HH:mm:ss.SSS} %-5p %-30.30logger{0} - %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="file" class="ch.qos.logback.core.FileAppender">
+		<file>logs/sitoolkit.log</file>
+		<encoding>UTF-8</encoding>
+		<append>true</append>		
+		<encoder>
+			<pattern>%d{yyyy/MM/dd HH:mm:ss.SSS} %-5p %-30.30logger{0} - %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.sitoolkit.core" level="debug"/>
+	<logger name="org.sitoolkit.core.infra.repository.excel" level="trace" additivity="true"/>
+
+	<logger name="org.springframework" level="info"/>
+
+	<logger name="org.apache.velocity" level="info"/>
+
+	<root level="info">
+		<appender-ref ref="file" />
+		<appender-ref ref="stdout" />
+	</root>
+</configuration>

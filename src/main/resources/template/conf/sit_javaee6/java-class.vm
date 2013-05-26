@@ -1,0 +1,164 @@
+#macro (import $clazz)
+#if ($clazz.hasDateField())
+import java.util.Date;
+#end
+#if ($clazz.hasCodedField())
+import ${clazz.appRootPkg}.domain.code.*;
+import ${clazz.appRootPkg}.infra.code.*;
+#end
+#end
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+##
+##
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+#macro (field $field $type)
+	/**
+	 * $field.name
+	 */
+#annotation($field $type)
+	private $field.type $field.pname;
+#end
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+##
+##
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+#macro(annotation $field $type)
+#if ($type == "jpa")
+## type = jpa
+#if ($field.embeddedId)
+	@EmbeddedId
+#else
+#### type = jpa & !field.embeddedId
+#if ($field.id) 
+	@Id
+#end
+#### type = jpa & !field.embeddedId
+#if ($field.type == "Date")
+	@Temporal(TemporalType.DATE)
+#end
+	@Column(name="$field.column")
+#end
+#elseif ($type == "jsf")
+	@Inject
+	@RequestParam
+#end ## if type = jpa
+#end## macro annotation
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+##
+##
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+#macro (accessor $field)
+#if ($field.coded)
+#getterComment($field)
+	public ${field.codeSpec}${field.entity.voPnameSuffix} get${field.pnamePascal}${field.entity.voPnameSuffix}() {
+		return CodeUtils.decode(this.$field.pname, ${field.codeSpec}${field.entity.voPnameSuffix}.values());
+	}
+#setterComment($field)
+	public void set${field.pnamePascal}${field.entity.voPnameSuffix}(${field.codeSpec}${field.entity.voPnameSuffix} $field.pname) {
+		this.$field.pname = ($field.pname == null ? null : ${field.pname}.getValue());
+	}
+## !field.coded
+#*
+#elseif ($field.booled)
+#getterComment($field)
+	public boolean get${field.pnamePascal}() {
+		return this.$field.pname == 1;
+	}
+#setterComment($field)
+	public void set${field.pnamePascal}(boolean $field.pname) {
+		this.$field.pname = $field.pname ? 1 : 0;
+	}
+*#
+## !field.coded & !field.booled
+#end
+#getterComment($field)
+	public $field.type get${field.pnamePascal}() {
+		return this.$field.pname;
+	}
+
+#setterComment($field)
+	public void set${field.pnamePascal}($field.type $field.pname) {
+		this.$field.pname = $field.pname;
+	}
+#end
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+##
+##
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+#macro (getterComment $field)
+	/**
+	 * $field.nameを返却する。
+	 * @return $field.name
+	 */
+#end
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+##
+##
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+#macro (setterComment $field)
+	/**
+	 * $field.nameを設定する。
+	 * @param $field.pname $field.name
+	 */
+#end
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+##
+##
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+#macro (equals $clazz)
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof $clazz.pname)) {
+			return false;
+		}
+		$clazz.pname castOther = ($clazz.pname)other;
+		return #foreach ($field in $clazz.ids)
+#if ($velocityCount > 1) 
+			&& #end
+#if ($field.primitiveType) this.$field.pname == castOther.$field.pname
+#else this.${field.pname}.equals(castOther.$field.pname) 
+#end
+#end ## foreach clazz.ids
+			;
+	}
+#end
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+##
+##
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+#macro (hashcode $clazz)
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int hash = 17;
+#foreach ($field in $clazz.ids)
+		hash = hash * prime + #hash($field)
+#end
+		return hash;
+    }
+
+#end
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+##
+##
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+#macro (hash $field)
+ #if ($field.type == "boolean") 
+(this.$field.pname ? 0 : 1);
+ #elseif ($field.type == "byte" || $field.type == "char" || $field.type == "short" || $field.type == "int")
+(int)this.$field.pname;
+ #elseif ($field.type == "long") 
+(int)(this.$field.pname ^ (this.$field.pname >>> 32));
+ #elseif ($field.type == "float")
+Float.floatToIntBits(this.$field.pname);
+ #elseif ($field.type == "double")
+(int)(this.Double.doubleToLongBits(this.$field.pname) ^ (this.Double.doubleToLongBits(this.$field.pname) >>> 32);
+ #elseif ($field.arrayType) 
+java.util.Arrays.hashCode(this.$field.pnme);
+ #else
+(this.$field.pname != null ? this.${field.pname}.hashCode() : 0);
+#end ## if type
+#end## mcro hash

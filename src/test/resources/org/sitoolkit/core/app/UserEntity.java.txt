@@ -1,0 +1,160 @@
+package jp.monocrea.sitoolkit.archetype.domain.user;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+import jp.monocrea.sitoolkit.archetype.domain.code.*;
+import jp.monocrea.sitoolkit.archetype.infra.code.*;
+import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
+
+/**
+ * このクラスは、ユーザーマスターを表すエンティティです。
+ * @author 
+ */
+@Entity
+@Table(name="m_user")
+public class UserEntity extends AbstractBaseEntity implements Serializable {
+
+	/**
+	 * ユーザーID
+	 */
+	@Id
+	@Column(name="user_id")
+ 	private String userId;
+
+	/**
+	 * パスワード
+	 */
+	@Column(name="password")
+ 	private String password;
+	/**
+	 * 姓
+	 */
+	@Column(name="last_name")
+ 	private String lastName;
+	/**
+	 * 名
+	 */
+	@Column(name="first_name")
+ 	private String firstName;
+	/**
+	 * 性別
+	 */
+	@Column(name="gender")
+ 	private String gender;
+
+	/**
+	 * パスワードを返却する。
+	 * @return パスワード
+	 */
+	public String getPassword() {
+		return this.password;
+	}
+
+	/**
+	 * パスワードを設定する。
+	 * @param password パスワード
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	/**
+	 * 姓を返却する。
+	 * @return 姓
+	 */
+	public String getLastName() {
+		return this.lastName;
+	}
+
+	/**
+	 * 姓を設定する。
+	 * @param lastName 姓
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	/**
+	 * 名を返却する。
+	 * @return 名
+	 */
+	public String getFirstName() {
+		return this.firstName;
+	}
+
+	/**
+	 * 名を設定する。
+	 * @param firstName 名
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	/**
+	 * 性別を返却する。
+	 * @return 性別
+	 */
+	public 性別Vo getGenderVo() {
+		return CodeUtils.decode(this.gender, 性別Vo.values());
+	}
+	/**
+	 * 性別を設定する。
+	 * @param gender 性別
+	 */
+	public void setGenderVo(性別Vo gender) {
+		this.gender = (gender == null ? null : gender.getValue());
+	}
+
+	/**
+	 * 性別を返却する。
+	 * @return 性別
+	 */
+	public String getGender() {
+		return this.gender;
+	}
+
+	/**
+	 * 性別を設定する。
+	 * @param gender 性別
+	 */
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	/**
+	 * ユーザーIDを返却する。
+	 * @return ユーザーID
+	 */
+	public String getUserId() {
+		return this.userId;
+	}
+
+	/**
+	 * ユーザーIDを設定する。
+	 * @param userId ユーザーID
+	 */
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof UserEntity)) {
+			return false;
+		}
+		UserEntity castOther = (UserEntity)other;
+		return  this.userId.equals(castOther.userId) 
+ 			;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime +  (this.userId != null ? this.userId.hashCode() : 0);
+ 		return hash;
+    }
+
+
+}

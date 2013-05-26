@@ -1,0 +1,14 @@
+/log/
+/out/
+/target
+/.settings
+/.checkstyle
+/.classpath
+/.project
+/bin/as/log/
+/bin/as/script/
+/bin/dev/log/
+/bin/db/script/
+/conf/
+/doc/
+/logs/

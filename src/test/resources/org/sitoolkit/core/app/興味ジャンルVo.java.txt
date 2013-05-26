@@ -1,0 +1,34 @@
+package jp.monocrea.sitoolkit.archetype.domain.code;
+
+import jp.monocrea.sitoolkit.archetype.infra.code.ICode;
+
+/**
+ * 
+ * @auther 
+ **/
+public enum 興味ジャンルVo implements ICode{
+		エンターテイメント("01", "エンターテイメント"),
+		旅行レジャー("02", "旅行・レジャー"),
+		スポーツアウトドア("03", "スポーツ・アウトドア"),
+		ファッションビューティー("04", "ファッション・ビューティー"),
+		ITパソコンデジタル家電("05", "IT・パソコン・デジタル家電"),
+		ビジネスキャリア("06", "ビジネスキャリア"),
+	;
+	
+	private 興味ジャンルVo(String value, String label) {
+		this.value = value;
+		this.label = label;
+	}
+	private String value;
+	private String label;
+	public String getValue() {
+		return value;
+	}
+	public String getLabel() {
+		return label;
+	}
+	@Override
+	public String toString() {
+		return getLabel();
+	}
+}

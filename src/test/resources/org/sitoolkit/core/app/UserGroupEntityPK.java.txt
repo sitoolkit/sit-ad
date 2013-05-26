@@ -1,0 +1,87 @@
+package jp.monocrea.sitoolkit.archetype.domain.user;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+/**
+ * このクラスは、ユーザーグループ関連エンティティのIDを表します。
+ * @author
+ */
+@Embeddable
+public class UserGroupEntityPK implements Serializable {
+
+	/**
+	 * ユーザーID
+	 */
+ 	private String userId;
+	/**
+	 * グループID
+	 */
+ 	private String groupId;
+
+	public UserGroupEntityPK() {
+		super();
+	}
+
+	public UserGroupEntityPK(String userId, String groupId) {
+		super();
+		this.userId = userId;
+		this.groupId = groupId;
+	}
+	
+	/**
+	 * ユーザーIDを返却する。
+	 * @return ユーザーID
+	 */
+	public String getUserId() {
+		return this.userId;
+	}
+
+	/**
+	 * ユーザーIDを設定する。
+	 * @param userId ユーザーID
+	 */
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	/**
+	 * グループIDを返却する。
+	 * @return グループID
+	 */
+	public String getGroupId() {
+		return this.groupId;
+	}
+
+	/**
+	 * グループIDを設定する。
+	 * @param groupId グループID
+	 */
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof UserGroupEntityPK)) {
+			return false;
+		}
+		UserGroupEntityPK castOther = (UserGroupEntityPK)other;
+		return  this.userId.equals(castOther.userId) 
+			&&  this.groupId.equals(castOther.groupId) 
+ 			;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime +  (this.userId != null ? this.userId.hashCode() : 0);
+ 		hash = hash * prime +  (this.groupId != null ? this.groupId.hashCode() : 0);
+ 		return hash;
+    }
+
+
+}

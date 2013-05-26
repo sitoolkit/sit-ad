@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition>
+	<h:outputScript library="js" name="menu.js" target="head"/>
+	<h:outputStylesheet library="css" name="side-nav.css" />
+
+	<a id="top-back" href="#{facesContext.externalContext.requestContextPath}/">トップ</a>
+	<ul id="menu">
+		#navTree($tree.list)
+	</ul>
+</ui:composition>
+</html>
+##
+##
+#macro (navTree $nodes)
+	#foreach ($node in $nodes)
+	<li>
+		#if($node.isPage())
+			<h:link outcome="/pages/$node.ppath" value="$node.name"/>
+		#else
+			<a href="">$node.name</a>
+		#end
+		#if (not $node.children.isEmpty())
+		<ul>
+			#navTree ($node.children)
+		</ul>
+		#end
+	</li>
+	#end
+#end

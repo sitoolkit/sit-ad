@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd"
+	   default-lazy-init="true">
+	   
+	<context:annotation-config/>
+	<context:component-scan base-package="org.sitoolkit.core"/>
+
+	<bean id="pm" class="org.sitoolkit.core.infra.util.PropertyManager" scope="singleton">
+		<property name="prop">
+			<props>
+				<prop key="docdir.pagespec">doc</prop>
+				<prop key="docdir.dbdef">doc</prop>
+				<prop key="resdir.mockup">conf/mockup</prop>
+				<prop key="outdir.mockup">out/mockup</prop>
+				<prop key="outdir.db">out/db/script</prop>
+				<prop key="dbdef.file">テーブル定義書.xlsx</prop>
+				<prop key="pagelist.file">画面一覧定義書.xlsx</prop>
+				<prop key="pagelist.sheet">画面一覧</prop>
+				<prop key="pagespec.template">画面定義書_テンプレート.xlsx</prop>
+				<prop key="pagespec.file">画面定義書_%s.xlsx</prop>
+				<prop key="pagespec.sheet">項目定義</prop>
+				<prop key="codespec.file">コード定義書.xlsx</prop>
+				<prop key="ioformat.file">書式定義書.xlsx</prop>
+				<prop key="timestamp">yyyy/MM/dd HH:mm:ss</prop>
+				<prop key="elementSplit">\n</prop>
+				<prop key="keyValueSplit">：</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="repo" class="org.sitoolkit.core.infra.repository.excel.ExcelRepository" scope="singleton">
+		<property name="excludingSheetNames">
+			<set>
+				<value>表紙</value>
+				<value>更新履歴</value>
+			</set>
+		</property>
+		<property name="cornerCellPattern" value="項番|No\.|#"/>
+	</bean>
+
+	<bean id="dm" class="org.sitoolkit.core.infra.repository.DocumentMapper" scope="singleton">
+		<property name="converterMap">
+			<map key-type="java.lang.Class" value-type="org.apache.commons.beanutils.Converter">
+				<entry key="org.sitoolkit.core.infra.doc.KeyValuePairMap" value-ref="stringLoadableConverter"/>
+				<entry key="org.sitoolkit.core.domain.view.itemcmp.DataBindList" value-ref="stringLoadableConverter"/>
+				<entry key="org.sitoolkit.core.domain.view.itemcmp.NestedNamePair" value-ref="stringLoadableConverter"/>
+				<entry key="org.sitoolkit.core.domain.view.nav.NodeType" value-ref="enumConverter"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="stringLoadableConverter" class="org.sitoolkit.core.infra.repository.StringLoadableConverter"/>
+	<bean id="enumConverter" class="org.sitoolkit.core.infra.repository.EnumConverter"/>
+
+	<bean id="codeGen" class="org.sitoolkit.core.app.SourceCodeGenerator">
+		<property name="name" value="コード定義"/>
+		<property name="catalog" ref="codeDefCatalog"/>
+	</bean>
+
+	<bean id="codeDefCatalog" class="org.sitoolkit.core.domain.code.CodeDefCatalog" scope="singleton">
+		<property name="codeDefId" value="codeDef"/>
+	</bean>
+	
+	<bean id="codeDef" class="org.sitoolkit.core.domain.code.CodeDef" scope="prototype">
+		<property name="template" value="/java-code.vm"/>
+		<property name="var" value="code"/>
+		<property name="pnameSuffix" value="Vo"/>
+	</bean>
+
+	<bean id="formatDefCatalog" class="org.sitoolkit.core.domain.format.FormatDefCatalog" scope="singleton"/>
+	
+	<bean id="formatDef" class="org.sitoolkit.core.domain.format.FormatDef" scope="prototype"/>
+
+	<bean id="ddlGen" class="org.sitoolkit.core.app.SourceCodeGenerator">
+		<property name="name" value="DDLスクリプト"/>
+		<property name="catalog" ref="dbDefCatalog"/>
+	</bean>
+	
+	<bean id="dbDefCatalog" class="org.sitoolkit.core.domain.data.DBDefCatalog" scope="singleton"/>
+
+	<bean id="tableDef" class="org.sitoolkit.core.domain.data.TableDef" scope="prototype">
+		<property name="template" value="/db-derby.vm"/>
+		<property name="var" value="table"/>
+		<property name="fileExt" value="sql"/>
+	</bean>
+
+	<bean id="columnDef" class="org.sitoolkit.core.domain.data.ColumnDef" scope="prototype">
+		<property name="dataTypeSetWithoutLength">
+			<set>
+				<value>integer</value>
+				<value>int</value>
+				<value>long</value>
+				<value>short</value>
+				<value>text</value>
+				<value>date</value>
+				<value>time</value>
+				<value>datetime</value>
+				<value>bool</value>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="layerGen" class="org.sitoolkit.core.app.LayerGenerator">
+		<property name="name" value="レイヤ"/>
+	</bean>
+	
+	<bean id="entityDef" class="org.sitoolkit.core.domain.java.EntityDef" scope="prototype">
+		<property name="template" value="/java-entity.vm"/>
+		<property name="var" value="entity"/>
+		<property name="pkgRootDir" value="#{pm.libSrcDir}"/>
+		<property name="voPnameSuffix" value="Vo"/>
+		<property name="embeddedId">
+			<bean class="org.sitoolkit.core.domain.java.EmbeddedIdDef">
+				<property name="template" value="/java-embeddedId.vm"/>
+				<property name="var" value="embeddedId"/>
+				<property name="pkgRootDir" value="#{pm.libSrcDir}"/>
+			</bean>
+		</property> 
+		<property name="layerList">
+			<list>
+				<bean class="org.sitoolkit.core.domain.java.LayerDef" scope="prototype">
+					<property name="template" value="/java-dao.vm"/>
+					<property name="var" value="dao"/>
+					<property name="pnameSuffix" value="Dao"/>
+					<property name="pkgRootDir" value="#{pm.libSrcDir}"/>
+				</bean>
+				<bean class="org.sitoolkit.core.domain.java.LayerDef" scope="prototype">
+					<property name="template" value="/java-service.vm"/>
+					<property name="var" value="service"/>
+					<property name="pnameSuffix" value="Service"/>
+					<property name="pkgRootDir" value="#{pm.libSrcDir}"/>
+				</bean>
+				<bean class="org.sitoolkit.core.domain.java.InputModelDef" scope="prototype">
+					<property name="template" value="/java-input-model.vm"/>
+					<property name="var" value="model"/>
+					<property name="pnameSuffix" value="InputModel"/>
+					<property name="pkg" value="#{pm.appRootPkg}.web.model"/>
+					<property name="pkgRootDir" value="#{pm.webSrcDir}"/>
+				</bean>
+				<bean class="org.sitoolkit.core.domain.java.LayerDef" scope="prototype">
+					<property name="template" value="/java-list-model.vm"/>
+					<property name="var" value="model"/>
+					<property name="pnameSuffix" value="ListModel"/>
+					<property name="pkg" value="#{pm.appRootPkg}.web.model"/>
+					<property name="pkgRootDir" value="#{pm.webSrcDir}"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="pageSpecGen" class="org.sitoolkit.core.app.PageSpecGenerator">
+		<property name="name" value="画面定義書"/>
+		<property name="pageDefCatalog" ref="pageDefCatalog"/>
+		<property name="dbDefCatalog" ref="dbDefCatalog"/>
+		<property name="converterList">
+			<list>
+				<bean class="org.sitoolkit.core.domain.view.pagecnv.ListPageConverter"/>
+				<bean class="org.sitoolkit.core.domain.view.pagecnv.InputPageConverter"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="pageDefCatalog" class="org.sitoolkit.core.domain.view.PageDefCatalog" scope="singleton">
+		<property name="pageDefId" value="pageDef"/>
+		<property name="tree">
+			<bean class="org.sitoolkit.core.domain.view.nav.TreeDef"></bean>
+		</property>
+	</bean>
+
+	<bean id="pageDef" class="org.sitoolkit.core.domain.view.PageDef" scope="prototype">
+		<property name="areDefId" value="areaDef"/>
+		<property name="itemDefId" value="itemDef"/>
+	</bean>
+
+	<bean id="areaDef" class="org.sitoolkit.core.domain.view.AreaDef" scope="prototype">
+	</bean>
+	
+	<bean id="itemDef" class="org.sitoolkit.core.domain.view.ItemDef" scope="prototype">
+	</bean>
+
+	<bean id="viewGen" class="org.sitoolkit.core.app.SourceCodeGenerator">
+		<property name="name" value="ビュー"/>
+		<property name="catalog">
+			<bean class="org.sitoolkit.core.domain.view.PageDefCatalog" >
+				<property name="pageDefId" value="viewPageDef"/>
+				<property name="pnamePath" value="true"/>
+				<property name="tree">
+					<bean class="org.sitoolkit.core.domain.view.nav.TreeDef">
+						<property name="template" value="/java-view-menu.vm"/>
+						<property name="var" value="tree"/>
+						<property name="pname" value="menu"/>
+						<property name="fileExt" value="xhtml"/>
+						<property name="output" value="true"/>
+						<property name="outDir" value="#{pm.webCmpDir}"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="viewPageDef" class="org.sitoolkit.core.domain.view.PageDef" scope="prototype">
+		<property name="areDefId" value="viewAreaDef"/>
+		<property name="itemDefId" value="viewItemDef"/>
+		<property name="outDir" value="#{pm.webPageDir}"/>
+		<property name="fileExt" value="xhtml"/>
+		<property name="template" value="/java-view.vm"/>
+		<property name="var" value="view"/>
+	</bean>
+	
+	<bean id="viewAreaDef" class="org.sitoolkit.core.domain.view.ViewAreaDef" scope="prototype">
+	</bean>
+	
+	<bean id="viewItemDef" class="org.sitoolkit.core.domain.view.ViewItemDef" scope="prototype">
+		<property name="searchConditionPath" value="condition.params"/>
+		<property name="codedFieldSuffix" value="Vo"/>
+	</bean>
+
+	<bean id="mockupGen" class="org.sitoolkit.core.app.MockupGenerator">
+		<property name="name" value="モックアップ"/>
+		<property name="catalog">
+			<bean class="org.sitoolkit.core.domain.view.PageDefCatalog" >
+				<property name="pageDefId" value="mockupPageDef"/>
+				<property name="pnamePath" value="false"/>
+				<property name="tree">
+					<bean class="org.sitoolkit.core.domain.view.nav.TreeDef">
+						<property name="var" value="tree"/>
+						<property name="output" value="false"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="mockupPageDef" class="org.sitoolkit.core.domain.view.PageDef" scope="prototype">
+		<property name="areDefId" value="areaDef"/>
+		<property name="itemDefId" value="itemDef"/>
+		<property name="outDir" value="#{pm.mockupOutputDir}"/>
+		<property name="fileExt" value="html"/>
+		<property name="template" value="/mockup.vm"/>
+		<property name="var" value="mock"/>
+	</bean>
+
+	<bean id="nodeDef" class="org.sitoolkit.core.domain.view.nav.NodeDef" scope="prototype"/>
+</beans>

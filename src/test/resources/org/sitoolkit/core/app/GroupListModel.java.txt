@@ -1,0 +1,20 @@
+package jp.monocrea.sitoolkit.archetype.web.model;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
+import jp.monocrea.sitoolkit.archetype.domain.group.*;
+import jp.monocrea.sitoolkit.archetype.web.infra.AbstractBaseListModel;
+
+@ManagedBean
+@RequestScoped
+public class GroupListModel extends AbstractBaseListModel<GroupEntity, String, GroupService> {
+
+	@Inject
+	GroupService service;
+
+	@Override
+	protected GroupService getService() {
+		return service;
+	}
+}

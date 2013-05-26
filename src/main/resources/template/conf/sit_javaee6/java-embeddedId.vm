@@ -1,0 +1,38 @@
+#parse("/java-class.vm")
+package $embeddedId.pkg;
+
+import java.io.Serializable;
+import javax.persistence.*;
+#import($embeddedId)
+
+/**
+ * このクラスは、$embeddedId.nameエンティティのIDを表します。
+ * @author
+ */
+@Embeddable
+public class $embeddedId.pname implements Serializable {
+
+#foreach ($field in $embeddedId.ids)
+#field($field)
+#end
+
+	public ${embeddedId.pname}() {
+		super();
+	}
+
+	public ${embeddedId.pname}(#foreach($field in $embeddedId.ids)#if($velocityCount > 1), #end$field.type $field.pname#end) {
+		super();
+#foreach($field in $embeddedId.ids)
+		this.$field.pname = $field.pname;
+#end
+	}
+	
+#foreach ($field in $embeddedId.ids)
+#accessor($field)
+#end
+
+#equals($embeddedId)
+
+#hashcode($embeddedId)
+
+}

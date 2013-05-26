@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:cmp="http://java.sun.com/jsf/composite/cmp">
+	<ui:composition template="/WEB-INF/templates/template.xhtml">
+#foreach ($area in $view.areas)
+#if ($area.type == "メタ情報")
+		<ui:define name="metadata">
+			<f:metadata>
+#foreach ($item in $area.items)
+#viewParam($item 4)
+#end
+			</f:metadata>
+		</ui:define>
+#end
+#end
+		<ui:define name="content">
+
+#foreach ($area in $view.areas)
+#if ($area.type != "メタ情報")
+			<h:panelGroup id="$area.id" styleClass="area" layout="block">
+				<h1>$area.name</h1>
+				<p></p>
+
+#if ($area.type == "フォーム")
+#viewAreaForm ($area)
+## switch area.type
+#elseif ($area.type == "テーブル")
+#viewAreaTable ($area)
+## switch area.type
+#elseif ($area.type == "シンプル")
+#viewItem($item)
+#end## switch area.type
+			</h:panelGroup>
+#end## area.type not メタ情報
+#end## foreach ($area in $view.areas)
+
+	</ui:define>
+</ui:composition>
+</html>
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro(viewAreaForm $area)
+				<h:panelGrid styleClass="formtable" columns="$area.formColumns" columnClasses="header data">
+#foreach ($item in $area.items)
+#set ($item.contextVar = $view.pname + "Model") 
+
+					<h:outputLabel for="$item.id" value="$item.name" styleClass="#if ($item.required)requred #end"/>
+					<h:panelGroup>
+#viewItem($item 6)
+						<h:message for="$item.id" errorClass="errmsg" showDetail="true" showSummary="false"/>
+						<div class="guidance">${item.guidance}</div>
+#foreach ($subItem in $item.bottomSubItems)
+#viewItem($subItem 6)
+#end
+					</h:panelGroup>
+#end ## foreach ($item in $area.items)
+				</h:panelGrid>
+				<h:panelGroup styleClass="form-footer" layout="block">
+#foreach ($footerItem in $area.footerItems)
+#viewItem($footerItem 5)
+#end
+				</h:panelGroup>
+#end
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro(viewAreaTable $area)
+				<h:dataTable var="$area.repeatVar" value="#{${view.pname}Model.list}" rendered="#{not empty ${view.pname}Model.list}" styleClass="datatable">
+					<f:facet name="caption">
+						<cmp:pageCtrl model="#{${view.pname}Model}"/>
+					</f:facet>
+				
+#foreach ($item in $area.items)
+#set ($item.repeatVar = $area.repeatVar) 
+					<h:column>
+						<f:facet name="header">
+#if ($item.hasDesignInfo("Sortable"))
+							<h:commandLink action="#{${view.pname}Model.sort('$item.dataBindColumn2El')}" value="$item.label">
+								<f:ajax render="@form"/>
+							</h:commandLink>
+#else
+							$item.label
+#end
+						</f:facet>
+#viewItem($item 6)
+					</h:column>
+
+#end ## foreach $area.items
+				</h:dataTable>
+
+#end
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro(viewItem $item $indentCount)
+##
+#define ($indent)#indent($indentCount)#end
+#define ($indent1)${indent}#indent(1)#end
+##
+#if ($item.control == "リンク")
+$indent<h:link outcome="$item.designInfoMap.NavigateTo.value" value="$item.label">
+#foreach ($dataBind in $item.dataBindList)
+$indent1<f:param name="$dataBind.field" value="#{${item.repeatVar}.${dataBind.field}}" />
+#end ## foreach ($dataBind in $item.dataBindList)
+$indent1<f:param name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+$indent</h:link>
+##
+## switch item.control
+#elseif ($item.control == "ボタン")
+#if ($item.actionButton)
+$indent<h:commandButton id="${item.domain}-${item.actionButton.id}" action="#{${view.pname}Model.${item.actionButton.id}}" 
+${indent1}value="$item.name" #modeRenderd($item) immediate="$item.actionButton.immediate">
+#viewItemChildren($item $indentCount)
+$indent</h:commandButton>
+#else
+
+#end
+##
+## switch item.control
+#elseif ($item.control == "テキスト")
+$indent<h:outputText id="$item.id" #itemValue($item) styleClass="$item.cssClass">
+#viewItemChildren($item $indentCount)
+$indent</h:outputText>
+##
+## switch item.control
+#elseif ($item.control == "テキストボックス")
+$indent<h:inputText id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass" maxlength="$item.inputLength">
+#viewItemChildren($item $indentCount) 
+$indent</h:inputText>
+##
+## switch item.control
+#elseif ($item.control == "パスワード")
+$indent<h:inputSecret id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass" maxlength="$item.inputLength" redisplay="true">
+#viewItemChildren($item $indentCount) 
+$indent1<f:converter converterId="passwordConverter"/>
+$indent</h:inputSecret>
+##
+## switch item.control
+#elseif ($item.control == "テキストエリア")
+$indent<h:inputTextarea id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass" maxlength="$item.inputLength" cols="50" rows="5">
+#viewItemChildren($item $indentCount) 
+$indent</h:inputTextarea>
+##
+## switch item.control
+#elseif ($item.control == "ラジオボタン")
+$indent<h:selectOneRadio id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass">
+#viewItemChildren($item $indentCount)
+$indent</h:selectOneRadio>
+##
+## switch item.control
+#elseif ($item.control.template == "singleCheck")
+$indent<h:selectBooleanCheckbox id="$item.id" #itemValue($item) label="$item.name"/>
+$indent<h:outputLabel for="$item.id" value="$item.name"/>
+##
+## switch item.control
+#elseif ($item.control.template == "multiCheck")
+$indent<h:selectManyCheckbox id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="jsf-select $item.cssClass">
+#viewItemChildren($item $indentCount)
+$indent</h:selectManyCheckbox>
+##
+## switch item.control
+#elseif ($item.control.template == "selectBox")
+$indent<h:selectOneMenu id="$item.id" #itemValue($item) label="$item.name">
+#viewItemChildren($item $indentCount)
+$indent</h:selectOneMenu>
+##
+## switch item.control
+#elseif ($item.control.template == "hidden")
+$indent<h:inputHidden id="$item.id" #itemValue($item)>
+#viewItemChildren($item $indentCount)
+$indent</h:inputHidden>
+#end## switch item.control
+#end
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro(viewParam $item $vpIndentCount)
+#if ($item.control.template == "requestParameter")
+#indent($vpIndentCount)<f:viewParam name="$item.label" value="#{${view.pname}Model.$item.label}" />
+#end
+#end
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro(modeRenderd $item)
+#if ($item.actionButton.mode != "any")rendered="#{${view.pname}Model.mode.${item.actionButton.mode}}"#end
+#end
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro(disabledOnUpdate $item)
+#if ($item.hasDesignInfo("InactiveOnUpdate"))disabled="#{${view.pname}Model.mode.update}"#end
+#end
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro(viewItemChildren $item $parentIndent)
+##
+#define ($childIndent)#indent($parentIndent)#indent(1)#end
+##
+#if ($item.required) 
+$childIndent<f:validateRequired />
+#end 
+##
+#if ($item.ioformatObj.converter == "DateConverter") 
+$childIndent<f:convertDateTime pattern="yyyy/MM/dd"/>
+#end
+##
+#if ($item.codedField && $item.control.select)
+$childIndent<f:selectItems var="cd" value="#{codeService.values('${item.codeName}${item.codedFieldSuffix}')}" itemValue="#{cd.value}" itemLabel="#{cd.label}"/>
+##
+#end
+#if ($item.hasDesignInfo("Ajax"))
+$childIndent<f:ajax execute="@form" render="@form"/>
+#end
+#end
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro(itemValue $item)
+#if ($item.dataBind2El != "")value="#{${item.dataBind2El}}"#end
+#end
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro(indent $count)
+#foreach ($i in [1..$count])	#end
+#end
+

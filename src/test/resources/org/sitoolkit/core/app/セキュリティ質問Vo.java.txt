@@ -1,0 +1,31 @@
+package jp.monocrea.sitoolkit.archetype.domain.code;
+
+import jp.monocrea.sitoolkit.archetype.infra.code.ICode;
+
+/**
+ * 
+ * @auther 
+ **/
+public enum セキュリティ質問Vo implements ICode{
+		質問を選択してください("0", "質問を選択してください"),
+		子供のころの親友の名前は("1", "子供のころの親友の名前は？"),
+		最初の仕事での上司の名前は("2", "最初の仕事での上司の名前は？"),
+	;
+	
+	private セキュリティ質問Vo(String value, String label) {
+		this.value = value;
+		this.label = label;
+	}
+	private String value;
+	private String label;
+	public String getValue() {
+		return value;
+	}
+	public String getLabel() {
+		return label;
+	}
+	@Override
+	public String toString() {
+		return getLabel();
+	}
+}

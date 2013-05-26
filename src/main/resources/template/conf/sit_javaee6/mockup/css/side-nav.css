@@ -1,0 +1,45 @@
+#top-back {
+	display: block;
+	color: white;
+	background-image: url("../img/menu_top_back.gif");
+	padding-top: 8px;
+	padding-left: 25px;
+	height: 28px;
+	text-decoration: none;
+}
+
+#menu, #menu ul{
+	padding-left: 1em;
+	list-style: none;
+}
+
+#menu li a {
+	color: #000000;
+	border-bottom: solid 1px #000000;
+	text-decoration: none;
+	display: block;
+	padding:1.5em 0 0.5em;
+}
+
+#menu li a:hover {
+	background-color: #f0f0f0;
+}
+
+
+span.menubtn, span.menuspace{
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	font-size: larger;
+}
+
+span.menubtn {
+	background-image: url("../img/menu_arrow_close.gif");
+	vertical-align: middle;
+	background-repeat: no-repeat;
+}
+
+span.menuopen {
+	background-image: url("../img/menu_arrow_open.gif");
+	vertical-align: middle;
+	background-repeat: no-repeat;
+}

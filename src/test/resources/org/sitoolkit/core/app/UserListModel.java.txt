@@ -1,0 +1,20 @@
+package jp.monocrea.sitoolkit.archetype.web.model;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
+import jp.monocrea.sitoolkit.archetype.domain.user.*;
+import jp.monocrea.sitoolkit.archetype.web.infra.AbstractBaseListModel;
+
+@ManagedBean
+@RequestScoped
+public class UserListModel extends AbstractBaseListModel<UserEntity, String, UserService> {
+
+	@Inject
+	UserService service;
+
+	@Override
+	protected UserService getService() {
+		return service;
+	}
+}

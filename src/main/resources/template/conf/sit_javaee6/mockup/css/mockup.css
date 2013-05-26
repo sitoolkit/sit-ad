@@ -1,0 +1,19 @@
+div.shownum-hover-box {
+	position: absolute;
+	border: dotted 2px yellow;
+	text-align: right;
+}
+em.shownum {
+	color: orange;
+	font-weight: bold;
+	background-color: white;
+	opacity:0.7;
+	font-style: normal;
+}
+span.shownum-wrap-box {
+	border: dotted 2px yellow;
+	padding:4px;
+}
+span.shownum-wrap-box-off {
+	border: none;
+}

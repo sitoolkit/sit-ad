@@ -1,0 +1,62 @@
+package jp.monocrea.sitoolkit.archetype.domain.user;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
+
+/**
+ * このクラスは、ユーザーグループ関連を表すエンティティです。
+ * @author 
+ */
+@Entity
+@Table(name="m_user_group")
+public class UserGroupEntity extends AbstractBaseEntity implements Serializable {
+
+	/**
+	 * ユーザーグループ関連の主キー
+	 */
+	@EmbeddedId
+ 	private UserGroupEntityPK pk;
+
+
+
+	/**
+	 * ユーザーグループ関連の主キーを返却する。
+	 * @return ユーザーグループ関連の主キー
+	 */
+	public UserGroupEntityPK getPk() {
+		return this.pk;
+	}
+
+	/**
+	 * ユーザーグループ関連の主キーを設定する。
+	 * @param pk ユーザーグループ関連の主キー
+	 */
+	public void setPk(UserGroupEntityPK pk) {
+		this.pk = pk;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof UserGroupEntity)) {
+			return false;
+		}
+		UserGroupEntity castOther = (UserGroupEntity)other;
+		return  this.pk.equals(castOther.pk) 
+ 			;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime +  (this.pk != null ? this.pk.hashCode() : 0);
+ 		return hash;
+    }
+
+
+}

@@ -1,0 +1,21 @@
+#parse("/java-class.vm")
+package $model.pkg;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
+import ${model.appRootPkg}.domain.${model.entity.domainPkg}.*;
+import ${model.appRootPkg}.web.infra.AbstractBaseListModel;
+
+@ManagedBean
+@RequestScoped
+public class $model.pname extends AbstractBaseListModel<${model.entity.domain}Entity, $model.entity.idType, ${model.entity.domain}Service> {
+
+	@Inject
+	${model.entity.domain}Service service;
+
+	@Override
+	protected ${model.entity.domain}Service getService() {
+		return service;
+	}
+}
