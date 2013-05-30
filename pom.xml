@@ -4,15 +4,36 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.sitoolkit</groupId>
 	<artifactId>sit-core</artifactId>
-	<version>0.9</version>
+	<version>0.9-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>sit-core</name>
 	<description>SIToolkit core module</description>
 	<url>https://github.com/sitoolkit</url>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
 	<scm>
-		<url>https://github.com/sitoolkit/sit-core</url>
-		<connection>scm:git:git://github.com/sitoolkit/sit-core.git</connection>
+		<connection>scm:git:git//github.com/sitoolkit/sit-core.git</connection>
+		<developerConnection>scm:git:git//github.com/sitoolkit/sit-core.git</developerConnection>
+		<url>https://github.com/sitoolkit/sit-core.git</url>
 	</scm>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Snapshot Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Maven Central Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 	<developers>
 		<developer>
 			<id>yuichi.kuwahara</id>
@@ -25,6 +46,11 @@
 		<poi.version>3.9</poi.version>
 		<spring.version>3.1.4.RELEASE</spring.version>
 	</properties>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -135,6 +161,58 @@
 					</additionalClasspathElements>
 				</configuration>			
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<docencoding>${project.report.encoding}</docencoding>
+					<charset>${project.report.encoding}</charset>
+					<encoding>${project.report.encoding}</encoding>
+					<bottom>
+            <![CDATA[
+            &copy; 2013 Monocre Inc．AllRights Reserved.
+            ]]>
+					</bottom>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>						
+			</plugin>			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
