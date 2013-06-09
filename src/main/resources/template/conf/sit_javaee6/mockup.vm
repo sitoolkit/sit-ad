@@ -6,7 +6,9 @@
 <link rel="stylesheet" href="${mock.base}css/side-nav.css"/>
 <link rel="stylesheet" href="${mock.base}css/mockup.css"/>
 <link rel="stylesheet" href="${mock.base}css/${mock.pname}.css"/>
-<script src="${mock.base}js/jquery.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="${mock.base}js/menu.js"></script>
 <script src="${mock.base}js/mockup.js"></script>
 <script>
@@ -20,7 +22,7 @@ $(function() {
 <body>
 <hr class="full"/>
 <div id="header" class="container">
-	<img src="${mock.base}img/logo.png" alt="SIToolkit" style="margin: 1em;"/>
+	<img id="logo" src="${mock.base}img/logo.png" alt="SIToolkit" style="margin: 1em;"/>
 	<table id="submenu">
 		<tr>
 			<td>
@@ -154,50 +156,50 @@ $(function() {
 #macro(item $item)
 
 	#if ($item.control == "テキスト")
-		<span id="$item.id" class="shownum">$item.label</span>
+		<span id="$item.id" class="documented">$item.label</span>
 
 	#elseif ($item.control == "テキストボックス")
-		<input id="$item.id" name="$item.id" type="text" maxlength="$item.inputLength" size="$item.displayLength" class="shownum"/>	
+		<input id="$item.id" name="$item.id" type="text" maxlength="$item.inputLength" size="$item.displayLength" class="documented"/>	
 
 	#elseif ($item.control == "パスワード")
-		<input id="$item.id" name="$item.id" type="password" maxlength="$item.inputLength" size="$item.displayLength" class="shownum"/>	
+		<input id="$item.id" name="$item.id" type="password" maxlength="$item.inputLength" size="$item.displayLength" class="documented"/>	
 
 	#elseif ($item.control == "テキストボックス")
-		<input id="$item.id" name="$item.id" type="password" maxlength="$item.inputLength" size="$item.displayLength" class="shownum"/>	
+		<input id="$item.id" name="$item.id" type="password" maxlength="$item.inputLength" size="$item.displayLength" class="documented"/>	
 
 	#elseif ($item.control == "ラジオボタン")
 		#foreach ($code in $item.options)
-		<input id="$item.id$velocityCount" name="$item.id" type="radio" #if ($item.deginInfoMap.DefaultValue.value == $code.label) checked="checked" #end class="shownum"/>
+		<input id="$item.id$velocityCount" name="$item.id" type="radio" #if ($item.deginInfoMap.DefaultValue.value == $code.label) checked="checked" #end class="documented"/>
 		<label for="$item.id$velocityCount">$code.label</label>	
 		#end
 
 	#elseif ($item.control == "単一チェックボックス")
-		<input id="$item.id" name="$item.id" type="checkbox" #if ($item.deginInfoMap.DefaultValue.value == "チェックあり") checked="checked" #end class="shownum"/>
+		<input id="$item.id" name="$item.id" type="checkbox" #if ($item.deginInfoMap.DefaultValue.value == "チェックあり") checked="checked" #end class="documented"/>
 		<label for="$item.id">$item.label</label>	
 
 	#elseif ($item.control == "複数チェックボックス")
 		#foreach ($code in $item.options)
 		<span>
-			<input id="$item.id$velocityCount" name="$item.id" type="checkbox" #if ($item.deginInfoMap.DefaultValue.value == $code.label) checked="checked" #end class="shownum"/>
+			<input id="$item.id$velocityCount" name="$item.id" type="checkbox" #if ($item.deginInfoMap.DefaultValue.value == $code.label) checked="checked" #end class="documented"/>
 			<label for="$item.id$velocityCount">$code.label</label>	
 		</span>
 		#end
 		
 	#elseif ($item.control == "ボタン")
-		<input id="$item.id" name="$item.id" type="button" value="$item.label" class="shownum"/>	
+		<input id="$item.id" name="$item.id" type="button" value="$item.label" class="documented"/>	
 
 	#elseif ($item.control == "セレクトボックス")
-		<select id="$item.id" name="$item.id" class="shownum">
+		<select id="$item.id" name="$item.id" class="documented">
 		#foreach ($code in $item.options)
 			<option value="$code.code">$code.label</option>
 		#end
 		</select>
 	
 	#elseif ($item.control == "リンク")
-		<a id="$item.id" href="" class="shownum">$item.label</a>	
+		<a id="$item.id" href="" class="documented">$item.label</a>	
 	
 	#elseif ($item.control == "イメージ")
-		<img id="$item.id" src="$item.designInfoMap.File.value" class="shownum" alt="$item.label" title="$item.label"/>
+		<img id="$item.id" src="${mock.base}${item.designInfoMap.File.value}" class="documented" alt="$item.label" title="$item.label"/>
 
 	#else
 	
