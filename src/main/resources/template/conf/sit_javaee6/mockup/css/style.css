@@ -22,6 +22,10 @@ a {
 	color: gray;
 }
 
+a img {
+	border: none;
+}
+
 table.form, table.datatable {
 	width: 100%;
 	border: solid 0 #000000;

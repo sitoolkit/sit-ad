@@ -6,7 +6,9 @@
 <link rel="stylesheet" href="../css/side-nav.css"/>
 <link rel="stylesheet" href="../css/mockup.css"/>
 <link rel="stylesheet" href="../css/モックアップデモ.css"/>
-<script src="../js/jquery.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="../js/menu.js"></script>
 <script src="../js/mockup.js"></script>
 <script>
@@ -19,7 +21,7 @@ $(function() {
 <body>
 <hr class="full"/>
 <div id="header" class="container">
-	<img src="../img/logo.png" alt="SIToolkit" style="margin: 1em;"/>
+	<img id="logo" src="../img/logo.png" alt="SIToolkit" style="margin: 1em;"/>
 	<table id="submenu">
 		<tr>
 			<td>
@@ -75,7 +77,7 @@ $(function() {
 						</th>
 						<td>
 							
-			<input id="userLastName" name="userLastName" type="text" maxlength="36" size="40" class="shownum"/>	
+			<input id="userLastName" name="userLastName" type="text" maxlength="36" size="40" class="documented"/>	
 
 	
 								<div class="guidance"></div>
@@ -87,7 +89,7 @@ $(function() {
 						</th>
 						<td>
 							
-			<input id="userFirstName" name="userFirstName" type="text" maxlength="36" size="40" class="shownum"/>	
+			<input id="userFirstName" name="userFirstName" type="text" maxlength="36" size="40" class="documented"/>	
 
 	
 								<div class="guidance"></div>
@@ -99,9 +101,9 @@ $(function() {
 						</th>
 						<td>
 							
-					<input id="gender1" name="gender" type="radio"  class="shownum"/>
+					<input id="gender1" name="gender" type="radio"  class="documented"/>
 		<label for="gender1">男性</label>	
-				<input id="gender2" name="gender" type="radio"  class="shownum"/>
+				<input id="gender2" name="gender" type="radio"  class="documented"/>
 		<label for="gender2">女性</label>	
 		
 	
@@ -114,11 +116,11 @@ $(function() {
 						</th>
 						<td>
 							
-			<input id="account" name="account" type="text" maxlength="255" size="40" class="shownum"/>	
+			<input id="account" name="account" type="text" maxlength="255" size="40" class="documented"/>	
 
 	
 			
-			<input id="accountConfirm" name="accountConfirm" type="button" value="使用できるか確認" class="shownum"/>	
+			<input id="accountConfirm" name="accountConfirm" type="button" value="使用できるか確認" class="documented"/>	
 
 	
 									<div class="guidance">例: Ichiro. Tanaka, I. Tanaka</div>
@@ -130,11 +132,11 @@ $(function() {
 						</th>
 						<td>
 							
-			<input id="password" name="password" type="text" maxlength="8" size="12" class="shownum"/>	
+			<input id="password" name="password" type="text" maxlength="8" size="12" class="documented"/>	
 
 	
 			
-			<a id="passwordCheck" href="" class="shownum">パスワードの安全度</a>	
+			<a id="passwordCheck" href="" class="documented">パスワードの安全度</a>	
 	
 	
 									<div class="guidance">8文字以上にしてください。</div>
@@ -146,17 +148,17 @@ $(function() {
 						</th>
 						<td>
 							
-			<input id="passwordConfirm" name="passwordConfirm" type="text" maxlength="8" size="12" class="shownum"/>	
+			<input id="passwordConfirm" name="passwordConfirm" type="text" maxlength="8" size="12" class="documented"/>	
 
 	
 								<div class="guidance"></div>
 										
-			<input id="loginState" name="loginState" type="checkbox"  class="shownum"/>
+			<input id="loginState" name="loginState" type="checkbox"  class="documented"/>
 		<label for="loginState">ログイン状態を保持</label>	
 
 	
 											
-			<input id="webHistory" name="webHistory" type="checkbox"  class="shownum"/>
+			<input id="webHistory" name="webHistory" type="checkbox"  class="documented"/>
 		<label for="webHistory">ウェブ履歴を有効にする</label>	
 
 	
@@ -168,7 +170,7 @@ $(function() {
 						</th>
 						<td>
 							
-			<select id="secretQuestion" name="secretQuestion" class="shownum">
+			<select id="secretQuestion" name="secretQuestion" class="documented">
 					<option value="0">質問を選択してください</option>
 					<option value="1">子供のころの親友の名前は？</option>
 					<option value="2">最初の仕事での上司の名前は？</option>
@@ -185,27 +187,27 @@ $(function() {
 						<td>
 							
 					<span>
-			<input id="interest1" name="interest" type="checkbox"  class="shownum"/>
+			<input id="interest1" name="interest" type="checkbox"  class="documented"/>
 			<label for="interest1">エンターテイメント</label>	
 		</span>
 				<span>
-			<input id="interest2" name="interest" type="checkbox"  class="shownum"/>
+			<input id="interest2" name="interest" type="checkbox"  class="documented"/>
 			<label for="interest2">旅行・レジャー</label>	
 		</span>
 				<span>
-			<input id="interest3" name="interest" type="checkbox"  class="shownum"/>
+			<input id="interest3" name="interest" type="checkbox"  class="documented"/>
 			<label for="interest3">スポーツ・アウトドア</label>	
 		</span>
 				<span>
-			<input id="interest4" name="interest" type="checkbox"  class="shownum"/>
+			<input id="interest4" name="interest" type="checkbox"  class="documented"/>
 			<label for="interest4">ファッション・ビューティー</label>	
 		</span>
 				<span>
-			<input id="interest5" name="interest" type="checkbox"  class="shownum"/>
+			<input id="interest5" name="interest" type="checkbox"  class="documented"/>
 			<label for="interest5">IT・パソコン・デジタル家電</label>	
 		</span>
 				<span>
-			<input id="interest6" name="interest" type="checkbox"  class="shownum"/>
+			<input id="interest6" name="interest" type="checkbox"  class="documented"/>
 			<label for="interest6">ビジネスキャリア</label>	
 		</span>
 				
@@ -218,7 +220,7 @@ $(function() {
 			</table>
 			<div class="form-footer">
 					
-			<input id="create" name="create" type="button" value="同意して、アカウントを作成します" class="shownum"/>	
+			<input id="create" name="create" type="button" value="同意して、アカウントを作成します" class="documented"/>	
 
 	
 						</div>
@@ -239,23 +241,23 @@ $(function() {
 			<tbody>
 				<tr>
 							<td>
-			<input id="groupAction" name="groupAction" type="checkbox"  class="shownum"/>
+			<input id="groupAction" name="groupAction" type="checkbox"  class="documented"/>
 		<label for="groupAction"></label>	
 
 	
 	</td>
 							<td>
-			<span id="sender" class="shownum">差出人</span>
+			<span id="sender" class="documented">差出人</span>
 
 	
 	</td>
 							<td>
-			<span id="subject" class="shownum">件名</span>
+			<span id="subject" class="documented">件名</span>
 
 	
 	</td>
 							<td>
-			<span id="receptDate" class="shownum">受信日時</span>
+			<span id="receptDate" class="documented">受信日時</span>
 
 	
 	</td>
@@ -272,21 +274,21 @@ $(function() {
 					<div class="box-item productImage">	<label for="productImage">[商品イメージ_小]</label>
 	
 	
-			<img id="productImage" src="img/sample-image_s.png" class="shownum" alt="[商品イメージ_小]" title="[商品イメージ_小]"/>
+			<img id="productImage" src="../img/sample-image_s.png" class="documented" alt="[商品イメージ_小]" title="[商品イメージ_小]"/>
 
 	
 	</div> 
 					<div class="box-item productName">	<label for="productName">[商品名]</label>
 	
 	
-			<a id="productName" href="" class="shownum">[商品名]</a>	
+			<a id="productName" href="" class="documented">[商品名]</a>	
 	
 	
 	</div> 
 					<div class="box-item productPrice">	<label for="productPrice">[商品価格]</label>
 	
 	
-			<span id="productPrice" class="shownum">[商品価格]</span>
+			<span id="productPrice" class="documented">[商品価格]</span>
 
 	
 	</div> 
@@ -300,7 +302,7 @@ $(function() {
 					<div class="box-item productImage_d">	<label for="productImage_d">[商品イメージ_大]</label>
 	
 	
-			<img id="productImage_d" src="img/sample-image_l.png" class="shownum" alt="[商品イメージ_大]" title="[商品イメージ_大]"/>
+			<img id="productImage_d" src="../img/sample-image_l.png" class="documented" alt="[商品イメージ_大]" title="[商品イメージ_大]"/>
 
 	
 	</div> 
