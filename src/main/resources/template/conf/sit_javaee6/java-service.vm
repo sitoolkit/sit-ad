@@ -6,7 +6,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import ${service.appRootPkg}.infra.layer.AbstractBaseDao;;
+import ${service.appRootPkg}.infra.layer.AbstractBaseDao;
 import ${service.appRootPkg}.infra.layer.AbstractBaseService;
 
 /**
