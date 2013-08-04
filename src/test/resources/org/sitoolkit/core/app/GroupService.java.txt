@@ -6,7 +6,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseDao;;
+import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseDao;
 import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseService;
 
 /**
