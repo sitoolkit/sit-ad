@@ -1,4 +1,4 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -52,6 +52,40 @@
 		<version>7</version>
 	</parent>
 	<profiles>
+		<profile>
+			<id>gen-jaxb</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jvnet.jaxb2.maven2</groupId>
+						<artifactId>maven-jaxb2-plugin</artifactId>
+						<version>0.8.3</version>
+						<executions>
+							<execution>
+								<id>jaxb-generate-document</id>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+								<configuration>
+									<schemaIncludes>
+										<include>jaxb/document/*.xsd</include>
+									</schemaIncludes>
+									<episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-document.episode</episodeFile>
+									<generatePackage>org.sitoolkit.core.infra.repository.schema</generatePackage>
+								</configuration>
+							</execution>
+						</executions>
+						<configuration>
+							<catalog>src/main/resources/jaxb/catalog.xml</catalog>
+							<catalogResolver>org.jvnet.jaxb2.maven2.resolver.tools.ClasspathCatalogResolver</catalogResolver>
+							<forceRegenerate>true</forceRegenerate>
+							<generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
+							<verbose>true</verbose>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>release</id>
 			<activation>
@@ -321,35 +355,6 @@
 					</reportPlugins>
 				</configuration>
 			</plugin>
-			<!--
-						<plugin>
-							<groupId>org.jvnet.jaxb2.maven2</groupId>
-							<artifactId>maven-jaxb2-plugin</artifactId>
-							<version>0.8.2</version>
-							<executions>
-								<execution>
-									<id>jaxb-generate-document</id>
-									<goals>
-										<goal>generate</goal>
-									</goals>
-									<configuration>
-										<schemaIncludes>
-											<include>jaxb/document/*.xsd</include>
-										</schemaIncludes>
-										<episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-document.episode</episodeFile>
-										<generatePackage>org.sitoolkit.core.infra.repository.schema</generatePackage>
-									</configuration>
-								</execution>
-							</executions>
-							<configuration>
-								<catalog>src/main/resources/jaxb/catalog.xml</catalog>
-								<catalogResolver>org.jvnet.jaxb2.maven2.resolver.tools.ClasspathCatalogResolver</catalogResolver>
-								<forceRegenerate>true</forceRegenerate>
-								<generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
-								<verbose>true</verbose>
-							</configuration>
-						</plugin>
-			-->
 		</plugins>
 	</build>
 

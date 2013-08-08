@@ -16,7 +16,6 @@ java-view.vm
 mockup.vm
 velocity.properties
 mockup/css/mockup.css
-mockup/css/mockupDemo_muji.css
 mockup/css/side-nav.css
 mockup/css/style.css
 mockup/img/head_back.gif
@@ -31,6 +30,5 @@ mockup/img/sample-image_l.png
 mockup/img/sample-image_s.png
 mockup/img/title_arrow.gif
 mockup/img/title_line.gif
-mockup/js/jquery.js
 mockup/js/menu.js
 mockup/js/mockup.js
