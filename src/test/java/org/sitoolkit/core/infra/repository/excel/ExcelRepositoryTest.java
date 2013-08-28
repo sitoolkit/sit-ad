@@ -15,9 +15,7 @@
  */
 package org.sitoolkit.core.infra.repository.excel;
 
-import org.sitoolkit.core.infra.repository.excel.ExcelRepository;
 import java.io.File;
-import java.io.IOException;
 import org.sitoolkit.core.infra.repository.TableData;
 import org.sitoolkit.core.infra.repository.TableDataCatalog;
 import org.sitoolkit.core.infra.util.SitFileUtils;
@@ -31,14 +29,35 @@ import static org.junit.Assert.*;
 public class ExcelRepositoryTest {
 
 	/**
-	 * xlsxファイルを読み取ることができることを確認
+     * <dl>
+     * <dt>ケース
+     * <dd>xlsx形式のファイルの読み込み
+     * </dl>
 	 */
 	@Test
-	public void testRead_xlsx() throws Exception {
-		ExcelRepository instance = new ExcelRepository();
-		TableDataCatalog result = instance.readAll(
+	public void testReadXlsx() {
+		ExcelRepository repo = new ExcelRepository();
+		TableDataCatalog result = repo.readAll(
 				SitFileUtils.res2filepath(ExcelRepositoryTest.class, "ExcelRepositoryReadTestData.xlsx"));
-		
+
+		assertEquals(1, result.size());
+
+		TableData sheet1 = result.get("Sheet1");
+		assertEquals("1,a,200,a200\r\n2,b,300,b300\r\n3,c,400,c400", sheet1.toString());
+	}
+
+	/**
+     * <dl>
+     * <dt>ケース
+     * <dd>xls形式のファイルの読み込み
+     * </dl>
+	 */
+	@Test
+	public void testReadXls() {
+		ExcelRepository repo = new ExcelRepository();
+		TableDataCatalog result = repo.readAll(
+				SitFileUtils.res2filepath(ExcelRepositoryTest.class, "ExcelRepositoryReadTestData.xls"));
+
 		assertEquals(1, result.size());
 
 		TableData sheet1 = result.get("Sheet1");
@@ -46,42 +65,40 @@ public class ExcelRepositoryTest {
 	}
 
 	/**
-	 * xlsファイルを読み取ることができることを確認
+     * <dl>
+     * <dt>ケース
+     * <dd>conerCellPatternの初期値の確認
+     * </dl>
 	 */
 	@Test
-	public void testRead_xls() throws Exception {
-		ExcelRepository instance = new ExcelRepository();
-		TableDataCatalog result = instance.readAll(
-				SitFileUtils.res2filepath(ExcelRepositoryTest.class, "ExcelRepositoryReadTestData.xls"));
-		
-		assertEquals(1, result.size());
-
-		TableData sheet1 = result.get("Sheet1");
-		assertEquals("1,a,200\r\n2,b,300\r\n3,c,400", sheet1.toString());
-	}
-
-	@Test
 	public void testGetCornerCellPattern() {
-		ExcelRepository instance = new ExcelRepository();
-		assertTrue("項番".matches(instance.getCornerCellPattern()));
-		assertTrue("No.".matches(instance.getCornerCellPattern()));
-		assertTrue("#".matches(instance.getCornerCellPattern()));
-		assertFalse("No".matches(instance.getCornerCellPattern()));
+		ExcelRepository repo = new ExcelRepository();
+		assertTrue("項番".matches(repo.getCornerCellPattern()));
+		assertTrue("No.".matches(repo.getCornerCellPattern()));
+		assertTrue("#".matches(repo.getCornerCellPattern()));
+		assertFalse("No".matches(repo.getCornerCellPattern()));
 	}
-	
+
+	/**
+     * <dl>
+     * <dt>ケース
+     * <dd>xlsx形式のファイルの書き込み
+     * </dl>
+	 */
 	@Test
-	public void testWrite_xlsx() throws IOException {
-		ExcelRepository instance = new ExcelRepository();
-		TableDataCatalog expectedCatalog = instance.readAll(
+	public void testWriteXlsx() {
+		ExcelRepository repo = new ExcelRepository();
+		TableDataCatalog expectedCatalog = repo.readAll(
 				SitFileUtils.res2filepath(ExcelRepositoryTest.class, "ExcelRepositoryReadTestData.xlsx"));
 
 		File actualFile = new File("target/test-classes/ExcelRepositoryWirteTestResult.xlsx");
-		actualFile.deleteOnExit();
-		instance.write(
+		repo.write(
 				SitFileUtils.res2filepath(ExcelRepositoryTest.class, "ExcelRepositoryWriteTestTemplate.xlsx"),
 				actualFile, expectedCatalog);
-		TableDataCatalog actualCatalog= instance.readAll(actualFile.getAbsolutePath());
+		TableDataCatalog actualCatalog = repo.readAll(actualFile.getAbsolutePath());
 
 		assertEquals(expectedCatalog, actualCatalog);
-	}	
+
+        actualFile.deleteOnExit();
+	}
 }

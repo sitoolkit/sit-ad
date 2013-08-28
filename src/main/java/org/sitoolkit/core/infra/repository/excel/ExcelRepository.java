@@ -31,6 +31,7 @@ import org.sitoolkit.core.infra.repository.TableDataCatalog;
 import org.sitoolkit.core.infra.util.SitException;
 import org.sitoolkit.core.infra.util.SitStringUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -286,9 +287,9 @@ public class ExcelRepository implements DocumentRepository {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param sheet
-	 * @return 
+	 * @return
 	 */
 	private Row findHeaderRow(Sheet sheet) {
 		LOG.debug("シート[{}]のヘッダー行を特定します。", sheet.getSheetName(), getCornerCellPattern());
@@ -320,7 +321,7 @@ public class ExcelRepository implements DocumentRepository {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param schema スキーマ
 	 * @param row 行オブジェクト
 	 * @return 行オブジェクトの情報を読み込んだRowDataオブジェクト
@@ -360,7 +361,8 @@ public class ExcelRepository implements DocumentRepository {
 				break;
 			case Cell.CELL_TYPE_FORMULA:
 				cellValue = roundValue(
-						cell.getSheet().getWorkbook().getCreationHelper().createFormulaEvaluator().evaluate(cell).formatAsString()
+						cell.getSheet().getWorkbook().getCreationHelper()
+                        .createFormulaEvaluator().evaluate(cell).formatAsString()
 					);
 				break;
 			default:
@@ -375,10 +377,18 @@ public class ExcelRepository implements DocumentRepository {
 	}
 
 	String roundValue(String str) {
-		if (NumberUtils.isNumber(str)) {
+        if (StringUtils.isEmpty(str)) {
+            return StringUtils.EMPTY;
+        } else if (NumberUtils.isNumber(str)) {
 			return roundValue(NumberUtils.toDouble(str));
 		} else {
-			return str;
+            if (str.length() > 1
+                    && str.startsWith("\"")
+                    && str.endsWith("\"")) {
+                return str.substring(1, str.length() - 1);
+            } else {
+    			return str;
+            }
 		}
 	}
 
