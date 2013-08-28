@@ -53,40 +53,6 @@
 	</parent>
 	<profiles>
 		<profile>
-			<id>gen-jaxb</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.jvnet.jaxb2.maven2</groupId>
-						<artifactId>maven-jaxb2-plugin</artifactId>
-						<version>0.8.3</version>
-						<executions>
-							<execution>
-								<id>jaxb-generate-document</id>
-								<goals>
-									<goal>generate</goal>
-								</goals>
-								<configuration>
-									<schemaIncludes>
-										<include>jaxb/document/*.xsd</include>
-									</schemaIncludes>
-									<episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-document.episode</episodeFile>
-									<generatePackage>org.sitoolkit.core.infra.repository.schema</generatePackage>
-								</configuration>
-							</execution>
-						</executions>
-						<configuration>
-							<catalog>src/main/resources/jaxb/catalog.xml</catalog>
-							<catalogResolver>org.jvnet.jaxb2.maven2.resolver.tools.ClasspathCatalogResolver</catalogResolver>
-							<forceRegenerate>true</forceRegenerate>
-							<generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
-							<verbose>true</verbose>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
 			<id>release</id>
 			<activation>
 				<property>
@@ -132,8 +98,8 @@
 									<goal>jar</goal>
 								</goals>
 							</execution>
-						</executions>						
-					</plugin>			
+						</executions>
+					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
@@ -151,7 +117,7 @@
 				</plugins>
 			</build>
 		</profile>
-	</profiles>	
+	</profiles>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -163,7 +129,7 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.9.0</version>
-			<scope>test</scope>		
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -229,9 +195,9 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.0.12</version>
-		</dependency>	
+		</dependency>
 	</dependencies>
-    
+
 	<build>
 		<plugins>
 			<plugin>
@@ -239,7 +205,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<encoding>UTF-8</encoding> 
+					<encoding>UTF-8</encoding>
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
@@ -260,7 +226,7 @@
 					<additionalClasspathElements>
 						<additionalClasspathElement>${basedir}/conf</additionalClasspathElement>
 					</additionalClasspathElements>
-				</configuration>			
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -294,7 +260,7 @@
 								<inputEncoding>${project.report.encoding}</inputEncoding>
 								<outputEncoding>${project.report.encoding}</outputEncoding>
 							</configuration>
-						</plugin>                        
+						</plugin>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-surefire-report-plugin</artifactId>
@@ -303,7 +269,7 @@
 								<inputEncoding>${project.report.encoding}</inputEncoding>
 								<outputEncoding>${project.report.encoding}</outputEncoding>
 							</configuration>
-						</plugin>                        
+						</plugin>
 						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>taglist-maven-plugin</artifactId>
@@ -328,7 +294,7 @@
 									<format>xml</format>
 								</formats>
 							</configuration>
-						</plugin>					
+						</plugin>
 						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>findbugs-maven-plugin</artifactId>
@@ -351,8 +317,24 @@
 									<include>**/*.java</include>
 								</includes>
 							</configuration>
-						</plugin>  
+						</plugin>
 					</reportPlugins>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<packageName>org.sitoolkit.core.infra.repository.schema</packageName>>
 				</configuration>
 			</plugin>
 		</plugins>

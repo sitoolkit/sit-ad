@@ -8,6 +8,8 @@
     	<xs:attribute name="flag" type="xs:string"></xs:attribute>
     	<xs:attribute name="readOnly" type="xs:boolean"></xs:attribute>
     	<xs:attribute name="min" type="xs:int"></xs:attribute>
+    	<xs:attribute name="excludePattern" type="xs:string"></xs:attribute>
+    	<xs:attribute name="excludeEmptyValue" type="xs:boolean" default="true"></xs:attribute>
     </xs:complexType>
 
     <xs:complexType name="table">

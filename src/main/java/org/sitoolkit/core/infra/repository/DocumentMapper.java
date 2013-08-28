@@ -29,6 +29,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,10 +103,13 @@ public class DocumentMapper {
 		return bean;
 	}
 
-	void map(Object bean, Column column, RowData rowData) {
+	protected void map(Object bean, Column column, RowData rowData) {
 		try {
 			String property = column.getProperty();
-			Object value = retriveValue(bean, rowData, column);
+			Object value = retriveValue(
+					 PropertyUtils.getPropertyType(bean, column.getProperty()),
+					 rowData,
+					 column);
 			BeanUtils.setProperty(bean, property, value);
 		} catch (Exception e) {
 			LOG.error("ID:{}", column.getProperty(), e);
@@ -116,32 +120,33 @@ public class DocumentMapper {
 	/**
 	 * 行データの指定された列の値を取得します。
      * 値は、beanの対応するプロパティの型よって適宜変換されます。
-	 * @param bean プロパティを設定する対象のBean
-	 * @param rowData プロパティに設定する値を取得する行
-	 * @param column 設定するプロパティを特定する列
+	 * @param type プロパティをの型
+	 * @param row プロパティに設定する値を取得する行
+	 * @param col 設定するプロパティを特定する列
 	 * @return beanに設定する値
 	 */
-	protected Object retriveValue(Object bean, RowData rowData, Column column) {
-        try {
-    		Object propertyValue = PropertyUtils.getProperty(bean, column.getProperty());
-            if (StringUtils.isNotEmpty(column.getPattern())) {
-                if (propertyValue instanceof Map) {
-                    return rowData.getCellValuesAsMap(column.getPattern(), 1);
-                } else {
-                    return rowData.getCellValues(column.getPattern());
-                }
-            } else {
-                if (propertyValue instanceof Integer) {
-                    return rowData.getInt(column.getName());
-                } else if (propertyValue instanceof Boolean) {
-                    return rowData.getBoolean(column.getName(), column.getFlag());
-                } else {
-                    return rowData.getCellValue(column.getName());
-                }
-            }
-        } catch (Exception e) {
-            throw new SitException(e);
-        }
+	protected Object retriveValue(Class<?> type, RowData row, Column col) {
+		if (StringUtils.isNotEmpty(col.getPattern())) {
+			if (ClassUtils.isAssignable(type, Map.class)) {
+				return row.getCellValuesAsMap(
+						col.getPattern(),
+						1,
+						col.getExcludePattern());
+			} else {
+				return row.getCellValues(
+						col.getPattern(),
+						col.getExcludePattern(),
+						col.isExcludeEmptyValue());
+			}
+		} else {
+			if (ClassUtils.isAssignable(type, Integer.class)) {
+				return row.getInt(col.getName(), col.getExcludePattern());
+			} else if (ClassUtils.isAssignable(type, Boolean.class)) {
+				return row.getBoolean(col.getName(), col.getFlag(), col.getExcludePattern());
+			} else {
+				return row.getCellValue(col.getName(), col.getExcludePattern());
+			}
+		}
 	}
 
 	@PostConstruct

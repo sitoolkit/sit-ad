@@ -19,6 +19,7 @@ import org.sitoolkit.core.infra.repository.RowData;
 import org.sitoolkit.core.infra.repository.DocumentMapper;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import org.sitoolkit.core.app.SourceCodeGenerator;
 import org.sitoolkit.core.infra.doc.KeyValuePairMap;
@@ -36,26 +37,44 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:" + SourceCodeGenerator.APP_CTX_CONFIG_LOCATION)
 public class DocumentMapperTest {
-	
+
 	@Resource
 	private DocumentMapper dm;
-	
+
+	/**
+	 * <dl>
+	 * <dt>ケース
+	 * <dd>BeanのString型プロパティにマップ
+	 * <dl>
+	 */
 	@Test
-	public void testMap_101() {
-		RowData rowData = new RowData("文字列", "str");
+	public void testMapString() {
+		RowData rowData = new RowData("文字列", "str(3文字)");
 		Column column = new Column();
 		column.setProperty("strVal");
 		column.setName("文字列");
 
 		TestBean bean = new TestBean();
 		dm.map(bean, column, rowData);
-		
+
+		assertEquals("str(3文字)", bean.getStrVal());
+
+		column.setExcludePattern("\\([0-9]*文字\\)");
+
+		dm.map(bean, column, rowData);
+
 		assertEquals("str", bean.getStrVal());
 	}
-	
 
+
+	/**
+	 * <dl>
+	 * <dt>ケース
+	 * <dd>Beanのint型プロパティにマップ
+	 * <dl>
+	 */
 	@Test
-	public void testMap_102() {
+	public void testMapInt() {
 		RowData rowData = new RowData("整数", 100);
 		Column column = new Column();
 		column.setProperty("intVal");
@@ -63,12 +82,18 @@ public class DocumentMapperTest {
 
 		TestBean bean = new TestBean();
 		dm.map(bean, column, rowData);
-		
+
 		assertEquals(100, bean.getIntVal());
 	}
 
+	/**
+	 * <dl>
+	 * <dt>ケース
+	 * <dd>BeanのList型プロパティにマップ
+	 * <dl>
+	 */
 	@Test
-	public void testMap_103() {
+	public void testMapList() {
 		RowData rowData = new RowData();
 		rowData.setCellValue("階層1", "a");
 		rowData.setCellValue("階層2", "b");
@@ -79,14 +104,20 @@ public class DocumentMapperTest {
 
 		TestBean bean = new TestBean();
 		dm.map(bean, column, rowData);
-		
+
 		assertEquals("a", bean.getListVal().get(0));
 		assertEquals("b", bean.getListVal().get(1));
 		assertEquals("c", bean.getListVal().get(2));
 	}
 
+	/**
+	 * <dl>
+	 * <dt>ケース
+	 * <dd>Beanの{@link KeyValuePairMap}型プロパティにマップ
+	 * <dl>
+	 */
 	@Test
-	public void testMap_104() throws IllegalAccessException, InvocationTargetException {
+	public void testMapKvm() {
 		RowData rowData = new RowData("マップ", "key1:val1\nkey2:val2");
 		Column column = new Column();
 		column.setProperty("kvmVal");
@@ -94,19 +125,49 @@ public class DocumentMapperTest {
 
 		TestBean bean = new TestBean();
 		dm.map(bean, column, rowData);
-		
+
 		assertEquals("key1", bean.getKvmVal().get("key1").getKey());
 		assertEquals("val1", bean.getKvmVal().get("key1").getValue());
 		assertEquals("key2", bean.getKvmVal().get("key2").getKey());
 		assertEquals("val2", bean.getKvmVal().get("key2").getValue());
 	}
-	
+
+	/**
+	 * <dl>
+	 * <dt>ケース
+	 * <dd>BeanのMap型プロパティにマップ
+	 * <dl>
+	 */
+	@Test
+	public void testMapMap() {
+		RowData rowData = new RowData();
+		rowData.setCellValue("ケース_001", "a(1文字)");
+		rowData.setCellValue("ケース_002", "b");
+		rowData.setCellValue("ケース_003", "c");
+		Column column = new Column();
+		column.setProperty("mapVal");
+		column.setPattern("ケース_([0-9]*)");
+
+		TestBean bean = new TestBean();
+		dm.map(bean, column, rowData);
+
+		assertEquals("a(1文字)", bean.getMapVal().get("001"));
+		assertEquals("b", bean.getMapVal().get("002"));
+		assertEquals("c", bean.getMapVal().get("003"));
+
+		column.setExcludePattern("\\([0-9]*文字\\)");
+
+		dm.map(bean, column, rowData);
+
+		assertEquals("a", bean.getMapVal().get("001"));
+	}
 
 	public class TestBean {
 		private String strVal;
 		private int intVal;
 		private List<String> listVal;
 		private KeyValuePairMap kvmVal;
+		private Map<String, String> mapVal;
 
 		public int getIntVal() {
 			return intVal;
@@ -140,6 +201,14 @@ public class DocumentMapperTest {
 			this.kvmVal = kvmVal;
 		}
 
-		
+		public Map<String, String> getMapVal() {
+			return mapVal;
+		}
+
+		public void setMapVal(Map<String, String> mapVal) {
+			this.mapVal = mapVal;
+		}
+
+
 	}
 }

@@ -57,13 +57,28 @@ public class RowData {
 		return getData().get(SitStringUtils.cleansing(columnName.toString()));
 	}
 
+	public String getCellValue(Object columnName, String excludePattern) {
+		if (SitStringUtils.isEmpty(columnName)) {
+			LOG.warn("列名が空であるセル値は格納できません。");
+			return StringUtils.EMPTY;
+		}
+		String columnNameStr = SitStringUtils.cleansing(columnName.toString());
+		return value(getData().get(columnNameStr), excludePattern);
+	}
+
+	private String value(String value, String excludePattern) {
+		return StringUtils.isEmpty(excludePattern)
+				? value
+				: value.replaceAll(excludePattern, StringUtils.EMPTY);
+	}
+
 	/**
 	 * 正規表現に一致する列に該当するセルの値を返します。
 	 *
 	 * @param regex 正規表現
 	 * @return 正規表現に一致する列に該当するセルの値
 	 */
-	public List<String> getCellValues(String regex) {
+	public List<String> getCellValues(String regex, String excludePattern, boolean excludeEmptyValue) {
 		List<String> valueList = new ArrayList<String>();
 
 		if (StringUtils.isEmpty(regex)) {
@@ -73,13 +88,13 @@ public class RowData {
 		Pattern pattern = Pattern.compile(regex);
 		for (Entry<String, String> entry : getData().entrySet()) {
 			if (pattern.matcher(entry.getKey()).matches()) {
-				if (StringUtils.isEmpty(entry.getValue())) {
+				if (excludeEmptyValue &&
+					StringUtils.isEmpty(entry.getValue())) {
 					continue;
 				}
-				if (LOG.isTraceEnabled()) {
-					LOG.trace("key:{}, value:{}", entry.getKey(), entry.getValue());
-				}
-				valueList.add(entry.getValue());
+				String value = value(entry.getValue(), excludePattern);
+				LOG.trace("key:{}, value:{}", entry.getKey(), value);
+				valueList.add(value);
 			}
 		}
 
@@ -94,7 +109,7 @@ public class RowData {
 	 * @return 正規表現に一致する列名のセルの値
 	 * @see Matcher#group(int)
 	 */
-	public Map<String, String> getCellValuesAsMap(String regex, int groupIdx) {
+	public Map<String, String> getCellValuesAsMap(String regex, int groupIdx, String excludePattern) {
 		Map<String, String> map = new TreeMap<String, String>();
 
 		Pattern p = Pattern.compile(regex);
@@ -102,18 +117,19 @@ public class RowData {
 			Matcher m = p.matcher(entry.getKey());
 
 			if (m.matches()) {
-				map.put(m.group(groupIdx), entry.getValue());
+				String value = value(entry.getValue(), excludePattern);
+				map.put(m.group(groupIdx), value);
 			}
 		}
 		return map;
 	}
 
-	public int getInt(Object columnName) {
+	public int getInt(Object columnName, String excludePattern) {
 		return NumberUtils.toInt(getCellValue(columnName), 0);
 	}
 
-	public boolean getBoolean(Object columnName, Object trueStr) {
-		return getCellValue(columnName).equals(trueStr);
+	public boolean getBoolean(Object columnName, Object trueStr, String excludePattern) {
+		return getCellValue(columnName, excludePattern).equals(trueStr);
 	}
 
 	public void setCellValue(Object columnName, Object value) {
