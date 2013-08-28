@@ -16,7 +16,6 @@
 package org.sitoolkit.core.infra.repository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.annotation.PostConstruct;
@@ -52,7 +51,7 @@ public class DocumentMapper {
 	/**
 	 * BeanUtilsで使用するConverter
 	 */
-	private Map<Class<?>, ? extends Converter> converterMap;
+	private Map<Class<?>, ? extends Converter> converterMap = new HashMap<Class<?>, Converter>();
 
 	/**
 	 * 設定ファイルのパス
