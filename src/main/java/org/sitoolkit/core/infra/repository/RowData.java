@@ -17,6 +17,7 @@ package org.sitoolkit.core.infra.repository;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.sitoolkit.core.infra.util.SitStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,116 +30,137 @@ import org.slf4j.LoggerFactory;
  * @author yuichi.kuwahara
  */
 public class RowData {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(RowData.class);
-	
-	private Map<String, String> data = new LinkedHashMap<String, String>();
 
-	public RowData() {
-		super();
-	}
-	
-	public RowData(String columnName, Object value) {
-		setCellValue(columnName, value);
-	}
-	
-	/**
-	 * 当該行の列名に該当するセルの値を返します。
-	 * @param columnName 列名
-	 * @return 列名に該当するセルの値
-	 */
-	public String getCellValue(Object columnName) {
-		if (SitStringUtils.isEmpty(columnName)) {
-			LOG.warn("列名が空であるセル値は格納できません。");
-			return "";
-		}
-		
-		return getData().get(SitStringUtils.cleansing(columnName.toString()));
-	}
+    private static final Logger LOG = LoggerFactory.getLogger(RowData.class);
+    private Map<String, String> data = new LinkedHashMap<String, String>();
 
-	/**
-	 * 正規表現に一致する列に該当するセルの値を返します。
-	 * @param regex 正規表現
-	 * @return 正規表現に一致する列に該当するセルの値
-	 */
-	public List<String> getCellValues(String regex) {
-		List<String> valueList = new ArrayList<String>();
+    public RowData() {
+        super();
+    }
 
-		if (StringUtils.isEmpty(regex)) {
-			LOG.warn("列名が空であるセル値は格納できません。");
-			return valueList;
-		}
-		Pattern pattern = Pattern.compile(regex);
-		for (Entry<String, String> entry : getData().entrySet()) {
-			if (pattern.matcher(entry.getKey()).matches()) {
-				if (StringUtils.isEmpty(entry.getValue())) {
-					continue;
-				}
-				if (LOG.isTraceEnabled()) {
-					LOG.trace("key:{}, value:{}", entry.getKey(), entry.getValue());
-				}
-				valueList.add(entry.getValue());
-			}
-		}
-		
-		return valueList;
-	}
-	
-	public int getInt(Object columnName) {
-		return NumberUtils.toInt(getCellValue(columnName), 0);
-	}
-	
-	public boolean getBoolean(Object columnName, Object trueStr) {
-		return getCellValue(columnName).equals(trueStr);
-	}
-	
-	public void setCellValue(Object columnName, Object value) {
-		if (SitStringUtils.isEmpty(columnName)) {
-			LOG.warn("列名が空であるセル値は格納できません。");
-			return;
-		}
-		getData().put(
-				SitStringUtils.cleansing(columnName.toString()),
-				value == null ? "" : value.toString());
-	}
-	
-	public void setInt(Object columnName, int value, int limit) {
-		if(value <= limit) {
-			setCellValue(columnName, "");
-		} else {
-			setCellValue(columnName, value);
-		}
-	}
+    public RowData(String columnName, Object value) {
+        setCellValue(columnName, value);
+    }
 
-	public Map<String, String> getData() {
-		return data;
-	}
+    /**
+     * 当該行の列名に該当するセルの値を返します。
+     *
+     * @param columnName 列名
+     * @return 列名に該当するセルの値
+     */
+    public String getCellValue(Object columnName) {
+        if (SitStringUtils.isEmpty(columnName)) {
+            LOG.warn("列名が空であるセル値は格納できません。");
+            return "";
+        }
 
-	@Override
-	public String toString() {
-		return StringUtils.join(getData().values(), ",");
-	}
+        return getData().get(SitStringUtils.cleansing(columnName.toString()));
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final RowData other = (RowData) obj;
-		if (this.data != other.data && (this.data == null || !this.data.equals(other.data))) {
-			return false;
-		}
-		return true;
-	}
+    /**
+     * 正規表現に一致する列に該当するセルの値を返します。
+     *
+     * @param regex 正規表現
+     * @return 正規表現に一致する列に該当するセルの値
+     */
+    public List<String> getCellValues(String regex) {
+        List<String> valueList = new ArrayList<String>();
 
-	@Override
-	public int hashCode() {
-		int hash = 3;
-		hash = 73 * hash + (this.data != null ? this.data.hashCode() : 0);
-		return hash;
-	}
-	
+        if (StringUtils.isEmpty(regex)) {
+            LOG.warn("列名が空であるセル値は格納できません。");
+            return valueList;
+        }
+        Pattern pattern = Pattern.compile(regex);
+        for (Entry<String, String> entry : getData().entrySet()) {
+            if (pattern.matcher(entry.getKey()).matches()) {
+                if (StringUtils.isEmpty(entry.getValue())) {
+                    continue;
+                }
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("key:{}, value:{}", entry.getKey(), entry.getValue());
+                }
+                valueList.add(entry.getValue());
+            }
+        }
+
+        return valueList;
+    }
+
+    /**
+     * 正規表現に一致する列名のセルの値をMapとして取得します。
+     * @param regex 列名に一致させる正規表現
+     * @param groupIdx 列名の中から抜き出しMapのキーとするグループの番号
+     * @return 正規表現に一致する列名のセルの値
+     * @see Matcher#group(int)
+     */
+    public Map<String, String> getCellValuesAsMap(String regex, int groupIdx) {
+        Map<String, String> map = new TreeMap<String, String>();
+
+        Pattern p = Pattern.compile(regex);
+        for (Entry<String, String> entry : getData().entrySet()) {
+            Matcher m = p.matcher(entry.getKey());
+
+            if (m.matches()) {
+                map.put(m.group(groupIdx), entry.getValue());
+            }
+        }
+        return map;
+    }
+
+    public int getInt(Object columnName) {
+        return NumberUtils.toInt(getCellValue(columnName), 0);
+    }
+
+    public boolean getBoolean(Object columnName, Object trueStr) {
+        return getCellValue(columnName).equals(trueStr);
+    }
+
+    public void setCellValue(Object columnName, Object value) {
+        if (SitStringUtils.isEmpty(columnName)) {
+            LOG.warn("列名が空であるセル値は格納できません。");
+            return;
+        }
+        getData().put(
+                SitStringUtils.cleansing(columnName.toString()),
+                value == null ? "" : value.toString());
+    }
+
+    public void setInt(Object columnName, int value, int limit) {
+        if (value <= limit) {
+            setCellValue(columnName, "");
+        } else {
+            setCellValue(columnName, value);
+        }
+    }
+
+    public Map<String, String> getData() {
+        return data;
+    }
+
+    @Override
+    public String toString() {
+        return StringUtils.join(getData().values(), ",");
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RowData other = (RowData) obj;
+        if (this.data != other.data && (this.data == null || !this.data.equals(other.data))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 73 * hash + (this.data != null ? this.data.hashCode() : 0);
+        return hash;
+    }
 }

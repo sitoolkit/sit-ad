@@ -15,11 +15,10 @@
  */
 package org.sitoolkit.core.infra.repository;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import org.sitoolkit.core.infra.repository.schema.Column;
@@ -34,9 +33,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  *
@@ -49,7 +46,7 @@ public class DocumentMapper {
 	@Resource
 	ApplicationContext appCtx;
 	/**
-	 * 
+	 *
 	 */
 	private Map<String, Table> tableMap = new HashMap<String, Table>();
 	/**
@@ -61,7 +58,7 @@ public class DocumentMapper {
 	 * 設定ファイルのパス
 	 */
 	private String configFilePath = "/documentMapping.xml";
-	
+
 	public RowData map(String beanId, Object bean) {
 		RowData rowData = new RowData();
 		Table table = tableMap.get(beanId);
@@ -75,9 +72,9 @@ public class DocumentMapper {
 				if (column.getMin() != null) {
 					rowData.setInt(column.getName(), Integer.parseInt(value.toString()), column.getMin());
 				} else if (StringUtils.isNotEmpty(column.getFlag())) {
-					rowData.setCellValue(column.getName(), Boolean.parseBoolean(value.toString()) ? column.getFlag() : "");	
+					rowData.setCellValue(column.getName(), Boolean.parseBoolean(value.toString()) ? column.getFlag() : "");
 				} else {
-					rowData.setCellValue(column.getName(), value);	
+					rowData.setCellValue(column.getName(), value);
 				}
 			} catch (Exception e) {
 				throw new SitException(e);
@@ -118,29 +115,34 @@ public class DocumentMapper {
 	}
 
 	/**
-	 * 
-	 * @param bean プロパティを設定する対象のインスタンス
-	 * @param rowData 
-	 * @param column
-	 * @return Beanに設定する
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException
+	 * 行データの指定された列の値を取得します。
+     * 値は、beanの対応するプロパティの型よって適宜変換されます。
+	 * @param bean プロパティを設定する対象のBean
+	 * @param rowData プロパティに設定する値を取得する行
+	 * @param column 設定するプロパティを特定する列
+	 * @return beanに設定する値
 	 */
-	Object retriveValue(Object bean, RowData rowData, Column column) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		if (StringUtils.isNotEmpty(column.getPattern())) {
-			return rowData.getCellValues(column.getPattern());
-		}
-
-		Object propertyValue = PropertyUtils.getProperty(bean, column.getProperty());
-		
-		if (propertyValue instanceof Integer) {
-			return rowData.getInt(column.getName());
-		} else if (propertyValue instanceof Boolean) {
-			return rowData.getBoolean(column.getName(), column.getFlag());
-		} else {
-			return rowData.getCellValue(column.getName());
-		}
+	protected Object retriveValue(Object bean, RowData rowData, Column column) {
+        try {
+    		Object propertyValue = PropertyUtils.getProperty(bean, column.getProperty());
+            if (StringUtils.isNotEmpty(column.getPattern())) {
+                if (propertyValue instanceof Map) {
+                    return rowData.getCellValuesAsMap(column.getPattern(), 1);
+                } else {
+                    return rowData.getCellValues(column.getPattern());
+                }
+            } else {
+                if (propertyValue instanceof Integer) {
+                    return rowData.getInt(column.getName());
+                } else if (propertyValue instanceof Boolean) {
+                    return rowData.getBoolean(column.getName(), column.getFlag());
+                } else {
+                    return rowData.getCellValue(column.getName());
+                }
+            }
+        } catch (Exception e) {
+            throw new SitException(e);
+        }
 	}
 
 	@PostConstruct
@@ -155,7 +157,7 @@ public class DocumentMapper {
 		}
 		LOG.info("設計書定義を読み込みました。{}", tableMap);
 	}
-	
+
 	@PostConstruct
 	public void initConverters() {
 		if (LOG.isDebugEnabled()) {
@@ -164,7 +166,7 @@ public class DocumentMapper {
 		for (Entry<Class<?>, ? extends Converter> entry : getConverterMap().entrySet()) {
 			ConvertUtils.register(entry.getValue(), entry.getKey());
 		}
-			
+
 	}
 
 	public Map<Class<?>, ? extends Converter> getConverterMap() {
