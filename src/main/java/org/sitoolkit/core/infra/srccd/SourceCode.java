@@ -41,8 +41,8 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class SourceCode extends DocumentElement {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SourceCode.class);
-	
+	protected final Logger log = LoggerFactory.getLogger(getClass());
+
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 	/**
 	 * 出力するソースコードファイル名の拡張子
@@ -65,16 +65,16 @@ public abstract class SourceCode extends DocumentElement {
 	 */
 	private static final String VELO_PROP_PATH = "/velocity.properties";
 	/**
-	 * 
+	 *
 	 */
 	private Map<String, Object> contextParam = new HashMap<String, Object>();
 	/**
 	 * テキストファイルオブジェクトを構築して返します。
 	 * テキストファイルの内容は、{@link #buildSrcCd()}の結果の文字列です。
-	 * @return テキストファイルオブジェクト 
+	 * @return テキストファイルオブジェクト
 	 */
 	public TextFile toFile() {
-		LOG.info("ソースコードを構築します。テンプレート：「{}」、出力ファイル名：「{}」"
+		log.info("ソースコードを構築します。テンプレート：「{}」、出力ファイル名：「{}」"
 				,getTemplate(), getFileName());
 		return new TextFile(getOutDir(), getFileName(), build());
 	}
@@ -85,7 +85,7 @@ public abstract class SourceCode extends DocumentElement {
 	 */
 	protected String build() {
 		try {
-			
+
 			Velocity.init(SitFileUtils.resource2prop(getClass(), VELO_PROP_PATH));
 			Template tmpl = Velocity.getTemplate(getTemplate());
 			VelocityContext context = new VelocityContext();

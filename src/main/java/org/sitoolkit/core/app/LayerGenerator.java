@@ -21,8 +21,6 @@ import org.sitoolkit.core.domain.data.TableDef;
 import org.sitoolkit.core.domain.java.EntityDef;
 import org.sitoolkit.core.infra.srccd.SourceCode;
 import org.sitoolkit.core.infra.util.SitFileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -30,15 +28,13 @@ import org.slf4j.LoggerFactory;
  */
 public class LayerGenerator extends SourceCodeGenerator {
 
-	private static final Logger LOG = LoggerFactory.getLogger(LayerGenerator.class);
-
 	@Resource
 	DBDefCatalog dbDefCatalog;
-	
+
 	@Override
 	public void generate(String... tableNames) {
 		for (TableDef table : dbDefCatalog.getAll()) {
-			LOG.info("テーブル：{}に対応する{}を生成します。", table.getName(), getName());
+			log.info("テーブル：{}に対応する{}を生成します。", table.getName(), getName());
 
 			EntityDef entity = appCtx().getBean("entityDef", EntityDef.class);
 			entity.load(table);
@@ -47,5 +43,5 @@ public class LayerGenerator extends SourceCodeGenerator {
 			}
 		}
 	}
-	
+
 }

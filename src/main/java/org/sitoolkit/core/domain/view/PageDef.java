@@ -16,10 +16,8 @@
 package org.sitoolkit.core.domain.view;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import javax.annotation.Resource;
 import org.sitoolkit.core.domain.data.TableDef;
 import org.sitoolkit.core.infra.repository.DocumentMapper;
@@ -27,8 +25,6 @@ import org.sitoolkit.core.infra.repository.RowData;
 import org.sitoolkit.core.infra.repository.TableData;
 import org.sitoolkit.core.infra.srccd.SourceCode;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -38,8 +34,6 @@ import org.springframework.context.ApplicationContext;
  */
 public class PageDef extends SourceCode {
 
-	private static final Logger LOG = LoggerFactory.getLogger(PageDef.class);
-	
 	private String id;
 	/**
 	 * ドメイン
@@ -59,20 +53,20 @@ public class PageDef extends SourceCode {
 	 * パス
 	 */
 	private String parentPath;
-	
+
 	@Resource
 	ApplicationContext appCtx;
 	@Resource
 	DocumentMapper dm;
-	
+
 	private Map<String, AreaDef> areas() {
 		return areas;
 	}
-	
+
 	public Collection<AreaDef> getAreas() {
 		return areas().values();
 	}
-	
+
 	/**
 	 * 画面項目定義を画面定義に追加します。
 	 * 追加の際に項目番号を採番します。
@@ -82,15 +76,13 @@ public class PageDef extends SourceCode {
 		item.setNo(getItemCount() + 1);
 		addItem(item);
 	}
-	
+
 	/**
 	 * 画面項目定義を画面定義に追加します。
 	 * @param item 画面項目定義
 	 */
 	public void addItem(ItemDef item) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("項目[{}]を画面[{}]に追加します。", item.getName(), getName());
-		}
+		log.debug("項目[{}]を画面[{}]に追加します。", item.getName(), getName());
 		final String areaName = item.isLocatedMainArea()
 				? item.getAreaName()
 				: item.getParentAreaName();
@@ -98,9 +90,7 @@ public class PageDef extends SourceCode {
 		if (area == null) {
 			area = appCtx.getBean(getAreDefId(), AreaDef.class);
 			area.init(getDomain(), item);
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("領域[{}]を画面[{}]に追加します。", areaName, getName());
-			}
+			log.debug("領域[{}]を画面[{}]に追加します。", areaName, getName());
 			areas().put(areaName, area);
 		}
 		area.addItem(item);
@@ -129,7 +119,7 @@ public class PageDef extends SourceCode {
 	public void setTable(TableDef table) {
 		this.table = table;
 	}
-	
+
 	public TableData toTableData() {
 		TableData tableData = new TableData();
 		int no = 1;
@@ -138,16 +128,16 @@ public class PageDef extends SourceCode {
 				tableData.add(dm.map("itemDef", item));
 			}
 		}
-		
+
 		return tableData;
 	}
-	
+
 	public void load(TableData tableData) {
 		for(RowData rowData : tableData.getRows()) {
 			addItem(dm.map(getItemDefId(), rowData, ItemDef.class));
 		}
 	}
-	
+
 	public int getItemCount() {
 		int cnt = 0;
 		for(AreaDef area : getAreas()) {

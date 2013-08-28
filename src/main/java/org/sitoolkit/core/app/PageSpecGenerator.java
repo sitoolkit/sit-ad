@@ -21,8 +21,6 @@ import org.sitoolkit.core.domain.data.TableDef;
 import org.sitoolkit.core.domain.view.PageDef;
 import org.sitoolkit.core.domain.view.PageDefCatalog;
 import org.sitoolkit.core.domain.view.pagecnv.PageDefConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -30,26 +28,24 @@ import org.slf4j.LoggerFactory;
  */
 public class PageSpecGenerator extends SourceCodeGenerator {
 
-	private static final Logger LOG = LoggerFactory.getLogger(PageSpecGenerator.class);
-
 	private PageDefCatalog pageDefCatalog;
-	
+
 	private DBDefCatalog dbDefCatalog;
-	
+
 	private List<PageDefConverter> converterList;
 
 	@Override
 	public void generate(String... tableNames) {
-		
+
 		for (TableDef table : getDbDefCatalog().getAll()) {
 			if (table.isRelation()) {
-				LOG.info("テーブル[{}]は関連テーブルのため変換対象から除外します。", table.getName());
+				log.info("テーブル[{}]は関連テーブルのため変換対象から除外します。", table.getName());
 				continue;
-			} 
+			}
 			for (PageDefConverter converter : getConverterList()) {
-				LOG.info("テーブル[{}]を画面に変換します。", table.getName());
+				log.info("テーブル[{}]を画面に変換します。", table.getName());
 				PageDef page = converter.convert(table);
-				LOG.info("テーブル[{}]を画面[{}](項目数[{}])に変換しました。", 
+				log.info("テーブル[{}]を画面[{}](項目数[{}])に変換しました。",
 						new Object[]{table.getName(), page.getName(), page.getItemCount()});
 				getPageDefCatalog().add(page);
 			}
@@ -64,7 +60,7 @@ public class PageSpecGenerator extends SourceCodeGenerator {
 	public void setPageDefCatalog(PageDefCatalog pageDefCatalog) {
 		this.pageDefCatalog = pageDefCatalog;
 	}
-	
+
 	public static void main(String args[]) {
 		PageSpecGenerator generator = appCtx().getBean(PageSpecGenerator.class);
 		System.exit(generator.execute(args));
