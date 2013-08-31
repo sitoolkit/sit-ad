@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Resource;
 
 import org.sitoolkit.core.infra.doc.DocumentElement;
 import org.sitoolkit.core.infra.util.SitException;
@@ -30,6 +31,7 @@ import org.sitoolkit.core.infra.util.TextFile;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.sitoolkit.core.infra.util.PropertyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +44,9 @@ import org.slf4j.LoggerFactory;
 public abstract class SourceCode extends DocumentElement {
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
+
+	@Resource
+	PropertyManager pm;
 
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 	/**
@@ -69,14 +74,25 @@ public abstract class SourceCode extends DocumentElement {
 	 */
 	private Map<String, Object> contextParam = new HashMap<String, Object>();
 	/**
+	 * 既存のソースファイルを上書きする場合にtrue
+	 */
+	private boolean overwrite = false;
+	/**
 	 * テキストファイルオブジェクトを構築して返します。
 	 * テキストファイルの内容は、{@link #buildSrcCd()}の結果の文字列です。
 	 * @return テキストファイルオブジェクト
 	 */
 	public TextFile toFile() {
-		log.info("ソースコードを構築します。テンプレート：「{}」、出力ファイル名：「{}」"
-				,getTemplate(), getFileName());
-		return new TextFile(getOutDir(), getFileName(), build());
+		TextFile file = new TextFile(getOutDir(), getFileName());
+		if (pm.isRebuild() || isOverwrite() || !file.exists()) {
+			log.info("ソースコードを構築します。テンプレート：「{}」、出力ファイル名：「{}」"
+					,getTemplate(), getFileName());
+			file.setText(build());
+		} else {
+			log.info("ソースコードは既に存在します。{}",
+					file.getAbsolutePath());
+		}
+		return file;
 	}
 
 	/**
@@ -199,5 +215,13 @@ public abstract class SourceCode extends DocumentElement {
 
 	public void addContextParam(String name, Object obj) {
 		contextParam.put(name, obj);
+	}
+
+	public boolean isOverwrite() {
+		return overwrite;
+	}
+
+	public void setOverwrite(boolean overwrite) {
+		this.overwrite = overwrite;
 	}
 }

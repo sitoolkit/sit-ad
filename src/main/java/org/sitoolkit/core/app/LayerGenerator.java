@@ -21,6 +21,7 @@ import org.sitoolkit.core.domain.data.TableDef;
 import org.sitoolkit.core.domain.java.EntityDef;
 import org.sitoolkit.core.infra.srccd.SourceCode;
 import org.sitoolkit.core.infra.util.SitFileUtils;
+import org.sitoolkit.core.infra.util.TextFile;
 
 /**
  *
@@ -39,7 +40,10 @@ public class LayerGenerator extends SourceCodeGenerator {
 			EntityDef entity = appCtx().getBean("entityDef", EntityDef.class);
 			entity.load(table);
 			for (SourceCode sourceCode : entity.create()) {
-				SitFileUtils.write(sourceCode.toFile());
+				TextFile file = sourceCode.toFile();
+				if (!file.isEmpty()) {
+					SitFileUtils.write(file);
+				}
 			}
 		}
 	}

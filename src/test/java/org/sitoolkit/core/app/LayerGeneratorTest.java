@@ -15,13 +15,8 @@
  */
 package org.sitoolkit.core.app;
 
-import org.sitoolkit.core.app.LayerGenerator;
-import org.sitoolkit.core.app.SourceCodeGenerator;
-import java.io.File;
 import java.io.IOException;
 import javax.annotation.Resource;
-import org.apache.commons.io.FileUtils;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -55,7 +50,7 @@ public class LayerGeneratorTest {
 			"UserEntity.java", "UserGroupEntity.java", "UserGroupEntityPK.java",
 			"UserService.java", "UserDao.java"};
 		GeneratorTestHelper.execAndAssert(layerGen, userOutDir, fileNamesInUser);
-		
+
 		String groupOutDir = "out/jp/monocrea/sitoolkit/archetype/domain/group";
 		String[] fileNamesInGroup = new String[]{"GroupEntity.java", "GroupService.java",
 			"GroupDao.java"};

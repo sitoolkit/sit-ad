@@ -24,23 +24,23 @@ import org.slf4j.LoggerFactory;
 
 /**
  * ツール共通プロパティファイル：sitoolkit.xmlへのアクセスを提供するクラス
- * 
+ *
  * 当該クラスはシングルトンであり、初回のインスタンスアクセス時にプロパティファイルを読み込む。
  * 読み込むプロパティファイルのパスは次の順に決まる。
- * 
+ *
  * <ol>
  * <li>システムプロパティ：jp.monocrea.sitoolkit.config.fileで指定されるパスのプロパティファイル</li>
  * <li>上記のシステムプロパティが指定されていない場合は、
  * 		VMの実行ディレクトリからの相対パス：conf/sitoolkit.xmlのプロパティファイル</li>
  * </ol>
- * 
+ *
  * @author Yuichi Kuwahara
  *
  */
 public class PropertyManager {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -67,7 +67,7 @@ public class PropertyManager {
 	public String getProperty(String key, String defaultValue) {
 		return getProp().getProperty(key, defaultValue);
 	}
-	
+
 	/**
 	 * keyで指定されるプロパティのパスから、dirsで指定される階層を辿ったパスを取得します。
 	 * @param key 基準となるパスを持つプロパティのキー
@@ -86,7 +86,7 @@ public class PropertyManager {
 	public String getDbDef() {
 		return getProperty("docdir.dbdef") + "/" + getProperty("dbdef.file");
 	}
-	
+
 	/**
 	 * 画面仕様書のファイルパスを取得します。
 	 * @param pageName 画面名
@@ -95,11 +95,11 @@ public class PropertyManager {
 	public String getPageSpec(String pageName) {
 		return getPath("docdir.pagespec", fmt("pagespec.file", pageName));
 	}
-	
+
 	/**
 	 * 書式文字列に変数を設定した文字列を返します。
 	 * 書式文字列はプロパティファイルに定義します。
-	 * 
+	 *
 	 * @param key プロパティのキー
 	 * @param args 書式に設定する変数
 	 * @return 書式設定された文字列
@@ -107,19 +107,19 @@ public class PropertyManager {
 	public String fmt(String key, Object...args) {
 		try {
 			String value = getProperty(key);
-			
+
 			if(value == null) {
 				LOG.warn("キー「{}」のプロパティは未定義です。", key);
 				return "";
 			}
-			
+
 			return String.format(value, args);
 		} catch (MissingFormatArgumentException e) {
 			LOG.warn("プロパティ「{}」の書式設定が失敗しました。", key);
 			return "";
 		}
 	}
-	
+
     /**
      * 書式定義書のパスを取得します。
      * @return 書式定義書のパス
@@ -127,7 +127,7 @@ public class PropertyManager {
 	public String getFormatDefPath() {
 		return getProperty("docdir.pagespec") + "/" + getProperty("ioformat.file");
 	}
-	
+
 	public String getPageCatalog() {
 		return getPageSpecDir() + "/" + getProperty("pagelist.file");
 	}
@@ -135,10 +135,10 @@ public class PropertyManager {
 	public String getPageSpecTemplate() {
 		return getPageSpecDir() + "/" + getProperty("pagespec.template");
 	}
-	
+
 	/**
 	 * 画面仕様書が配置されているフォルダのパスを取得します。
-	 * 
+	 *
 	 * @return 画面仕様書配置フォルダのパス
 	 */
 	public String getPageSpecDir() {
@@ -183,23 +183,23 @@ public class PropertyManager {
 	public String getKeyValueSplit() {
 		return getProperty("keyValueSplit", "：");
 	}
-	
+
 	public String getWebPageDir() {
 		return getProperty(WEBPAGE, System.getProperty(WEBPAGE, "out"));
 	}
 
 	/**
 	 * コード仕様書のファイルパスを取得します。
-	 * @return 
+	 * @return
 	 */
 	public String getCodeSpec() {
 		return getPath("docdir.dbdef", getProperty("codespec.file"));
 	}
-	
+
 	public String getMockupOutputDir() {
 		return getProperty("outdir.mockup");
 	}
-	
+
 	/**
 	 * プロパティを取得します。
 	 * プロパティの取得先の優先度は以下の通りです。
@@ -210,16 +210,25 @@ public class PropertyManager {
 	 * </ol>
 	 * @param key プロパティ名
 	 * @param def プロパティ名に対応するプロパティが無い場合に返される初期値
-	 * @return 
+	 * @return
 	 */
 	public String getSysProp(String key, String def) {
 		return  System.getProperty(key, getProperty(key, def));
 	}
-	
+
 	/**
 	 * @return アプリケーションルートパッケージ
 	 */
 	public String getAppRootPkg() {
 		return getSysProp("package", "jp.monocrea.sitoolkit.archetype");
+	}
+
+	/**
+	 * 再構築モードである場合にtrueを返します。
+	 * キー：rebuild
+	 * @return 再構築モードである場合にtrue
+	 */
+	public boolean isRebuild() {
+		return "true".equalsIgnoreCase(getSysProp("rebuild", "false"));
 	}
 }

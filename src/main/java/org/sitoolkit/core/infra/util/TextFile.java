@@ -17,6 +17,7 @@ package org.sitoolkit.core.infra.util;
 
 import java.io.File;
 import java.net.URI;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -24,8 +25,8 @@ import java.net.URI;
  */
 public class TextFile extends File {
 
-	private String text;
-	
+	private String text = StringUtils.EMPTY;
+
 	public TextFile(URI uri) {
 		super(uri);
 	}
@@ -41,7 +42,7 @@ public class TextFile extends File {
 	public TextFile(String pathname) {
 		super(pathname);
 	}
-	
+
 	public TextFile(String parent, String child, String text) {
 		this(parent, child);
 		this.text = text;
@@ -54,7 +55,8 @@ public class TextFile extends File {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
 
-	
+	public boolean isEmpty() {
+		return StringUtils.isEmpty(getText());
+	}
 }

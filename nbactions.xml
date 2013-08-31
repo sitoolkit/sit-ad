@@ -18,5 +18,12 @@
                 <goal>jaxb2:xjc</goal>
             </goals>
         </action>
+        <action>
+            <actionName>test</actionName>
+            <goals>
+                <goal>-X</goal>
+                <goal>test</goal>
+            </goals>
+        </action>
 	
 </actions>

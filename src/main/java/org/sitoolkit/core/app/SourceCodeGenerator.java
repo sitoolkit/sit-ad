@@ -22,6 +22,7 @@ import org.sitoolkit.core.infra.util.SitFileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.sitoolkit.core.infra.util.TextFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -34,9 +35,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class SourceCodeGenerator {
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
-	
+
 	public static final String APP_CTX_CONFIG_LOCATION = "sitoolkit-conf.xml";
-	
+
 	private static ApplicationContext appCtx = new ClassPathXmlApplicationContext(APP_CTX_CONFIG_LOCATION);
 
 	private SourceCodeCatalog<? extends SourceCode> catalog;
@@ -49,35 +50,38 @@ public class SourceCodeGenerator {
 	 * 生成対象に含む成果物の論理名
 	 */
 	private String[] includes = new String[0];
-	
+
 	public static ApplicationContext appCtx() {
 		return appCtx;
 	}
-	
+
 	protected void generate(String... args) {
 		Collection<? extends SourceCode> sources = getCatalog().getAll();
 		log.info("{}本の{}ソースコードを生成します。", sources.size(), getName());
 		for (SourceCode source : sources) {
-			
+
 			if (includes.length > 0 &&
 					!ArrayUtils.contains(includes, source.getName())) {
 				log.info("{}[{}]は生成対象から除外します。", getName(), source.getName());
 				continue;
 			}
-			
-			log.info("{}[{}]を生成します。", getName(), source.getName());
-			SitFileUtils.write(source.toFile());
+
+			TextFile file = source.toFile();
+			if (!file.isEmpty()) {
+				log.info("{}[{}]を生成します。", getName(), source.getName());
+				SitFileUtils.write(file);
+			}
 		}
 	}
 
 	public SourceCodeGenerator() {
 		super();
 	}
-	
+
 	/**
-	 * 
-	 * @param args 
-	 * @return 
+	 *
+	 * @param args
+	 * @return
 	 */
 	public int execute(String[] args) {
 		log.info("{}の生成を開始します。", getName());
@@ -103,8 +107,8 @@ public class SourceCodeGenerator {
 	public void setCatalog(SourceCodeCatalog<? extends SourceCode> catalog) {
 		this.catalog = catalog;
 	}
-	
-	
+
+
 	public String getName() {
 		return name;
 	}
