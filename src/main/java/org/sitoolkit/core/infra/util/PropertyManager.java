@@ -50,7 +50,7 @@ public class PropertyManager {
 	private static final String WEBCMP = "outdir.webcmp";
 	private static final Logger LOG = LoggerFactory.getLogger(PropertyManager.class);
 
-	private Properties prop;
+	private Properties prop = new Properties();
 
 	public Properties getProp() {
 		return prop;
