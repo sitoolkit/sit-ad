@@ -31,7 +31,7 @@ public class ColumnDef extends DocumentElement {
 	 * この列が所属するテーブル定義
 	 */
 	private TableDef table;
-	
+
 	private ForeignKeyDef fk;
 	/**
 	 * データ型
@@ -50,6 +50,10 @@ public class ColumnDef extends DocumentElement {
 	 * 長さ
 	 */
 	private int length;
+	/**
+	 * バイト数
+	 */
+	private int byteLength;
 	/**
 	 * 主キー
 	 */
@@ -71,10 +75,10 @@ public class ColumnDef extends DocumentElement {
 	 */
 	private boolean notnull;
 	/**
-	 * 長さの指定が不要なデータ型のセット
+	 * 長さの指定が必要なデータ型のセット
 	 */
-	private Set<String> dataTypeSetWithoutLength;
-	
+	private Set<String> dataTypeSetWithLength;
+
 	public boolean isNotNull() {
 		return this.notnull;
 	}
@@ -84,11 +88,11 @@ public class ColumnDef extends DocumentElement {
 	public int getLength() {
 		return this.length;
 	}
-	
+
 	public boolean isPrimaryKey() {
 		return getPk() > 0;
 	}
-	
+
 	public boolean hasFk() {
 		return StringUtils.isNotEmpty(getFkStr());
 	}
@@ -109,7 +113,7 @@ public class ColumnDef extends DocumentElement {
 	public void setFk(ForeignKeyDef fk) {
 		this.fk = fk;
 	}
-	
+
 	public boolean isPassword() {
 		return "password".equalsIgnoreCase(getPname());
 	}
@@ -182,24 +186,15 @@ public class ColumnDef extends DocumentElement {
 	}
 
 	public String getDeclareLength() {
-		if(getDataTypeSetWithoutLength().contains(getType()) ||
-			getLength() < 1) {
-			return "";
+		if(getDataTypeSetWithLength().contains(getType())) {
+			return "(" + getByteLength() + ")";
 		} else {
-			return "(" + getLength() + ")";
+			return "";
 		}
 	}
-	
+
 	public String getDelareNotNull() {
 		return !isPrimaryKey() && isNotNull() ? "NOT NULL" : "";
-	}
-
-	public Set<String> getDataTypeSetWithoutLength() {
-		return Collections.unmodifiableSet(dataTypeSetWithoutLength);
-	}
-
-	public void setDataTypeSetWithoutLength(Set<String> dataTypeSetWithoutLength) {
-		this.dataTypeSetWithoutLength = dataTypeSetWithoutLength;
 	}
 	public String getFormat() {
 		return format;
@@ -207,5 +202,21 @@ public class ColumnDef extends DocumentElement {
 
 	public void setFormat(String format) {
 		this.format = format;
+	}
+
+	public int getByteLength() {
+		return byteLength;
+	}
+
+	public void setByteLength(int byteLength) {
+		this.byteLength = byteLength;
+	}
+
+	public Set<String> getDataTypeSetWithLength() {
+		return dataTypeSetWithLength;
+	}
+
+	public void setDataTypeSetWithLength(Set<String> dataTypeSetWithLength) {
+		this.dataTypeSetWithLength = dataTypeSetWithLength;
 	}
 }

@@ -24,6 +24,7 @@
 		<column property="format" name="書式"/>
 		<column property="defaultValue" name="初期値"/>
 		<column property="length" name="長さ"/>
+		<column property="byteLength" name="バイト数"/>
 		<column property="notnull" name="必須" flag="○"/>
 		<column property="pk" name="主キー"/>
 		<column property="fkStr" name="外部キー"/>

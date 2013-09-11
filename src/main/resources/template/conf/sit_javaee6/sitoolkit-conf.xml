@@ -10,7 +10,7 @@
 	http://www.springframework.org/schema/aop
 	http://www.springframework.org/schema/aop/spring-aop.xsd"
 	   default-lazy-init="true">
-	   
+
 	<context:annotation-config/>
 	<context:component-scan base-package="org.sitoolkit.core"/>
 
@@ -68,7 +68,7 @@
 	<bean id="codeDefCatalog" class="org.sitoolkit.core.domain.code.CodeDefCatalog" scope="singleton">
 		<property name="codeDefId" value="codeDef"/>
 	</bean>
-	
+
 	<bean id="codeDef" class="org.sitoolkit.core.domain.code.CodeDef" scope="prototype">
 		<property name="template" value="/java-code.vm"/>
 		<property name="var" value="code"/>
@@ -76,14 +76,14 @@
 	</bean>
 
 	<bean id="formatDefCatalog" class="org.sitoolkit.core.domain.format.FormatDefCatalog" scope="singleton"/>
-	
+
 	<bean id="formatDef" class="org.sitoolkit.core.domain.format.FormatDef" scope="prototype"/>
 
 	<bean id="ddlGen" class="org.sitoolkit.core.app.SourceCodeGenerator">
 		<property name="name" value="DDLスクリプト"/>
 		<property name="catalog" ref="dbDefCatalog"/>
 	</bean>
-	
+
 	<bean id="dbDefCatalog" class="org.sitoolkit.core.domain.data.DBDefCatalog" scope="singleton"/>
 
 	<bean id="tableDef" class="org.sitoolkit.core.domain.data.TableDef" scope="prototype">
@@ -93,17 +93,12 @@
 	</bean>
 
 	<bean id="columnDef" class="org.sitoolkit.core.domain.data.ColumnDef" scope="prototype">
-		<property name="dataTypeSetWithoutLength">
+		<property name="dataTypeSetWithLength">
 			<set>
-				<value>integer</value>
-				<value>int</value>
-				<value>long</value>
-				<value>short</value>
-				<value>text</value>
-				<value>date</value>
-				<value>time</value>
-				<value>datetime</value>
-				<value>bool</value>
+				<value>char</value>
+				<value>varchar</value>
+				<value>clob</value>
+				<value>blob</value>
 			</set>
 		</property>
 	</bean>
@@ -111,7 +106,7 @@
 	<bean id="layerGen" class="org.sitoolkit.core.app.LayerGenerator">
 		<property name="name" value="レイヤ"/>
 	</bean>
-	
+
 	<bean id="entityDef" class="org.sitoolkit.core.domain.java.EntityDef" scope="prototype">
 		<property name="template" value="/java-entity.vm"/>
 		<property name="var" value="entity"/>
@@ -123,7 +118,7 @@
 				<property name="var" value="embeddedId"/>
 				<property name="pkgRootDir" value="#{pm.libSrcDir}"/>
 			</bean>
-		</property> 
+		</property>
 		<property name="layerList">
 			<list>
 				<bean class="org.sitoolkit.core.domain.java.LayerDef" scope="prototype">
@@ -155,7 +150,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="pageSpecGen" class="org.sitoolkit.core.app.PageSpecGenerator">
 		<property name="name" value="画面定義書"/>
 		<property name="pageDefCatalog" ref="pageDefCatalog"/>
@@ -182,7 +177,7 @@
 
 	<bean id="areaDef" class="org.sitoolkit.core.domain.view.AreaDef" scope="prototype">
 	</bean>
-	
+
 	<bean id="itemDef" class="org.sitoolkit.core.domain.view.ItemDef" scope="prototype">
 	</bean>
 
@@ -214,10 +209,10 @@
 		<property name="template" value="/java-view.vm"/>
 		<property name="var" value="view"/>
 	</bean>
-	
+
 	<bean id="viewAreaDef" class="org.sitoolkit.core.domain.view.ViewAreaDef" scope="prototype">
 	</bean>
-	
+
 	<bean id="viewItemDef" class="org.sitoolkit.core.domain.view.ViewItemDef" scope="prototype">
 		<property name="searchConditionPath" value="condition.params"/>
 		<property name="codedFieldSuffix" value="Vo"/>

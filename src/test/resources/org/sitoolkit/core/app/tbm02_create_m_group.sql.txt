@@ -1,13 +1,13 @@
 CREATE TABLE m_group (
 
 	group_id char (8) ,
-	group_name varchar (64) ,
+	group_name varchar (256) ,
 	deleted BOOLEAN NOT NULL DEFAULT FALSE,
 	version INTEGER NOT NULL DEFAULT 0,
 	created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	created_by VARCHAR(64) NOT NULL DEFAULT 'system',
+	created_by CHAR(8) NOT NULL DEFAULT 'system',
 	updated TIMESTAMP NOT NULL ,
-	updated_by VARCHAR(64) DEFAULT 'system',
+	updated_by CHAR(8) DEFAULT 'system',
 	PRIMARY KEY (  group_id )
 );
 
