@@ -21,8 +21,8 @@
         <action>
             <actionName>test</actionName>
             <goals>
-                <goal>-X</goal>
                 <goal>test</goal>
+                
             </goals>
         </action>
 	
