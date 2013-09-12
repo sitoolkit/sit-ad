@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  * @author kuwahara
  */
 public class SitStringUtilsTest {
-	
+
 	public SitStringUtilsTest() {
 	}
 
@@ -36,14 +36,14 @@ public class SitStringUtilsTest {
 		assertEquals("A", map.get("a"));
 		assertEquals("B", map.get("b"));
 	}
-	
+
 	@Test
 	public void testToCamel() {
 		assertEquals("camelStyle", SitStringUtils.toCamel("CAMEL_STYLE"));
 		assertEquals("camelStyle", SitStringUtils.toCamel("camel_style"));
 		assertEquals("camelStyle", SitStringUtils.toCamel("camelStyle"));
 	}
-	
+
 	@Test
 	public void testToPascal() {
 		assertEquals("PascalStyle", SitStringUtils.toPascal("PASCAL_STYLE"));
@@ -55,16 +55,16 @@ public class SitStringUtilsTest {
 	 * <dl>
 	 * <dt>テスト対象
 	 * <dd>@{@link SitStringUtils#url2filepath(java.net.URL) }
-	 * 
+	 *
 	 * <dt>テスト仕様
 	 * <dd>
 	 * <pre>
 	 * http://localhost:9090/a/b/c.html
 	 * → /a/b/c.html
-	 * 
+	 *
 	 * file:/C:/a/b/c.txt
 	 * → /C:/a/b/c.txt
-	 * 
+	 *
 	 * file:/C:/a/b/c.jar!/e/f/g.txt
 	 * → /e/f/g.txt
 	 * </pre>
@@ -72,11 +72,17 @@ public class SitStringUtilsTest {
 	 */
 	@Test
 	public void testUrl2filepath() throws Exception {
-		assertEquals("/a/b/c.html", 
+		assertEquals("/a/b/c.html",
 			SitStringUtils.url2filepath(new URL("http://localhost:9090/a/b/c.html")));
-		assertEquals("/C:/a/b/c.txt", 
+		assertEquals("/C:/a/b/c.txt",
 			SitStringUtils.url2filepath(new URL("file:/C:/a/b/c.txt")));
-		assertEquals("/e/f/g.txt", 
+		assertEquals("/e/f/g.txt",
 			SitStringUtils.url2filepath(new URL("file:/C:/a/b/c.jar!/e/f/g.txt")));
+	}
+
+	@Test
+	public void testEscapeForJavaIdentifer() {
+		assertEquals("ClassName", SitStringUtils.escapeForJavaIdentifer("9ClassName!"));
+		assertEquals("はいいいえ", SitStringUtils.escapeForJavaIdentifer("はい・いいえ"));
 	}
 }

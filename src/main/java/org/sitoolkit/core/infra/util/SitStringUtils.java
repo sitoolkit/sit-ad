@@ -41,17 +41,17 @@ public class SitStringUtils {
 
 	/**
 	 * 文字列をPascal形式(PascalStyle)に変換します。
-	 * 
+	 *
 	 * @param str 文字列
 	 * @return Pascal形式
 	 */
 	public static String toPascal(String str) {
 		return toCamelOrPascal(str, true, DELIMITER);
 	}
-	
+
 	/**
 	 * 文字列をPascal形式(PascalStyle)またはCamel形式(camelStyle)に変換します。
-	 * 
+	 *
 	 * @param str 文字列
 	 * @param isPascal true:Camel形式、false:Pascal形式
 	 * @param delimiter 区切り文字
@@ -68,7 +68,7 @@ public class SitStringUtils {
 				return StringUtils.uncapitalize(str);
 			}
 		}
-		
+
 		StringBuilder sb = new StringBuilder();
 		boolean toUpperCase = isPascal;
 		for (char c : str.toCharArray()) {
@@ -83,13 +83,13 @@ public class SitStringUtils {
 				toUpperCase = false;
 			}
 		}
-		
+
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 文字列をCamel形式(camelStyle)に変換します。
-	 * 
+	 *
 	 * @param str 文字列
 	 * @return Camel形式
 	 */
@@ -105,22 +105,22 @@ public class SitStringUtils {
 	public static String table2entity(String tableName) {
 		return toPascal(table2id(tableName));
 	}
-	
+
 	public static String table2camel(String tableName) {
 		return toCamel(table2id(tableName));
 	}
-	
+
 	/**
 	 * テーブル名の識別子を取得します。
-	 * 
-	 * <pre>{@code 
+	 *
+	 * <pre>{@code
 	 * t_table -> table
 	 * m_table -> table
 	 * table -> table
 	 * }</pre>
-	 * 
+	 *
 	 * @param tableName テーブル名
-	 * @return 
+	 * @return
 	 */
 	public static String table2id(String tableName) {
 		if(StringUtils.isEmpty(tableName)) {
@@ -131,39 +131,39 @@ public class SitStringUtils {
 		}
 		return tableName;
 	}
-	
+
 	public static List<String> decodeList(String str) {
 		return str == null ? new ArrayList<String>() :
 			Arrays.asList(str.replaceAll(" |\\[|\\]", "").split(","));
 	}
-	
+
 	public static String[] splitLine(String lineStr) {
 		return StringUtils.isEmpty(lineStr) ? new String[0] : lineStr.split("[\n|\r\n]");
 	}
 
 	/**
 	 * 文字列をMapにデコードします。
-	 * 
-	 * 
+	 *
+	 *
 	 * @param str デコードする対象の文字列
 	 * @param split1 要素の区切り文字
 	 * @param split2 キーバリューの区切り文字
-	 * @return 
+	 * @return
 	 */
 	public static Map<String, String> decodeToMap(String str, String split1, String split2) {
 		Map<String, String> map = new HashMap<String, String>();
-		
+
 		if(StringUtils.isEmpty(str) || StringUtils.isEmpty(split1) || StringUtils.isEmpty(split2)) {
 			return map;
 		}
-		
+
 		for(String entry : str.split(split1)) {
 			String[] pair = entry.split(split2);
 			if(pair.length > 1) {
 				map.put(pair[0], pair[1]);
 			}
 		}
-		
+
 		return map;
 	}
 
@@ -178,19 +178,19 @@ public class SitStringUtils {
 		}
 		StringBuilder sb = new StringBuilder();
 		char[] charArr = str.toCharArray();
-		
+
 		if (Character.isJavaIdentifierStart(charArr[0])) {
 			sb.append(charArr[0]);
 		}
-		
+
 		for (int i = 1; i < charArr.length; i++) {
-			if (Character.isJavaIdentifierPart(charArr[i])) {
+			if (Character.isJavaIdentifierPart(charArr[i]) && '・' != charArr[i]) {
 				sb.append(charArr[i]);
 			}
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * オブジェクトがnullまたは空文字であるかを判定します。
 	 * @param obj オブジェクト
@@ -208,24 +208,24 @@ public class SitStringUtils {
 	public static String cleansing(String str) {
 		return StringUtils.isEmpty(str) ? "" : str.replaceAll("[\\r|\\n| |　]", "");
 	}
-	
+
 
 	/**
 	 * URLをファイルパスに変換します。
-	 * 
+	 *
 	 * <pre>
 	 * 例)
-	 * 
+	 *
 	 * http://localhost:9090/a/b/c.html
 	 * → /a/b/c.html
-	 * 
+	 *
 	 * file:/C:/a/b/c.txt
 	 * → /C:/a/b/c.txt
-	 * 
+	 *
 	 * file:/C:/a/b/c.jar!/e/f/g.txt
 	 * → /e/f/g.txt
 	 * </pre>
-	 * 
+	 *
 	 * @param url URL
 	 * @return ファイルパス
 	 */
