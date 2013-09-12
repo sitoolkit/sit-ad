@@ -25,7 +25,7 @@
 		<column property="defaultValue" name="初期値"/>
 		<column property="length" name="長さ"/>
 		<column property="byteLength" name="バイト数"/>
-		<column property="notnull" name="必須" flag="○"/>
+		<column property="notnull" name="必須" trueStr="○" falseStr=""/>
 		<column property="pk" name="主キー"/>
 		<column property="fkStr" name="外部キー"/>
 		<column property="codeSpec" name="コード仕様"/>
@@ -52,7 +52,7 @@
 		<column property="choice" name="選択肢"/>
 		<column property="displayLength" name="表示桁数" min="0"/>
 		<column property="inputLength" name="入力桁数" min="0"/>
-		<column property="required" name="入力必須" flag="○"/>
+		<column property="required" name="入力必須" trueStr="○" falseStr=""/>
 		<column property="ioformat" name="入出力書式"/>
 		<column property="pname" name="項目物理名"/>
 		<column property="dataBindList" name="データバインド"/>

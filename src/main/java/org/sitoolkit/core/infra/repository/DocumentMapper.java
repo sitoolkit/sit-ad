@@ -41,7 +41,7 @@ import org.springframework.context.ApplicationContext;
  */
 public class DocumentMapper {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DocumentMapper.class);
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Resource
 	ApplicationContext appCtx;
@@ -69,10 +69,13 @@ public class DocumentMapper {
 			}
 			try {
 				Object value = BeanUtils.getProperty(bean, column.getProperty());
-				if (column.getMin() != null) {
+				Class<?> propertyType = PropertyUtils.getPropertyType(bean, column.getProperty());
+				if (ClassUtils.isAssignable(propertyType, Integer.class)) {
 					rowData.setInt(column.getName(), Integer.parseInt(value.toString()), column.getMin());
-				} else if (StringUtils.isNotEmpty(column.getFlag())) {
-					rowData.setCellValue(column.getName(), Boolean.parseBoolean(value.toString()) ? column.getFlag() : "");
+				} else if (ClassUtils.isAssignable(propertyType, Boolean.class)) {
+					boolean bool = value == null ? false : Boolean.parseBoolean(value.toString());
+					String cellValue = bool ? column.getTrueStr() : column.getFalseStr();
+					rowData.setCellValue(column.getName(), cellValue);
 				} else {
 					rowData.setCellValue(column.getName(), value);
 				}
@@ -110,9 +113,15 @@ public class DocumentMapper {
 					 PropertyUtils.getPropertyType(bean, column.getProperty()),
 					 rowData,
 					 column);
+
+			if (log.isTraceEnabled()) {
+				log.trace("{}.{}に[{}]を設定します",
+						new Object[]{bean.getClass().getSimpleName(), property, value});
+			}
+
 			BeanUtils.setProperty(bean, property, value);
 		} catch (Exception e) {
-			LOG.error("ID:{}", column.getProperty(), e);
+			log.error("ID:{}", column.getProperty(), e);
 			throw new SitException(e);
 		}
 	}
@@ -131,27 +140,27 @@ public class DocumentMapper {
 				return row.getCellValuesAsMap(
 						col.getPattern(),
 						1,
-						col.getExcludePattern());
+						col.getReplace());
 			} else {
 				return row.getCellValues(
 						col.getPattern(),
-						col.getExcludePattern(),
+						col.getReplace(),
 						col.isExcludeEmptyValue());
 			}
 		} else {
 			if (ClassUtils.isAssignable(type, Integer.class)) {
-				return row.getInt(col.getName(), col.getExcludePattern());
+				return row.getInt(col.getName(), col.getReplace());
 			} else if (ClassUtils.isAssignable(type, Boolean.class)) {
-				return row.getBoolean(col.getName(), col.getFlag(), col.getExcludePattern());
+				return row.getBoolean(col.getName(), col.getTrueStr(), col.getReplace());
 			} else {
-				return row.getCellValue(col.getName(), col.getExcludePattern());
+				return row.getCellValue(col.getName(), col.getReplace());
 			}
 		}
 	}
 
 	@PostConstruct
 	public void init() {
-		LOG.info("設計書定義を読み込みます。");
+		log.info("設計書定義を読み込みます。");
 		Document doc = SitJaxbUtils.res2obj(Document.class, getConfigFilePath());
 
 		for (Table table : doc.getTable()) {
@@ -159,13 +168,13 @@ public class DocumentMapper {
 				tableMap.put(id, table);
 			}
 		}
-		LOG.info("設計書定義を読み込みました。{}", tableMap);
+		log.info("設計書定義を読み込みました。{}", tableMap);
 	}
 
 	@PostConstruct
 	public void initConverters() {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Commons BeanUtilsのコンバータを登録します。{}", getConverterMap());
+		if (log.isDebugEnabled()) {
+			log.debug("Commons BeanUtilsのコンバータを登録します。{}", getConverterMap());
 		}
 		for (Entry<Class<?>, ? extends Converter> entry : getConverterMap().entrySet()) {
 			ConvertUtils.register(entry.getValue(), entry.getKey());

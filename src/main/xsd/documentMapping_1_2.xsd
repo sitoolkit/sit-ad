@@ -2,14 +2,19 @@
 <xs:schema version="1.0"
 		   elementFormDefault="qualified" targetNamespace="http://www.sitoolkit.org/schema/documentMapping" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sitoolkit.org/schema/documentMapping">
     <xs:complexType name="column">
+    	<xs:sequence>
+    		<xs:element name="replace" type="replacePattern" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    	</xs:sequence>
     	<xs:attribute name="property" type="xs:string"></xs:attribute>
     	<xs:attribute name="name" type="xs:string"></xs:attribute>
     	<xs:attribute name="pattern" type="xs:string"></xs:attribute>
-    	<xs:attribute name="flag" type="xs:string"></xs:attribute>
+    	<xs:attribute name="trueStr" type="xs:string" default="○"/>
+    	<xs:attribute name="falseStr" type="xs:string" default=""/>
     	<xs:attribute name="readOnly" type="xs:boolean"></xs:attribute>
     	<xs:attribute name="min" type="xs:int"></xs:attribute>
-    	<xs:attribute name="excludePattern" type="xs:string"></xs:attribute>
-    	<xs:attribute name="excludeEmptyValue" type="xs:boolean" default="true"></xs:attribute>
+    	<xs:attribute name="excludeEmptyValue" type="xs:boolean"
+    		default="true">
+    	</xs:attribute>
     </xs:complexType>
 
     <xs:complexType name="table">
@@ -32,4 +37,11 @@
     		</xs:sequence>
     	</xs:complexType>
     </xs:element>
+
+    <xs:complexType name="replacePattern">
+    	<xs:sequence>
+    		<xs:element name="pattern" type="xs:string"></xs:element>
+    		<xs:element name="replacement" type="xs:string"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
 </xs:schema>

@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import org.sitoolkit.core.infra.util.SitStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.sitoolkit.core.infra.repository.schema.ReplacePattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,19 +58,26 @@ public class RowData {
 		return getData().get(SitStringUtils.cleansing(columnName.toString()));
 	}
 
-	public String getCellValue(Object columnName, String excludePattern) {
+	public String getCellValue(Object columnName, List<ReplacePattern> replaces) {
 		if (SitStringUtils.isEmpty(columnName)) {
 			LOG.warn("列名が空であるセル値は格納できません。");
 			return StringUtils.EMPTY;
 		}
 		String columnNameStr = SitStringUtils.cleansing(columnName.toString());
-		return value(getData().get(columnNameStr), excludePattern);
+		return value(getData().get(columnNameStr), replaces);
 	}
 
-	private String value(String value, String excludePattern) {
-		return StringUtils.isEmpty(excludePattern)
-				? value
-				: value.replaceAll(excludePattern, StringUtils.EMPTY);
+	private String value(String value, List<ReplacePattern> replaces) {
+		if (value == null) {
+			return StringUtils.EMPTY;
+		} else if (replaces == null) {
+			return value;
+		} else {
+			for (ReplacePattern replace : replaces) {
+				value = value.replaceAll(replace.getPattern(), replace.getReplacement());
+			}
+			return value;
+		}
 	}
 
 	/**
@@ -78,7 +86,8 @@ public class RowData {
 	 * @param regex 正規表現
 	 * @return 正規表現に一致する列に該当するセルの値
 	 */
-	public List<String> getCellValues(String regex, String excludePattern, boolean excludeEmptyValue) {
+	public List<String> getCellValues(String regex, List<ReplacePattern> replaces,
+			boolean excludeEmptyValue) {
 		List<String> valueList = new ArrayList<String>();
 
 		if (StringUtils.isEmpty(regex)) {
@@ -92,7 +101,7 @@ public class RowData {
 					StringUtils.isEmpty(entry.getValue())) {
 					continue;
 				}
-				String value = value(entry.getValue(), excludePattern);
+				String value = value(entry.getValue(), replaces);
 				LOG.trace("key:{}, value:{}", entry.getKey(), value);
 				valueList.add(value);
 			}
@@ -109,7 +118,8 @@ public class RowData {
 	 * @return 正規表現に一致する列名のセルの値
 	 * @see Matcher#group(int)
 	 */
-	public Map<String, String> getCellValuesAsMap(String regex, int groupIdx, String excludePattern) {
+	public Map<String, String> getCellValuesAsMap(String regex, int groupIdx,
+			List<ReplacePattern> replaces) {
 		Map<String, String> map = new TreeMap<String, String>();
 
 		Pattern p = Pattern.compile(regex);
@@ -117,19 +127,19 @@ public class RowData {
 			Matcher m = p.matcher(entry.getKey());
 
 			if (m.matches()) {
-				String value = value(entry.getValue(), excludePattern);
+				String value = value(entry.getValue(), replaces);
 				map.put(m.group(groupIdx), value);
 			}
 		}
 		return map;
 	}
 
-	public int getInt(Object columnName, String excludePattern) {
-		return NumberUtils.toInt(getCellValue(columnName), 0);
+	public int getInt(Object columnName, List<ReplacePattern> replaces) {
+		return NumberUtils.toInt(getCellValue(columnName, replaces), 0);
 	}
 
-	public boolean getBoolean(Object columnName, Object trueStr, String excludePattern) {
-		return getCellValue(columnName, excludePattern).equals(trueStr);
+	public boolean getBoolean(Object columnName, String trueStr, List<ReplacePattern> replaces) {
+		return StringUtils.equalsIgnoreCase(trueStr, getCellValue(columnName, replaces));
 	}
 
 	public void setCellValue(Object columnName, Object value) {

@@ -27,6 +27,7 @@ import org.sitoolkit.core.infra.repository.schema.Column;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.sitoolkit.core.infra.repository.schema.ReplacePattern;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -59,7 +60,10 @@ public class DocumentMapperTest {
 
 		assertEquals("str(3文字)", bean.getStrVal());
 
-		column.setExcludePattern("\\([0-9]*文字\\)");
+		ReplacePattern replace = new ReplacePattern();
+		replace.setPattern("\\([0-9]*文字\\)");
+		replace.setReplacement("");
+		column.getReplace().add(replace);
 
 		dm.map(bean, column, rowData);
 
@@ -155,16 +159,80 @@ public class DocumentMapperTest {
 		assertEquals("b", bean.getMapVal().get("002"));
 		assertEquals("c", bean.getMapVal().get("003"));
 
-		column.setExcludePattern("\\([0-9]*文字\\)");
+		ReplacePattern replace = new ReplacePattern();
+		replace.setPattern("\\([0-9]*文字\\)");
+		replace.setReplacement("");
+		column.getReplace().add(replace);
 
 		dm.map(bean, column, rowData);
 
 		assertEquals("a", bean.getMapVal().get("001"));
 	}
 
+	/**
+	 * <dl>
+	 * <dt>ケース
+	 * <dd>セル値の「はい」、「いいえ」をtrue, falseにマップ
+	 * <dl>
+	 */
+	@Test
+	public void testBooleanMap() {
+		Column column = new Column();
+		column.setProperty("booleanVal");
+		column.setName("はい/いいえ");
+		column.setTrueStr("はい");
+		column.setFalseStr("いいえ");
+
+		RowData rowData = new RowData(column.getName(), "はい");
+
+		TestBean bean = new TestBean();
+		dm.map(bean, column, rowData);
+		assertEquals(true, bean.isBooleanVal());
+
+		rowData.setCellValue(column.getName(), "いいえ");
+
+		dm.map(bean, column, rowData);
+		assertEquals(false, bean.isBooleanVal());
+	}
+
+	/**
+	 * <dl>
+	 * <dt>ケース
+	 * <dd>セル値の「はい」、「いいえ」を1, 0に置換してマップ
+	 * <dl>
+	 */
+	@Test
+	public void testReplaceMap() {
+		Column column = new Column();
+		column.setProperty("intVal");
+		column.setName("はい/いいえ");
+
+		ReplacePattern replaceYes = new ReplacePattern();
+		replaceYes.setPattern("はい");
+		replaceYes.setReplacement("1");
+		column.getReplace().add(replaceYes);
+
+		ReplacePattern replaceNo = new ReplacePattern();
+		replaceNo.setPattern("いいえ");
+		replaceNo.setReplacement("0");
+		column.getReplace().add(replaceNo);
+
+		RowData rowData = new RowData(column.getName(), "はい");
+
+		TestBean bean = new TestBean();
+		dm.map(bean, column, rowData);
+		assertEquals(1, bean.getIntVal());
+
+		rowData.setCellValue(column.getName(), "いいえ");
+		dm.map(bean, column, rowData);
+		assertEquals(0, bean.getIntVal());
+
+	}
+
 	public class TestBean {
 		private String strVal;
 		private int intVal;
+		private boolean booleanVal;
 		private List<String> listVal;
 		private KeyValuePairMap kvmVal;
 		private Map<String, String> mapVal;
@@ -207,6 +275,14 @@ public class DocumentMapperTest {
 
 		public void setMapVal(Map<String, String> mapVal) {
 			this.mapVal = mapVal;
+		}
+
+		public boolean isBooleanVal() {
+			return booleanVal;
+		}
+
+		public void setBooleanVal(boolean booleanVal) {
+			this.booleanVal = booleanVal;
 		}
 
 
