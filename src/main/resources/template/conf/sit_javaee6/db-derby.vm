@@ -9,8 +9,8 @@ CREATE TABLE $table.pname (
 	created_by CHAR(8) NOT NULL DEFAULT 'system',
 	updated TIMESTAMP NOT NULL ,
 	updated_by CHAR(8) DEFAULT 'system',
-#foreach ($mapEntry in $table.fkMap.entrySet())
-	FOREIGN KEY ($mapEntry.value.srcCols) REFERENCES $mapEntry.key ($mapEntry.value.dstCols) ,
+#foreach ($fk in $table.fkMap.entrySet())
+	FOREIGN KEY ($fk.value.srcCols) REFERENCES $fk.value.dstTable ($fk.value.dstCols) ,
 #end
 	PRIMARY KEY (#foreach ($column in $table.pks) #if ($velocityCount > 1), #end $column.pname #end)
 );

@@ -34,7 +34,7 @@ import org.sitoolkit.core.infra.util.PropertyManager;
  */
 public class DBDefCatalog implements SourceCodeCatalog<TableDef> {
 
-	private Map<String, TableDef> tables = new HashMap<String, TableDef>();
+	private Map<String, TableDef> tables = new HashMap<>();
 	@Resource
 	PropertyManager pm;
 	@Resource

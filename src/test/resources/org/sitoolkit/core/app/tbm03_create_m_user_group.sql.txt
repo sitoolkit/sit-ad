@@ -8,8 +8,8 @@ CREATE TABLE m_user_group (
 	created_by CHAR(8) NOT NULL DEFAULT 'system',
 	updated TIMESTAMP NOT NULL ,
 	updated_by CHAR(8) DEFAULT 'system',
-	FOREIGN KEY (group_id) REFERENCES m_group (group_id) ,
 	FOREIGN KEY (user_id) REFERENCES m_user (user_id) ,
+	FOREIGN KEY (group_id) REFERENCES m_group (group_id) ,
 	PRIMARY KEY (  user_id  ,  group_id )
 );
 

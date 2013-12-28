@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.annotation.Resource;
 import org.sitoolkit.core.infra.srccd.SourceCode;
 import org.sitoolkit.core.infra.util.PropertyManager;
@@ -48,23 +49,27 @@ public class TableDef extends SourceCode {
 	/**
 	 * テーブルに定義されている全てのカラム定義
 	 */
-	private List<ColumnDef> columns = new ArrayList<ColumnDef>();
+	private List<ColumnDef> columns = new ArrayList<>();
 
 	/**
 	 * テーブルに定義されている主キーカラム
 	 */
-	private List<ColumnDef> pks = new ArrayList<ColumnDef>();
+	private List<ColumnDef> pks = new ArrayList<>();
 
 	/**
 	 * テーブルに定義されている外部キーのマップ
 	 * キー：参照先のテーブル物理名、値：外部キー定義
 	 */
-	private Map<String, ForeignKeyDef> fkMap = new HashMap<String, ForeignKeyDef>();
+	private Map<String, ForeignKeyDef> fkMap = new HashMap<>();
 
 	private String masterTableNameSuffix = "マスター";
 
 	private String relationTableNameSuffix = "関連";
 
+	/**
+	 * 親テーブルの物理名
+	 */
+	private String parentPname = StringUtils.EMPTY;
 	/**
 	 * テーブルに定義されている全てのカラム定義をリストとして取得します。
 	 * このリストは不可変です。
@@ -85,19 +90,39 @@ public class TableDef extends SourceCode {
 			pks.add(column);
 		}
 
-		if (column.hasFk()) {
-			ForeignKeyDef fk = column.getFk();
-			ForeignKeyDef mappedfk = fkMap.get(fk.getDstTable());
-			if (mappedfk == null) {
-				mappedfk = fk;
-				fkMap.put(fk.getDstTable(), mappedfk);
-			} else {
-				mappedfk.merge(column);
-			}
-		}
-		
+		addFk(column);
 	}
 
+	/**
+	 * カラムに定義された外部キー定義を追加します。
+	 * @param column カラム
+	 */
+	protected void addFk(ColumnDef column) {
+		Map<String, String> fkdef = column.getForeignKey();
+		for (Entry<String, String> entry : fkdef.entrySet()) {
+			if (StringUtils.isEmpty(entry.getValue())) {
+				continue;
+			}
+			String key = entry.getKey();
+			ForeignKeyDef fk = fkMap.get(key);
+			if (fk == null) {
+				fk = ForeignKeyDef.build(
+						getPname(),
+						key,
+						column.getPname(),
+						entry.getValue());
+				if (fk == null) {
+					continue;
+				}
+				fkMap.put(key, fk);
+			} else {
+				fk.add(column.getPname(), entry.getValue());
+			}
+			if (column.getPk() == 1) {
+				parentPname = fk.getDstTable();
+			}
+		}
+	}
 	/**
 	 * テーブルに定義されている主キーカラムのリストを取得します。
 	 * @return テーブルに定義されている主キーカラムのリスト
@@ -108,7 +133,7 @@ public class TableDef extends SourceCode {
 	public Map<String, ForeignKeyDef> getFkMap() {
 		return Collections.unmodifiableMap(fkMap);
 	}
-	
+
 	/**
 	 * テーブルがマスタテーブル(リソース系)である場合にtrueを返します。
 	 * @return テーブルがマスタテーブル(リソース系)である場合にtrue
@@ -128,19 +153,19 @@ public class TableDef extends SourceCode {
 	public boolean isDependent() {
 		return getPks().isEmpty() ? false : getPks().get(0).hasFk();
 	}
-	
+
 	/**
 	 * 当該テーブルが依存するテーブルの物理名を返します。
 	 * 当該テーブルが独立テーブルである場合は空文字を返します。
-	 * 
+	 *
 	 * @return 依存するテーブルの物理名
 	 */
 	public String getParentPname() {
-		return isDependent() ? getPks().get(0).getFk().getDstTable() : "";
+		return parentPname;
 	}
 
 	/**
-	 * 
+	 *
 	 * @return テーブル名の接頭辞を除いた名前
 	 */
 	public String getSimpleName() {
@@ -159,7 +184,7 @@ public class TableDef extends SourceCode {
 	public boolean isRelation() {
 		return getName().endsWith(getRelationTableNameSuffix());
 	}
-	
+
 	public String getDomain() {
 		return domain;
 	}

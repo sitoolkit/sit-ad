@@ -27,7 +27,7 @@
 		<column property="byteLength" name="バイト数"/>
 		<column property="notnull" name="必須" trueStr="○" falseStr=""/>
 		<column property="pk" name="主キー"/>
-		<column property="fkStr" name="外部キー"/>
+		<column property="foreignKey" name="外部キー" pattern="外部キー_(.*)"/>
 		<column property="codeSpec" name="コード仕様"/>
 		<column property="remark" name="説明"/>
 	</table>

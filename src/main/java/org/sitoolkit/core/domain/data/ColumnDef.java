@@ -15,7 +15,12 @@
  */
 package org.sitoolkit.core.domain.data;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import org.sitoolkit.core.infra.doc.DocumentElement;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +37,12 @@ public class ColumnDef extends DocumentElement {
 	 */
 	private TableDef table;
 
-	private ForeignKeyDef fk;
+	/**
+	 * 外部キー定義
+	 * キー：定義の列名上のサフィックス(外部キー_XXX)、値：定義値
+	 */
+	private Map<String, String> foreignKey = new HashMap<>();
+
 	/**
 	 * データ型
 	 */
@@ -58,10 +68,6 @@ public class ColumnDef extends DocumentElement {
 	 * 主キー
 	 */
 	private int pk;
-	/**
-	 * 外部キー
-	 */
-	private String fkStr;
 	/**
 	 * 説明
 	 */
@@ -94,24 +100,19 @@ public class ColumnDef extends DocumentElement {
 	}
 
 	public boolean hasFk() {
-		return StringUtils.isNotEmpty(getFkStr());
+		for (Entry<String, String> entry : getForeignKey().entrySet()) {
+			if (StringUtils.isNotEmpty(entry.getValue())) {
+				return true;
+			}
+		}
+		return false;
 	}
+
 	public TableDef getTable() {
 		return table;
 	}
 	public void setTable(TableDef table) {
 		this.table = table;
-	}
-
-	public ForeignKeyDef getFk() {
-		if(fk == null && hasFk()) {
-			fk = new ForeignKeyDef(this);
-		}
-		return fk;
-	}
-
-	public void setFk(ForeignKeyDef fk) {
-		this.fk = fk;
 	}
 
 	public boolean isPassword() {
@@ -152,14 +153,6 @@ public class ColumnDef extends DocumentElement {
 
 	public void setPk(int pk) {
 		this.pk = pk;
-	}
-
-	public String getFkStr() {
-		return fkStr;
-	}
-
-	public void setFkStr(String fkStr) {
-		this.fkStr = fkStr;
 	}
 
 	public boolean isNotnull() {
@@ -218,5 +211,13 @@ public class ColumnDef extends DocumentElement {
 
 	public void setDataTypeSetWithLength(Set<String> dataTypeSetWithLength) {
 		this.dataTypeSetWithLength = dataTypeSetWithLength;
+	}
+
+	public Map<String, String> getForeignKey() {
+		return foreignKey;
+	}
+
+	public void setForeignKey(Map<String, String> foreignKey) {
+		this.foreignKey = foreignKey;
 	}
 }

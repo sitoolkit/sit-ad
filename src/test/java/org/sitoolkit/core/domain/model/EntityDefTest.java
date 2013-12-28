@@ -15,7 +15,9 @@
  */
 package org.sitoolkit.core.domain.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.sitoolkit.core.app.SourceCodeGenerator;
 import org.sitoolkit.core.domain.data.ColumnDef;
 import org.sitoolkit.core.domain.data.TableDef;
@@ -44,7 +46,7 @@ public class EntityDefTest {
 
 	@Autowired
 	private ApplicationContext appCtx;
-	
+
 	public EntityDefTest() {
 	}
 
@@ -67,7 +69,7 @@ public class EntityDefTest {
 
 		EntityDef entity = appCtx.getBean("entityDef", EntityDef.class);
 		entity.load(table);
-		
+
 		assertFalse(entity.isDependent());
 		assertEquals("DomainEntity", entity.getPname());
 		FieldDef id1 = entity.getIds().get(0);
@@ -89,7 +91,9 @@ public class EntityDefTest {
 		ColumnDef col1 = new ColumnDef();
 		col1.setPname("col1");
 		col1.setPk(1);
-		col1.setFkStr("m_domain.col1");
+		Map<String, String> map = new HashMap<>();
+		map.put("1m_domain", "col1");
+		col1.setForeignKey(map);
 		table.addColumn(col1);
 
 		EntityDef entity = appCtx.getBean("entityDef", EntityDef.class);
@@ -97,7 +101,7 @@ public class EntityDefTest {
 
 		assertTrue(entity.isDependent());
 		assertEquals("SubDomainEntity", entity.getPname());
-
+		assertEquals("Domain", entity.getDomain());
 	}
 
 	/**
