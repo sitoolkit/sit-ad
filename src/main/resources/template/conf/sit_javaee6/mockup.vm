@@ -11,12 +11,8 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="${mock.base}js/menu.js"></script>
 <script src="${mock.base}js/mockup.js"></script>
-<script>
-$(function() {
-#set ($D = "$")
-	${D}.getScript("${mock.base}js/${mock.pname}.js");
-});
-</script>
+<script src="${mock.base}js/reload.js"></script>
+<script src="${mock.base}js/${mock.pname}.js"></script>
 <title>$mock.name</title>
 </head>
 <body>
@@ -50,7 +46,7 @@ $(function() {
 </div>
 #foreach ($area in $mock.areas)
 		#area($area)
-#end		
+#end
 	</div>
 	<hr class="full"/>
 	<div id="footer" class="container">Powered by SIToolkit</div>
@@ -101,7 +97,7 @@ $(function() {
 							#item($subItem)
 			#end
 						</td>
-		
+
 			#set ($lane = $lane + 1)
 		#end
 					</tr>
@@ -131,16 +127,16 @@ $(function() {
 			</tbody>
 		</table>
 
-	
+
 	#elseif ($area.type == "ボックス")
 		<div class="box $area.id">
 		#foreach ($item in $area.items)
-			<div class="box-item $item.id">#itemWithLabel($item)</div> 
+			<div class="box-item $item.id">#itemWithLabel($item)</div>
 		#end
 		</div>
-		
+
 	#else
-	
+
 	#end
 	</div>
 #end
@@ -148,7 +144,7 @@ $(function() {
 ##
 #macro(itemWithLabel $item)
 	<label for="$item.id">$item.label</label>
-	
+
 	#item($item)
 #end
 ##
@@ -159,34 +155,34 @@ $(function() {
 		<span id="$item.id" class="documented">$item.label</span>
 
 	#elseif ($item.control == "テキストボックス")
-		<input id="$item.id" name="$item.id" type="text" maxlength="$item.inputLength" size="$item.displayLength" class="documented"/>	
+		<input id="$item.id" name="$item.id" type="text" maxlength="$item.inputLength" size="$item.displayLength" class="documented"/>
 
 	#elseif ($item.control == "パスワード")
-		<input id="$item.id" name="$item.id" type="password" maxlength="$item.inputLength" size="$item.displayLength" class="documented"/>	
+		<input id="$item.id" name="$item.id" type="password" maxlength="$item.inputLength" size="$item.displayLength" class="documented"/>
 
 	#elseif ($item.control == "テキストボックス")
-		<input id="$item.id" name="$item.id" type="password" maxlength="$item.inputLength" size="$item.displayLength" class="documented"/>	
+		<input id="$item.id" name="$item.id" type="password" maxlength="$item.inputLength" size="$item.displayLength" class="documented"/>
 
 	#elseif ($item.control == "ラジオボタン")
 		#foreach ($code in $item.options)
 		<input id="$item.id$velocityCount" name="$item.id" type="radio" #if ($item.deginInfoMap.DefaultValue.value == $code.label) checked="checked" #end class="documented"/>
-		<label for="$item.id$velocityCount">$code.label</label>	
+		<label for="$item.id$velocityCount">$code.label</label>
 		#end
 
 	#elseif ($item.control == "単一チェックボックス")
 		<input id="$item.id" name="$item.id" type="checkbox" #if ($item.deginInfoMap.DefaultValue.value == "チェックあり") checked="checked" #end class="documented"/>
-		<label for="$item.id">$item.label</label>	
+		<label for="$item.id">$item.label</label>
 
 	#elseif ($item.control == "複数チェックボックス")
 		#foreach ($code in $item.options)
 		<span>
 			<input id="$item.id$velocityCount" name="$item.id" type="checkbox" #if ($item.deginInfoMap.DefaultValue.value == $code.label) checked="checked" #end class="documented"/>
-			<label for="$item.id$velocityCount">$code.label</label>	
+			<label for="$item.id$velocityCount">$code.label</label>
 		</span>
 		#end
-		
+
 	#elseif ($item.control == "ボタン")
-		<input id="$item.id" name="$item.id" type="button" value="$item.label" class="documented"/>	
+		<input id="$item.id" name="$item.id" type="button" value="$item.label" class="documented"/>
 
 	#elseif ($item.control == "セレクトボックス")
 		<select id="$item.id" name="$item.id" class="documented">
@@ -194,15 +190,15 @@ $(function() {
 			<option value="$code.code">$code.label</option>
 		#end
 		</select>
-	
+
 	#elseif ($item.control == "リンク")
-		<a id="$item.id" href="" class="documented">$item.label</a>	
-	
+		<a id="$item.id" href="" class="documented">$item.label</a>
+
 	#elseif ($item.control == "イメージ")
 		<img id="$item.id" src="${mock.base}${item.designInfoMap.File.value}" class="documented" alt="$item.label" title="$item.label"/>
 
 	#else
-	
+
 	#end
 
 	#foreach ($subItem in $item.rightSubItems)

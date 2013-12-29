@@ -16,6 +16,7 @@
 package org.sitoolkit.core.domain.code;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -43,14 +44,14 @@ public class CodeDefCatalog implements SourceCodeCatalog<CodeDef> {
 	PropertyManager pm;
 	@Resource
 	DocumentMapper dm;
-	
+
 	private Map<String, CodeDef> data = new HashMap<String, CodeDef>();
-	
+
 	@Override
 	public Collection<CodeDef> getAll() {
 		return data.values();
 	}
-	
+
 	public void load(TableData tableData) {
 		for (RowData rowData : tableData.getRows()) {
 			CodeDef codeDef = dm.map(getCodeDefId(), rowData, CodeDef.class);
@@ -58,7 +59,7 @@ public class CodeDefCatalog implements SourceCodeCatalog<CodeDef> {
 		}
 		LOG.info("{}件のコード定義を読み込みました。", data.size());
 	}
-	
+
 	private void add(CodeDef codeDef) {
 		data.put(codeDef.getName(), codeDef);
 	}
@@ -78,6 +79,12 @@ public class CodeDefCatalog implements SourceCodeCatalog<CodeDef> {
 
 	public void setCodeDefId(String codeDefId) {
 		this.codeDefId = codeDefId;
+	}
+
+	@Override
+	public Collection<CodeDef> reload(String inputSource) {
+		// TODO 実装
+		return Collections.emptyList();
 	}
 
 }

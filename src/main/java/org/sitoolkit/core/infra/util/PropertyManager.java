@@ -231,4 +231,12 @@ public class PropertyManager {
 	public boolean isRebuild() {
 		return "true".equalsIgnoreCase(getSysProp("rebuild", "false"));
 	}
+
+	/**
+	 * 繰り返し生成モードである場合にtrueを返します。
+	 * @return 繰り返し生成モードである場合にtrue
+	 */
+	public boolean isCGMode() {
+		return "true".equalsIgnoreCase(System.getProperty("sit.cg"));
+	}
 }

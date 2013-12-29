@@ -76,7 +76,7 @@ public abstract class SourceCode extends DocumentElement {
 	/**
 	 * 既存のソースファイルを上書きする場合にtrue
 	 */
-	private boolean overwrite = false;
+	private boolean overwrite = true;
 	/**
 	 * テキストファイルオブジェクトを構築して返します。
 	 * テキストファイルの内容は、{@link #buildSrcCd()}の結果の文字列です。

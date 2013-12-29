@@ -44,12 +44,16 @@ import org.springframework.context.ApplicationContextAware;
 public class PageDefCatalog implements ApplicationContextAware, SourceCodeCatalog<SourceCode> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(PageDefCatalog.class);
-	
+
 	/**
 	 * キー：ページ名、値：画面定義エンティティ
 	 */
-	private Map<String, PageDef> pageMap = new HashMap<String, PageDef>();
-	private List<SourceCode> srcCdList = new ArrayList<SourceCode>();
+	private Map<String, PageDef> pageMap = new HashMap<>();
+	private List<SourceCode> srcCdList = new ArrayList<>();
+	/**
+	 * キー：画面項目定義書のパス、値：ノード定義エンティティ
+	 */
+	private Map<String, NodeDef> nodeMap = new HashMap<>();
 	private String pageDefId;
 	/**
 	 * 画面のパスを物理名で出力する場合はtrue
@@ -61,7 +65,7 @@ public class PageDefCatalog implements ApplicationContextAware, SourceCodeCatalo
 	CodeDefCatalog codeDefCatalog;
 	@Resource
 	PropertyManager pm;
-	
+
 	private ApplicationContext appCtx;
 	private TreeDef tree;
 
@@ -74,40 +78,59 @@ public class PageDefCatalog implements ApplicationContextAware, SourceCodeCatalo
 		loadPageList();
 		loadPage();
 	}
-	
-	private void loadPage() {
+
+	@Override
+	public Collection<SourceCode> reload(String inputSource) {
+		// TODO inputSourceが画面一覧の場合の実装
+		List<SourceCode> list = new ArrayList();
+		NodeDef node = nodeMap.get(inputSource);
+		if (node == null) {
+			return list;
+		}
+		list.add(loadPage(node));
+		return list;
+	}
+
+	protected void loadPage() {
 		for (NodeDef node : getTree().getNodeList()) {
-			if (!node.isPage()) {
-				continue;
-			}
-			String pageSpecFilePath = pm.getPageSpec(node.getName());
-			
-			TableData itemDefList = null;
-			try {
-				LOG.info("画面定義書を読み込みます。{}", node.getName());
-				itemDefList = repo.read(pageSpecFilePath, pm.getProperty("pagespec.sheet"));
-			} catch (Exception e) {
-				LOG.error("画面定義書の読み込みに失敗しました。{}", e.getMessage());
-				continue;
-			}
-			PageDef page = appCtx.getBean(getPageDefId(), PageDef.class);
-			page.setDomain(node.getDomain());
-			page.setName(node.getName());
-			if (isPnamePath()) {
-				page.setPname(node.getPname());
-				page.setParentPath(node.getParent() == null ? "" : node.getParent().getPname());
-			} else {
-				page.setPname(node.getName());
-				page.setParentPath(node.getParentPath());
-			}
-			page.addContextParam(tree.getVar(), tree);
-			node.setPage(page);
-			add(page);
-			page.load(itemDefList);
+			loadPage(node);
 		}
 	}
-	
-	private void loadPageList() {
+
+	protected PageDef loadPage(NodeDef node) {
+		if (!node.isPage()) {
+			return null;
+		}
+		String pageSpecFilePath = pm.getPageSpec(node.getName());
+
+		TableData itemDefList = null;
+		try {
+			LOG.info("画面定義書を読み込みます。{}", node.getName());
+			itemDefList = repo.read(pageSpecFilePath, pm.getProperty("pagespec.sheet"));
+			nodeMap.put(pageSpecFilePath, node);
+		} catch (Exception e) {
+			LOG.error("画面定義書の読み込みに失敗しました。{}", e.getMessage());
+			return null;
+		}
+		PageDef page = appCtx.getBean(getPageDefId(), PageDef.class);
+		page.setDomain(node.getDomain());
+		page.setName(node.getName());
+		if (isPnamePath()) {
+			page.setPname(node.getPname());
+			page.setParentPath(node.getParent() == null ? "" : node.getParent().getPname());
+		} else {
+			page.setPname(node.getName());
+			page.setParentPath(node.getParentPath());
+		}
+		page.addContextParam(tree.getVar(), tree);
+		node.setPage(page);
+		add(page);
+		page.load(itemDefList);
+
+		return page;
+	}
+
+	protected void loadPageList() {
 		LOG.info("画面一覧を読み込みます。");
 		TableData pageListData = repo.read(pm.getPageCatalog(), pm.getProperty("pagelist.sheet"));
 		tree.load(pageListData);
@@ -131,7 +154,7 @@ public class PageDefCatalog implements ApplicationContextAware, SourceCodeCatalo
 			LOG.info("画面定義書を書き込みます。{}", page.getName());
 			String outFilePath = pm.getPageSpec(page.getName());
 			TableDataCatalog catalog = new TableDataCatalog();
-			
+
 			TableData tableData = page.toTableData();
 			tableData.setName(pm.getProperty("pagespec.sheet"));
 			catalog.add(tableData);
@@ -173,7 +196,7 @@ public class PageDefCatalog implements ApplicationContextAware, SourceCodeCatalo
 	public void setTree(TreeDef tree) {
 		this.tree = tree;
 	}
-	
+
 	public String getPageDefId() {
 		return pageDefId;
 	}
@@ -181,5 +204,5 @@ public class PageDefCatalog implements ApplicationContextAware, SourceCodeCatalo
 	public void setPageDefId(String pageDefId) {
 		this.pageDefId = pageDefId;
 	}
-	
+
 }

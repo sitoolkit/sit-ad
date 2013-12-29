@@ -16,6 +16,7 @@
 package org.sitoolkit.core.infra.repository;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,8 +26,8 @@ import java.util.Map;
  */
 public class TableDataCatalog {
 
-	private Map<String, TableData> data = new HashMap<String, TableData>();
-	
+	private Map<String, TableData> data = new HashMap<>();
+
 	private String name;
 
 	public String getName() {
@@ -36,7 +37,7 @@ public class TableDataCatalog {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public void add(TableData table) {
 		data().put(table.getName(), table);
 	}
@@ -49,7 +50,7 @@ public class TableDataCatalog {
 		}
 		return tableData;
 	}
-	
+
 	private Map<String, TableData> data() {
 		return data;
 	}
@@ -87,6 +88,6 @@ public class TableDataCatalog {
 		hash = 37 * hash + (this.name != null ? this.name.hashCode() : 0);
 		return hash;
 	}
-	
-	
+
+
 }

@@ -16,12 +16,15 @@
 package org.sitoolkit.core.app;
 
 import java.util.Collection;
+import javax.annotation.Resource;
 import org.sitoolkit.core.infra.srccd.SourceCode;
 import org.sitoolkit.core.infra.srccd.SourceCodeCatalog;
 import org.sitoolkit.core.infra.util.SitFileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.sitoolkit.core.infra.repository.ContinuousGeneratable;
+import org.sitoolkit.core.infra.repository.InputSourceWatcher;
 import org.sitoolkit.core.infra.util.TextFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +35,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * @author yuichi.kuwahara
  */
-public class SourceCodeGenerator {
+public class SourceCodeGenerator implements ContinuousGeneratable {
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -51,13 +54,31 @@ public class SourceCodeGenerator {
 	 */
 	private String[] includes = new String[0];
 
+	@Resource
+	protected InputSourceWatcher watcher;
+
+	public SourceCodeGenerator() {
+		super();
+	}
+
 	public static ApplicationContext appCtx() {
 		return appCtx;
 	}
 
-	protected void generate(String... args) {
+	public void generate(String... args) {
 		Collection<? extends SourceCode> sources = getCatalog().getAll();
 		log.info("{}本の{}ソースコードを生成します。", sources.size(), getName());
+		generate(sources);
+		watcher.start(this);
+	}
+
+	public void regenerate(String inputSource) {
+		Collection<? extends SourceCode> sources = getCatalog().reload(inputSource);
+		log.info("{}本の{}ソースコードを再生成します。", sources.size(), getName());
+		generate(sources);
+	}
+
+	protected void generate(Collection<? extends SourceCode> sources) {
 		for (SourceCode source : sources) {
 
 			if (includes.length > 0 &&
@@ -73,11 +94,6 @@ public class SourceCodeGenerator {
 			}
 		}
 	}
-
-	public SourceCodeGenerator() {
-		super();
-	}
-
 	/**
 	 *
 	 * @param args

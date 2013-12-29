@@ -21,12 +21,21 @@ import org.sitoolkit.core.infra.repository.TableDataCatalog;
 import org.sitoolkit.core.infra.util.SitFileUtils;
 import org.junit.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import org.sitoolkit.core.infra.repository.FileInputSourceWatcher;
 
 /**
  *
  * @author yuichi.kuwahara
  */
 public class ExcelRepositoryTest {
+
+	ExcelRepository repo = new ExcelRepository();
+
+	@Before
+	public void setUp() {
+		repo.watcher = mock(FileInputSourceWatcher.class);
+	}
 
 	/**
      * <dl>
@@ -36,7 +45,6 @@ public class ExcelRepositoryTest {
 	 */
 	@Test
 	public void testReadXlsx() {
-		ExcelRepository repo = new ExcelRepository();
 		TableDataCatalog result = repo.readAll(
 				SitFileUtils.res2filepath(ExcelRepositoryTest.class, "ExcelRepositoryReadTestData.xlsx"));
 
@@ -54,7 +62,6 @@ public class ExcelRepositoryTest {
 	 */
 	@Test
 	public void testReadXls() {
-		ExcelRepository repo = new ExcelRepository();
 		TableDataCatalog result = repo.readAll(
 				SitFileUtils.res2filepath(ExcelRepositoryTest.class, "ExcelRepositoryReadTestData.xls"));
 
@@ -72,7 +79,6 @@ public class ExcelRepositoryTest {
 	 */
 	@Test
 	public void testGetCornerCellPattern() {
-		ExcelRepository repo = new ExcelRepository();
 		assertTrue("項番".matches(repo.getCornerCellPattern()));
 		assertTrue("No.".matches(repo.getCornerCellPattern()));
 		assertTrue("#".matches(repo.getCornerCellPattern()));
@@ -87,7 +93,6 @@ public class ExcelRepositoryTest {
 	 */
 	@Test
 	public void testWriteXlsx() {
-		ExcelRepository repo = new ExcelRepository();
 		TableDataCatalog expectedCatalog = repo.readAll(
 				SitFileUtils.res2filepath(ExcelRepositoryTest.class, "ExcelRepositoryReadTestData.xlsx"));
 

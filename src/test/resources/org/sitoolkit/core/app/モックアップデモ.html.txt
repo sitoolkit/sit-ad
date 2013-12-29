@@ -11,11 +11,8 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="../js/menu.js"></script>
 <script src="../js/mockup.js"></script>
-<script>
-$(function() {
-	$.getScript("../js/モックアップデモ.js");
-});
-</script>
+<script src="../js/reload.js"></script>
+<script src="../js/モックアップデモ.js"></script>
 <title>モックアップデモ</title>
 </head>
 <body>
@@ -73,28 +70,28 @@ $(function() {
 				<tbody>
 					<tr>
 													<th>
-							<label for="userLastName"  class="required" >性</label>
+							<label for="userLastName"  class="required" >姓</label>
 						</th>
 						<td>
 							
-			<input id="userLastName" name="userLastName" type="text" maxlength="36" size="40" class="documented"/>	
+			<input id="userLastName" name="userLastName" type="text" maxlength="36" size="40" class="documented"/>
 
 	
 								<div class="guidance"></div>
 									</td>
-		
+
 													</tr><tr>
 													<th>
 							<label for="userFirstName"  class="required" >名</label>
 						</th>
 						<td>
 							
-			<input id="userFirstName" name="userFirstName" type="text" maxlength="36" size="40" class="documented"/>	
+			<input id="userFirstName" name="userFirstName" type="text" maxlength="36" size="40" class="documented"/>
 
 	
 								<div class="guidance"></div>
 									</td>
-		
+
 													</tr><tr>
 													<th>
 							<label for="gender" >性別</label>
@@ -102,68 +99,68 @@ $(function() {
 						<td>
 							
 					<input id="gender1" name="gender" type="radio"  class="documented"/>
-		<label for="gender1">男性</label>	
+		<label for="gender1">男性</label>
 				<input id="gender2" name="gender" type="radio"  class="documented"/>
-		<label for="gender2">女性</label>	
+		<label for="gender2">女性</label>
 		
 	
 								<div class="guidance"></div>
 									</td>
-		
+
 													</tr><tr>
 													<th>
 							<label for="account"  class="required" >希望するユーザー名</label>
 						</th>
 						<td>
 							
-			<input id="account" name="account" type="text" maxlength="255" size="40" class="documented"/>	
+			<input id="account" name="account" type="text" maxlength="255" size="40" class="documented"/>
 
 	
 			
-			<input id="accountConfirm" name="accountConfirm" type="button" value="使用できるか確認" class="documented"/>	
+			<input id="accountConfirm" name="accountConfirm" type="button" value="使用できるか確認" class="documented"/>
 
 	
 									<div class="guidance">例: Ichiro. Tanaka, I. Tanaka</div>
 									</td>
-		
+
 													</tr><tr>
 													<th>
 							<label for="password" >パスワードを作成</label>
 						</th>
 						<td>
 							
-			<input id="password" name="password" type="text" maxlength="8" size="12" class="documented"/>	
+			<input id="password" name="password" type="text" maxlength="8" size="12" class="documented"/>
 
 	
 			
-			<a id="passwordCheck" href="" class="documented">パスワードの安全度</a>	
-	
+			<a id="passwordCheck" href="" class="documented">パスワードの安全度</a>
+
 	
 									<div class="guidance">8文字以上にしてください。</div>
 									</td>
-		
+
 													</tr><tr>
 													<th>
 							<label for="passwordConfirm"  class="required" >パスワードを再入力</label>
 						</th>
 						<td>
 							
-			<input id="passwordConfirm" name="passwordConfirm" type="text" maxlength="8" size="12" class="documented"/>	
+			<input id="passwordConfirm" name="passwordConfirm" type="text" maxlength="8" size="12" class="documented"/>
 
 	
 								<div class="guidance"></div>
 										
 			<input id="loginState" name="loginState" type="checkbox"  class="documented"/>
-		<label for="loginState">ログイン状態を保持</label>	
+		<label for="loginState">ログイン状態を保持</label>
 
 	
 											
 			<input id="webHistory" name="webHistory" type="checkbox"  class="documented"/>
-		<label for="webHistory">ウェブ履歴を有効にする</label>	
+		<label for="webHistory">ウェブ履歴を有効にする</label>
 
 	
 										</td>
-		
+
 													</tr><tr>
 													<th>
 							<label for="secretQuestion" >セキュリティ保護用の質問</label>
@@ -175,11 +172,11 @@ $(function() {
 					<option value="1">子供のころの親友の名前は？</option>
 					<option value="2">最初の仕事での上司の名前は？</option>
 				</select>
-	
+
 	
 								<div class="guidance">セキュリティ保護用の質問とその答えはパスワードを忘れたときに必要になります。</div>
 									</td>
-		
+
 													</tr><tr>
 													<th>
 							<label for="interest" >興味のあるジャンル</label>
@@ -188,39 +185,39 @@ $(function() {
 							
 					<span>
 			<input id="interest1" name="interest" type="checkbox"  class="documented"/>
-			<label for="interest1">エンターテイメント</label>	
+			<label for="interest1">エンターテイメント</label>
 		</span>
 				<span>
 			<input id="interest2" name="interest" type="checkbox"  class="documented"/>
-			<label for="interest2">旅行・レジャー</label>	
+			<label for="interest2">旅行・レジャー</label>
 		</span>
 				<span>
 			<input id="interest3" name="interest" type="checkbox"  class="documented"/>
-			<label for="interest3">スポーツ・アウトドア</label>	
+			<label for="interest3">スポーツ・アウトドア</label>
 		</span>
 				<span>
 			<input id="interest4" name="interest" type="checkbox"  class="documented"/>
-			<label for="interest4">ファッション・ビューティー</label>	
+			<label for="interest4">ファッション・ビューティー</label>
 		</span>
 				<span>
 			<input id="interest5" name="interest" type="checkbox"  class="documented"/>
-			<label for="interest5">IT・パソコン・デジタル家電</label>	
+			<label for="interest5">IT・パソコン・デジタル家電</label>
 		</span>
 				<span>
 			<input id="interest6" name="interest" type="checkbox"  class="documented"/>
-			<label for="interest6">ビジネスキャリア</label>	
+			<label for="interest6">ビジネスキャリア</label>
 		</span>
-				
+		
 	
 								<div class="guidance"></div>
 									</td>
-		
+
 										</tr>
 				</tbody>
 			</table>
 			<div class="form-footer">
 					
-			<input id="create" name="create" type="button" value="同意して、アカウントを作成します" class="documented"/>	
+			<input id="create" name="create" type="button" value="同意して、アカウントを作成します" class="documented"/>
 
 	
 						</div>
@@ -242,7 +239,7 @@ $(function() {
 				<tr>
 							<td>
 			<input id="groupAction" name="groupAction" type="checkbox"  class="documented"/>
-		<label for="groupAction"></label>	
+		<label for="groupAction"></label>
 
 	
 	</td>
@@ -265,49 +262,49 @@ $(function() {
 			</tbody>
 		</table>
 
-	
+
 		</div>
 			<div id="おすすめ商品" class="area box-area">
 		<h1>おすすめ商品</h1>
 		<p></p>
 			<div class="box おすすめ商品">
 					<div class="box-item productImage">	<label for="productImage">[商品イメージ_小]</label>
-	
+
 	
 			<img id="productImage" src="../img/sample-image_s.png" class="documented" alt="[商品イメージ_小]" title="[商品イメージ_小]"/>
 
 	
-	</div> 
+	</div>
 					<div class="box-item productName">	<label for="productName">[商品名]</label>
+
 	
+			<a id="productName" href="" class="documented">[商品名]</a>
+
 	
-			<a id="productName" href="" class="documented">[商品名]</a>	
-	
-	
-	</div> 
+	</div>
 					<div class="box-item productPrice">	<label for="productPrice">[商品価格]</label>
-	
+
 	
 			<span id="productPrice" class="documented">[商品価格]</span>
 
 	
-	</div> 
+	</div>
 				</div>
-		
+
 		</div>
 			<div id="productDetail" class="area box-area">
 		<h1>商品詳細</h1>
 		<p></p>
 			<div class="box productDetail">
 					<div class="box-item productImage_d">	<label for="productImage_d">[商品イメージ_大]</label>
-	
+
 	
 			<img id="productImage_d" src="../img/sample-image_l.png" class="documented" alt="[商品イメージ_大]" title="[商品イメージ_大]"/>
 
 	
-	</div> 
+	</div>
 				</div>
-		
+
 		</div>
 	</div>
 	<hr class="full"/>

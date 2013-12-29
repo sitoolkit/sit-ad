@@ -36,6 +36,10 @@
 			</props>
 		</property>
 	</bean>
+
+	<bean id="watcher" class="org.sitoolkit.core.infra.repository.FileInputSourceWatcher" scope="singleton">
+	</bean>
+
 	<bean id="repo" class="org.sitoolkit.core.infra.repository.excel.ExcelRepository" scope="singleton">
 		<property name="excludingSheetNames">
 			<set>

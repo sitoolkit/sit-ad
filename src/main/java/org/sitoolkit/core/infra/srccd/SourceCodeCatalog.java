@@ -22,6 +22,8 @@ import java.util.Collection;
  * @author yuichi.kuwahara
  */
 public interface SourceCodeCatalog<E extends SourceCode> {
-	
-	public Collection<E> getAll();
+
+	Collection<E> getAll();
+
+	Collection<E> reload(String inputSource);
 }

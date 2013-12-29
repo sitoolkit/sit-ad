@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.sitoolkit.core.infra.repository;
 
 /**
- *
+ * 繰り返し生成を行うクラスが実装するインターフェースです。
  * @author yuichi.kuwahara
  */
-public interface DocumentRepository {
+public interface ContinuousGeneratable {
 
-	TableData read(String catalogName, String sheetName);
-
-	TableDataCatalog readAll(String catalogName);
-
-	void write(String templateFilePath, String targetFilePath, TableDataCatalog catalog);
-
+	/**
+	 * 繰り返し生成のイベントが検知されたら呼び出されるメソッドです。
+	 * 実装クラスは生成処理を実装します。
+	 * @param inputSource イベントの元となった入力ソース
+	 */
+	void regenerate(String inputSource);
 }

@@ -16,6 +16,7 @@
 package org.sitoolkit.core.domain.data;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -61,5 +62,11 @@ public class DBDefCatalog implements SourceCodeCatalog<TableDef> {
 	@Override
 	public Collection<TableDef> getAll() {
 		return tables.values();
+	}
+
+	@Override
+	public Collection<TableDef> reload(String inputSource) {
+		// TODO 実装
+		return Collections.emptyList();
 	}
 }

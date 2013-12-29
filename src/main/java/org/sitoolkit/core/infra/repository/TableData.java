@@ -16,9 +16,9 @@
 package org.sitoolkit.core.infra.repository;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -28,10 +28,12 @@ import org.apache.commons.lang3.StringUtils;
 public class TableData {
 
 	private String name;
-	
-	private List<RowData> rows = new ArrayList<RowData>();
 
-	public Iterable<RowData> getRows() {
+	private String inputSource;
+
+	private List<RowData> rows = new ArrayList<>();
+
+	public Collection<RowData> getRows() {
 		return rows;
 	}
 
@@ -42,11 +44,11 @@ public class TableData {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	private List<RowData> rows() {
 		return rows;
 	}
-	
+
 	public void add(RowData rowData) {
 		rows().add(rowData);
 	}
@@ -81,8 +83,16 @@ public class TableData {
 		hash = 97 * hash + (this.rows != null ? this.rows.hashCode() : 0);
 		return hash;
 	}
-	
+
 	public int getRowCount() {
 		return rows().size();
+	}
+
+	public String getInputSource() {
+		return inputSource;
+	}
+
+	public void setInputSource(String inputSource) {
+		this.inputSource = inputSource;
 	}
 }

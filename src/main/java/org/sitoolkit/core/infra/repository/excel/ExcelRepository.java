@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import javax.annotation.Resource;
 import org.sitoolkit.core.infra.repository.DocumentRepository;
 import org.sitoolkit.core.infra.repository.RowData;
 import org.sitoolkit.core.infra.repository.TableData;
@@ -39,11 +40,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.sitoolkit.core.infra.repository.FileInputSourceWatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Excelファイルを読み書きするためのリポジトリ実装です。
  * @author yuichi.kuwahara
  */
 public class ExcelRepository implements DocumentRepository {
@@ -58,7 +60,10 @@ public class ExcelRepository implements DocumentRepository {
 	/**
 	 * 読み取り対象から除外するシート名
 	 */
-	private Set<String> excludingSheetNames = new HashSet<String>();
+	private Set<String> excludingSheetNames = new HashSet<>();
+
+	@Resource
+	protected FileInputSourceWatcher watcher;
 
 	@Override
 	public TableDataCatalog readAll(String filePath) {
@@ -72,17 +77,22 @@ public class ExcelRepository implements DocumentRepository {
 
 	}
 
-	@Override
-	public TableDataCatalog read(String file, String[] sheetNames) {
-		if(ArrayUtils.isEmpty(sheetNames)) {
-			return readWorkbookByExceptedSheetNames(load(file));
-		} else {
-			return readWorkbookBySheetNames(load(file), sheetNames);
+	public TableDataCatalog read(String filePath, String[] sheetNames) {
+		File file = new File(filePath);
+		Workbook workbook = load(file);
+		TableDataCatalog catalog = ArrayUtils.isEmpty(sheetNames)
+				? readWorkbookByExceptedSheetNames(workbook)
+				: readWorkbookBySheetNames(workbook, sheetNames);
+
+		for (TableData table : catalog.tables()) {
+			table.setInputSource(file.getAbsolutePath());
 		}
+		watcher.watch(filePath);
+
+		return catalog;
 	}
 
-	private Workbook load(String path) {
-		File file = new File(path);
+	private Workbook load(File file) {
 		LOG.info("Excelファイルを読み込みます。{}", file.getAbsolutePath());
 		FileInputStream fis = null;
 		try {
@@ -115,7 +125,7 @@ public class ExcelRepository implements DocumentRepository {
 		FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(targetFile);
-			writeWorkbook(load(templateFile), catalog).write(fos);
+			writeWorkbook(load(new File(templateFile)), catalog).write(fos);
 			LOG.debug("Excelファイルに書き込みました。");
 		} catch (IOException e) {
 			throw new SitException(e);
