@@ -17,13 +17,11 @@ package org.sitoolkit.core.infra.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +34,11 @@ import org.slf4j.LoggerFactory;
 public class SitFileUtils {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SitFileUtils.class);
-	
+
 	/**
-	 * 
+	 *
 	 * @param filePath
 	 * @return
-	 * @throws IOException
 	 */
 	public static String read(String filePath) {
 		try {
@@ -54,7 +51,7 @@ public class SitFileUtils {
 	/**
 	 * テキストファイルを読み込み、各行を要素とするString配列として取得します。
 	 * ファイルが見つからないなど、読み込み時に例外が発生した場合は長さ0の配列が返却されます。
-	 * 
+	 *
 	 * @param folderPath テキストファイルが配置されたフォルダのパス
 	 * @param fileName テキストファイルのファイル名
 	 * @return 各行を要素とする配列
@@ -65,7 +62,7 @@ public class SitFileUtils {
 		if(!file.exists()) {
 			return new String[0];
 		}
-		
+
 		LOG.info("テキストファイルを読み込みます。{}", file.getAbsolutePath());
 
 		try {
@@ -76,16 +73,16 @@ public class SitFileUtils {
 			return new String[0];
 		}
 	}
-	
+
 	public static String res2filepath(Class<?> type, String resource) {
 		return res2file(type, resource).getAbsolutePath();
 	}
-	
+
 	/**
 	 * リソースをファイルオブジェクトとして取得します。
 	 * @param resource リソース名
 	 * @return リソースのファイルオブジェクト
-	 * @see #res2file(java.lang.Class, java.lang.String) 
+	 * @see #res2file(java.lang.Class, java.lang.String)
 	 */
 	public static File res2file(String resource) {
 		return res2file(SitFileUtils.class, resource);
@@ -113,7 +110,7 @@ public class SitFileUtils {
 		}
 		File currentDir = new File(".").getAbsoluteFile().getParentFile();
 		realFile = new File(currentDir, SitStringUtils.url2filepath(url));
-		
+
 		try {
 			FileUtils.copyURLToFile(url, realFile);
 		} catch (IOException e) {
@@ -143,8 +140,8 @@ public class SitFileUtils {
 	 * リソースの内容を1行ずつ格納したリストとして返します。
 	 * @param type リソースを取得する基準となるクラス
 	 * @param resName リソース名
-	 * @return 
-	 * @see FileUtils#readLines(java.io.File, java.lang.String) 
+	 * @return
+	 * @see FileUtils#readLines(java.io.File, java.lang.String)
 	 */
 	public static List<String> res2lines(Class<?> type, String resName) {
 		try {
@@ -155,7 +152,7 @@ public class SitFileUtils {
 	}
 	/**
 	 * リソースをUTF-8の文字列として読み込んだものを返します。
-	 * @param obj リソースはこのオブジェクトのクラスのリソースとして探します。
+	 * @param type リソースはこのオブジェクトのクラスのリソースとして探します。
 	 * @param resName リソースの位置を表す文字列
 	 * @return リソースを読み込んだ文字列
 	 */
@@ -166,30 +163,31 @@ public class SitFileUtils {
 			throw new SitException(e);
 		}
 	}
-	
+
 	public static Properties resource2prop(Class<?> type, String resource) {
 		Properties prop = new Properties();
 		URL url = type.getResource(resource);
-		
+
 		if (url == null) {
-			throw new SitException("");
+			throw new SitException("型:" + type.getClass() + "に対するリソース:" + resource
+					+ "が見つかりません。");
 		}
 		try {
 			prop.load(url.openStream());
 		} catch (IOException e) {
 			throw new SitException(e);
 		}
-		
+
 		return prop;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param filePath
 	 * @param data
 	 */
 	public static void write(final String filePath, final Object data) {
-		
+
 		File file = new File(filePath);
 		File dir = file.getParentFile();
 		if (!dir.exists()) {
@@ -199,20 +197,20 @@ public class SitFileUtils {
 				throw new SitException("ディレクトリの作成に失敗しました。" + dir.getAbsolutePath());
 			}
 		}
-		
+
 		try {
 			FileUtils.writeStringToFile(file, data.toString(), getEncoding());
-			
+
 			LOG.info("ファイルに書き込みました。{}", file.getAbsolutePath());
 		} catch (IOException e) {
 			throw new SitException(e);
-		} 	
+		}
 	}
-	
+
 	public static void write(TextFile file) {
 		write(file.getAbsolutePath(), file.getText());
 	}
-	
+
 	private static String getEncoding() {
 		return "UTF-8";
 	}
