@@ -75,7 +75,7 @@ public class PropertyManager {
 	 * @return パス文字列
 	 */
 	public String getPath(String key, Object...dirs) {
-		String basePath = getProperty(key);
+		String basePath = getSysProp(key);
 		return basePath + "/" + StringUtils.join(dirs, "/");
 	}
 
@@ -84,7 +84,7 @@ public class PropertyManager {
 	 * @return
 	 */
 	public String getDbDef() {
-		return getProperty("docdir.dbdef") + "/" + getProperty("dbdef.file");
+		return getSysProp("docdir.dbdef") + "/" + getSysProp("dbdef.file");
 	}
 
 	/**
@@ -125,15 +125,15 @@ public class PropertyManager {
      * @return 書式定義書のパス
      */
 	public String getFormatDefPath() {
-		return getProperty("docdir.pagespec") + "/" + getProperty("ioformat.file");
+		return getSysProp("docdir.pagespec") + "/" + getSysProp("ioformat.file");
 	}
 
 	public String getPageCatalog() {
-		return getPageSpecDir() + "/" + getProperty("pagelist.file");
+		return getPageSpecDir() + "/" + getSysProp("pagelist.file");
 	}
 
 	public String getPageSpecTemplate() {
-		return getPageSpecDir() + "/" + getProperty("pagespec.template");
+		return getPageSpecDir() + "/" + getSysProp("pagespec.template");
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class PropertyManager {
 	 * @return
 	 */
 	public String getLibSrcDir() {
-		return getProperty(LIBSRC, System.getProperty(LIBSRC, "out"));
+		return getSysProp(LIBSRC, "out");
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class PropertyManager {
 	 * @return
 	 */
 	public String getWebSrcDir() {
-		return getProperty(WEBSRC, System.getProperty(WEBSRC, "out"));
+		return getSysProp(WEBSRC, "out");
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class PropertyManager {
 	 * @return Webコンポーネントファイルの出力ディレクトリ
 	 */
 	public String getWebCmpDir() {
-		return getProperty(WEBCMP, System.getProperty(WEBCMP, "out"));
+		return getSysProp(WEBCMP, "out");
 	}
 
 	/**
@@ -181,11 +181,11 @@ public class PropertyManager {
 	 * @return キーと値の区切り文字
 	 */
 	public String getKeyValueSplit() {
-		return getProperty("keyValueSplit", "：");
+		return getSysProp("keyValueSplit", "：");
 	}
 
 	public String getWebPageDir() {
-		return getProperty(WEBPAGE, System.getProperty(WEBPAGE, "out"));
+		return getSysProp(WEBPAGE, "out");
 	}
 
 	/**
@@ -193,11 +193,11 @@ public class PropertyManager {
 	 * @return
 	 */
 	public String getCodeSpec() {
-		return getPath("docdir.dbdef", getProperty("codespec.file"));
+		return getPath("docdir.dbdef", getSysProp("codespec.file"));
 	}
 
 	public String getMockupOutputDir() {
-		return getProperty("outdir.mockup");
+		return getSysProp("outdir.mockup");
 	}
 
 	/**
@@ -205,12 +205,27 @@ public class PropertyManager {
 	 * プロパティの取得先の優先度は以下の通りです。
 	 * <ol>
 	 * <li>システムプロパティ
-	 * <li>SIToolkitプロパティファイル(sitoolkit.xml)
+	 * <li>SIToolkitプロパティファイル
+	 * </ol>
+	 * プロパティが何れにも設定されていない場合は空文字を返却します。
+	 * @param key プロパティ名
+	 * @return プロパティ
+	 */
+	public String getSysProp(String key) {
+		return  getSysProp(key, "");
+	}
+
+	/**
+	 * プロパティを取得します。
+	 * プロパティの取得先の優先度は以下の通りです。
+	 * <ol>
+	 * <li>システムプロパティ
+	 * <li>SIToolkitプロパティファイル
 	 * <li>初期値
 	 * </ol>
 	 * @param key プロパティ名
 	 * @param def プロパティ名に対応するプロパティが無い場合に返される初期値
-	 * @return
+	 * @return プロパティ
 	 */
 	public String getSysProp(String key, String def) {
 		return  System.getProperty(key, getProperty(key, def));
