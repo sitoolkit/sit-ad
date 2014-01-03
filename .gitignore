@@ -2,6 +2,7 @@
 /out/
 /target
 /.settings
+/.cg
 /.checkstyle
 /.classpath
 /.project
@@ -12,3 +13,7 @@
 /conf/
 /doc/
 /logs/
+/src/main/resources/template/doc/sit_simple/画面定義書_グループ登録.xlsx
+/src/main/resources/template/doc/sit_simple/画面定義書_グループ一覧.xlsx
+/src/main/resources/template/doc/sit_simple/画面定義書_ユーザー一覧.xlsx
+/src/main/resources/template/doc/sit_simple/画面定義書_ユーザー登録.xlsx
