@@ -15,10 +15,7 @@
  */
 package org.sitoolkit.core.domain.data;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -59,7 +56,7 @@ public class ColumnDef extends DocumentElement {
 	/**
 	 * 長さ
 	 */
-	private int length;
+	private String length;
 	/**
 	 * バイト数
 	 */
@@ -80,10 +77,6 @@ public class ColumnDef extends DocumentElement {
 	 * NOT NULL
 	 */
 	private boolean notnull;
-	/**
-	 * 長さの指定が必要なデータ型のセット
-	 */
-	private Set<String> dataTypeSetWithLength;
 
 	public boolean isNotNull() {
 		return this.notnull;
@@ -91,8 +84,12 @@ public class ColumnDef extends DocumentElement {
 	public int getPk() {
 		return this.pk;
 	}
-	public int getLength() {
+	public String getLength() {
 		return this.length;
+	}
+
+	public void setLength(String length) {
+		this.length = length;
 	}
 
 	public boolean isPrimaryKey() {
@@ -163,29 +160,6 @@ public class ColumnDef extends DocumentElement {
 		this.notnull = notnull;
 	}
 
-	public void setLength(int length) {
-		this.length = length;
-	}
-
-	@Override
-	public String toString() {
-		return String.format(
-				"\t%s %s %s %s, %n",
-				getPname(),
-				getType(),
-				getDeclareLength(),
-				!isPrimaryKey() && isNotNull() ? "NOT NULL" : ""
-				);
-	}
-
-	public String getDeclareLength() {
-		if(getDataTypeSetWithLength().contains(getType())) {
-			return "(" + getByteLength() + ")";
-		} else {
-			return "";
-		}
-	}
-
 	public String getDelareNotNull() {
 		return !isPrimaryKey() && isNotNull() ? "NOT NULL" : "";
 	}
@@ -203,14 +177,6 @@ public class ColumnDef extends DocumentElement {
 
 	public void setByteLength(int byteLength) {
 		this.byteLength = byteLength;
-	}
-
-	public Set<String> getDataTypeSetWithLength() {
-		return dataTypeSetWithLength;
-	}
-
-	public void setDataTypeSetWithLength(Set<String> dataTypeSetWithLength) {
-		this.dataTypeSetWithLength = dataTypeSetWithLength;
 	}
 
 	public Map<String, String> getForeignKey() {

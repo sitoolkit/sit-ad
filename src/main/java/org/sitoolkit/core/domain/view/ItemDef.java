@@ -32,11 +32,12 @@ import org.sitoolkit.core.infra.doc.KeyValuePair;
 import org.sitoolkit.core.infra.doc.KeyValuePairMap;
 import org.sitoolkit.core.infra.util.SitStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * このクラスは、1つの画面項目の定義を表すエンティティです。
  * インスタンスは画面項目定義の1行に相当し、
- * 
+ *
  * @author Yuichi Kuwahara
  *
  */
@@ -127,7 +128,7 @@ public class ItemDef extends DocumentElement {
 	public NestedNamePair getAreaStr() {
 		return areaStr;
 	}
-	
+
 	/**
 	 * 領域欄の文字列を設定します。
 	 * @param areaStr 領域欄の文字列
@@ -233,7 +234,7 @@ public class ItemDef extends DocumentElement {
 
 	/**
 	 * 項目IDを取得する。項目IDは以下の優先順位で決まる。
-	 * 
+	 *
 	 * <ol>
 	 * <li>項目物理名<br/>
 	 *		項目物理名が設定されている場合は、
@@ -247,7 +248,7 @@ public class ItemDef extends DocumentElement {
 	 *		項目名を項目IDとする。
 	 * </li>
 	 * </ol>
-	 * 
+	 *
 	 * @return 項目ID
 	 */
 	public String getId() {
@@ -301,23 +302,23 @@ public class ItemDef extends DocumentElement {
 
 	/**
 	 * 当該項目の選択肢に指定されるコード名を取得する。
-	 * 
+	 *
 	 * @return コード名
 	 */
 	public String getCodeName() {
 		String str = getChoice();
-		
+
 		if(StringUtils.isEmpty(str)) {
 			return "";
 		}
-		
+
 		if(str.startsWith(CODE_SPEC_PREFIX)) {
 			return str.replace(CODE_SPEC_PREFIX, "");
 		} else {
 			return "";
 		}
 	}
-	
+
 	public void setOptionAsCodeSpec(String str) {
 		if(!StringUtils.isEmpty(str)) {
 			setChoice(CODE_SPEC_PREFIX + str);
@@ -344,7 +345,7 @@ public class ItemDef extends DocumentElement {
 				getRightSubItems().add(item);
 				break;
 			default:
-				
+
 		}
 	}
 
@@ -413,11 +414,11 @@ public class ItemDef extends DocumentElement {
 	public void setArea(String name, String part) {
 		setAreaStr(new NestedNamePair(name, part));
 	}
-	
+
 	public String getDesignInfo(String key) {
 		return getDesignInfoMap().getValue(key);
 	}
-	
+
 	public String getDesignInfo(DesignInfoType type) {
 		return getDesignInfoMap().getValue(type.name());
 	}
@@ -473,6 +474,14 @@ public class ItemDef extends DocumentElement {
 		this.inputLength = inputLength;
 	}
 
+		/**
+	 * 入力桁数を設定します。
+	 * @param inputLength 入力桁数
+	 */
+	public void setInputLengthStr(String inputLength) {
+		this.inputLength = NumberUtils.toInt(inputLength, 10);
+	}
+
 
 	/**
 	 * ラベルを取得します。
@@ -510,7 +519,7 @@ public class ItemDef extends DocumentElement {
 	public String getControlStr() {
 		return getControl().toString();
 	}
-	
+
 	/**
 	 * ガイダンスを取得します。
 	 * @return ガイダンス
@@ -599,7 +608,7 @@ public class ItemDef extends DocumentElement {
 	public void setCssClass(String cssClass) {
 		this.cssClass = cssClass;
 	}
-	
+
 	public boolean isCodedField() {
 		return StringUtils.isNotEmpty(getCodeName());
 	}

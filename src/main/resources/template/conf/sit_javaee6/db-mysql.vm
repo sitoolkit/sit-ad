@@ -1,17 +1,24 @@
 CREATE TABLE $table.pname (
-
 #foreach ($column in $table.columns)
-	$column.pname $column.type $column.declareLength $column.delareNotNull,
+	$column.pname $column.type #declareLength($column) $column.delareNotNull,
 #end
 	deleted BOOLEAN NOT NULL DEFAULT FALSE,
 	version INTEGER NOT NULL DEFAULT 0,
 	created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	created_by VARCHAR(64) NOT NULL DEFAULT 'system',
+	created_by CHAR(8) NOT NULL DEFAULT 'system',
 	updated TIMESTAMP NOT NULL ,
-	updated_by VARCHAR(64) DEFAULT 'system',
-#foreach ($mapEntry in $table.fkMap.entrySet())
-	FOREIGN KEY ($mapEntry.value.srcCols) REFERENCES $mapEntry.key ($mapEntry.value.dstCols) ,
+	updated_by CHAR(8) DEFAULT 'system',
+#foreach ($fk in $table.fkMap.entrySet())
+	FOREIGN KEY ($fk.value.srcCols) REFERENCES $fk.value.dstTable ($fk.value.dstCols) ,
 #end
 	PRIMARY KEY (#foreach ($column in $table.pks) #if ($velocityCount > 1), #end $column.pname #end)
 );
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro (declareLength $column)
+#set ($type = $column.type.toUpperCase())
+#if ($type == "VARCHAR" || $type == "CHAR" || $type == "DECIMAL" || $type == "BLOB" || $type == "TEXT")($column.length)#end
+#end
 

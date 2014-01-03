@@ -1,9 +1,8 @@
 CREATE TABLE m_user (
-
 	user_id varchar (8) ,
 	password varchar (127) NOT NULL,
-	last_name varchar (128) ,
-	first_name varchar (128) ,
+	last_name varchar (32) ,
+	first_name varchar (32) ,
 	gender char (1) ,
 	deleted BOOLEAN NOT NULL DEFAULT FALSE,
 	version INTEGER NOT NULL DEFAULT 0,

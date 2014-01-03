@@ -1,5 +1,4 @@
 CREATE TABLE m_user_group (
-
 	user_id varchar (8) ,
 	group_id char (8) ,
 	deleted BOOLEAN NOT NULL DEFAULT FALSE,

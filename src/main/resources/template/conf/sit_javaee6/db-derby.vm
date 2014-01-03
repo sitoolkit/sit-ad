@@ -1,7 +1,6 @@
 CREATE TABLE $table.pname (
-
 #foreach ($column in $table.columns)
-	$column.pname $column.type $column.declareLength $column.delareNotNull,
+	$column.pname $column.type #declareLength($column) $column.delareNotNull,
 #end
 	deleted BOOLEAN NOT NULL DEFAULT FALSE,
 	version INTEGER NOT NULL DEFAULT 0,
@@ -14,4 +13,11 @@ CREATE TABLE $table.pname (
 #end
 	PRIMARY KEY (#foreach ($column in $table.pks) #if ($velocityCount > 1), #end $column.pname #end)
 );
-
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro (declareLength $column)
+#set ($type = $column.type.toUpperCase())
+#if ($type == "VARCHAR" || $type == "CHAR" || $type == "DECIMAL" || $type == "BLOB" || $type == "CLOB")($column.length)#end
+#end

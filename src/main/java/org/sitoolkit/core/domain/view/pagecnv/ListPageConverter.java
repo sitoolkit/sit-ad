@@ -40,27 +40,27 @@ public class ListPageConverter extends PageDefConverter {
 		CommonAction.検索,
 		CommonAction.クリア
 	};
-	
+
 	/**
 	 * 検索条件領域名
 	 */
 	private String searchAreaName = "検索条件";
-	
+
 	/**
 	 * アクション項目を配置する領域名
 	 */
 	private String actionItemAreaName = "フッター";
-	
+
 	/**
 	 * 入力ページの物理名サフィックス
 	 */
 	private String inputPagePnameSuffix = "Input";
-	
+
 	@Override
 	protected void convertAfter(PageDef page) {
 		// NOP
 	}
-	
+
 	@Override
 	protected void convertItem(int no, ColumnDef column, ItemDef item) {
 		item.setControl(ItemControl.テキスト);
@@ -69,7 +69,7 @@ public class ListPageConverter extends PageDefConverter {
 			if (!format.isNoEdit()) {
 				item.setIoformat(format.getName());
 				item.addDesignInfo(DesignInfoType.CSSClass, format.getCssClass());
-			} 
+			}
 		}
 	}
 
@@ -81,7 +81,7 @@ public class ListPageConverter extends PageDefConverter {
 			searchItem.setArea(getSearchAreaName(), "");
 			searchItem.setName(column.getName());
 			searchItem.setLabel(column.getName());
-			searchItem.setInputLength(column.getLength());
+			searchItem.setInputLengthStr(column.getLength());
 			searchItem.setIoformat(column.getFormat());
 			searchItem.setControl(getControl(column));
 			searchItem.setDataBindList(new DataBindList(getSearchItemDataBind(column)));
@@ -92,7 +92,7 @@ public class ListPageConverter extends PageDefConverter {
 
 			page.addItem(searchItem);
 		}
-		
+
 		for (CommonAction action : actions) {
 			ItemDef actionItem = new ItemDef();
 			actionItem.setArea(getSearchAreaName(), getActionItemAreaName());
@@ -100,10 +100,10 @@ public class ListPageConverter extends PageDefConverter {
 			actionItem.setName(action.name());
 			actionItem.setControl(action.getControl());
 			actionItem.addDesignInfo(DesignInfoType.Ajax, "");
-			
+
 			page.addItem(actionItem);
 		}
-		
+
 		ItemDef detailLink = new ItemDef();
 		detailLink.setAreaStr(new NestedNamePair(getAreaName(page)));
 		detailLink.setName("詳細表示");
@@ -144,10 +144,10 @@ public class ListPageConverter extends PageDefConverter {
 			return ItemControl.単一チェックボックス;
 		} else if (StringUtils.isNotEmpty(column.getCodeSpec())) {
 			return ItemControl.複数チェックボックス;
-		} 
+		}
 		return ItemControl.テキストボックス;
 	}
-	
+
 	protected String getSearchItemDataBind(ColumnDef column) {
 		String operator = "sw";
 		if (StringUtils.isNotEmpty(column.getCodeSpec())) {

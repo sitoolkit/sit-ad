@@ -97,14 +97,6 @@
 	</bean>
 
 	<bean id="columnDef" class="org.sitoolkit.core.domain.data.ColumnDef" scope="prototype">
-		<property name="dataTypeSetWithLength">
-			<set>
-				<value>char</value>
-				<value>varchar</value>
-				<value>clob</value>
-				<value>blob</value>
-			</set>
-		</property>
 	</bean>
 
 	<bean id="layerGen" class="org.sitoolkit.core.app.LayerGenerator">

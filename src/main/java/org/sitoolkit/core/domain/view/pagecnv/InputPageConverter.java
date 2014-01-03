@@ -29,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * このクラスは、入力画面用の{@link PageDefConverter}です。
- * 
+ *
  * @author Yuichi Kuwahara
  */
 public class InputPageConverter extends PageDefConverter {
@@ -43,19 +43,19 @@ public class InputPageConverter extends PageDefConverter {
 		CommonAction.削除,
 		CommonAction.一覧へ戻る,
 	};
-	
+
 	/**
 	 * アクション項目を配置する領域名
 	 */
 	private String actionItemAreaName = "フッター";
-	
+
 	/**
 	 * 一覧ページの物理名サフィックス
 	 */
 	private String listPagePnameSuffix = "List";
 	/**
-	 * 
-	 * @param page 
+	 *
+	 * @param page
 	 */
 	@Override
 	protected void convertAfter(PageDef page) {
@@ -75,7 +75,7 @@ public class InputPageConverter extends PageDefConverter {
 	@Override
 	protected void convertItem(int no, ColumnDef column, ItemDef item) {
 		item.setControl(getControl(column));
-		item.setInputLength(column.getLength());
+		item.setInputLengthStr(column.getLength());
 		item.setRequired(column.isNotNull() || column.isPrimaryKey());
 		if (column.isPrimaryKey()) {
 			item.addDesignInfo(DesignInfoType.InactiveOnUpdate, "");
@@ -83,7 +83,7 @@ public class InputPageConverter extends PageDefConverter {
 		if (no == 1) {
 			item.addDesignInfo(DesignInfoType.AreaType, AreaType.フォーム);
 		}
-		
+
 		String formatName = column.getFormat();
 		if (StringUtils.isNotEmpty(formatName)) {
 			FormatDef ioformat = formatDefCatalog.getByName(formatName);
@@ -95,7 +95,7 @@ public class InputPageConverter extends PageDefConverter {
 			}
 		}
 	}
-	
+
 	/**
 	 * 列定義に応じたフォームコントロールを取得する。
 	 * @param column
@@ -140,5 +140,5 @@ public class InputPageConverter extends PageDefConverter {
 	public void setListPagePnameSuffix(String listPagePnameSuffix) {
 		this.listPagePnameSuffix = listPagePnameSuffix;
 	}
-	
+
 }
