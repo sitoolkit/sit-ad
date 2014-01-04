@@ -20,7 +20,7 @@ public class UserInputModel extends AbstractBaseInputModel<UserEntity, String, U
 	 */
 	@Inject
 	@RequestParam
- 	private String userId;
+	private String userId;
 
 	/**
 	 * ユーザーIDを返却する。

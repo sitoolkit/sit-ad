@@ -2,6 +2,8 @@ package jp.monocrea.sitoolkit.archetype.domain.user;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import javax.validation.Valid;
 
 import jp.monocrea.sitoolkit.archetype.domain.code.*;
 import jp.monocrea.sitoolkit.archetype.infra.code.*;
@@ -9,7 +11,7 @@ import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
 
 /**
  * このクラスは、ユーザーマスターを表すエンティティです。
- * @author 
+ * @author
  */
 @Entity
 @Table(name="m_user")
@@ -19,29 +21,38 @@ public class UserEntity extends AbstractBaseEntity implements Serializable {
 	 * ユーザーID
 	 */
 	@Id
-	@Column(name="user_id")
- 	private String userId;
+	@Column(name = "user_id")
+	@NotNull
+	@Size(max = 8)
+	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+	private String userId;
 
 	/**
 	 * パスワード
 	 */
-	@Column(name="password")
- 	private String password;
+	@Column(name = "password")
+	@NotNull
+	@Size(max = 127)
+	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+	private String password;
 	/**
 	 * 姓
 	 */
-	@Column(name="last_name")
- 	private String lastName;
+	@Column(name = "last_name")
+	@Size(max = 32)
+	private String lastName;
 	/**
 	 * 名
 	 */
-	@Column(name="first_name")
- 	private String firstName;
+	@Column(name = "first_name")
+	@Size(max = 32)
+	private String firstName;
 	/**
 	 * 性別
 	 */
-	@Column(name="gender")
- 	private String gender;
+	@Column(name = "gender")
+	@Size(max = 1, min = 1)
+	private String gender;
 
 	/**
 	 * パスワードを返却する。
@@ -144,7 +155,7 @@ public class UserEntity extends AbstractBaseEntity implements Serializable {
 			return false;
 		}
 		UserEntity castOther = (UserEntity)other;
-		return  this.userId.equals(castOther.userId) 
+		return  this.userId.equals(castOther.userId)
  			;
 	}
 

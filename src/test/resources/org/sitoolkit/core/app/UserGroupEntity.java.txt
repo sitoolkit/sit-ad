@@ -2,12 +2,14 @@ package jp.monocrea.sitoolkit.archetype.domain.user;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import javax.validation.Valid;
 
 import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
 
 /**
  * このクラスは、ユーザーグループ関連を表すエンティティです。
- * @author 
+ * @author
  */
 @Entity
 @Table(name="m_user_group")
@@ -17,7 +19,9 @@ public class UserGroupEntity extends AbstractBaseEntity implements Serializable 
 	 * ユーザーグループ関連の主キー
 	 */
 	@EmbeddedId
- 	private UserGroupEntityPK pk;
+	@Valid
+	@NotNull
+	private UserGroupEntityPK pk;
 
 
 
@@ -46,7 +50,7 @@ public class UserGroupEntity extends AbstractBaseEntity implements Serializable 
 			return false;
 		}
 		UserGroupEntity castOther = (UserGroupEntity)other;
-		return  this.pk.equals(castOther.pk) 
+		return  this.pk.equals(castOther.pk)
  			;
 	}
 

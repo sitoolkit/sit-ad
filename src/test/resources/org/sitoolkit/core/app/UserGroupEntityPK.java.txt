@@ -2,6 +2,8 @@ package jp.monocrea.sitoolkit.archetype.domain.user;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import javax.validation.Valid;
 
 /**
  * このクラスは、ユーザーグループ関連エンティティのIDを表します。
@@ -13,11 +15,19 @@ public class UserGroupEntityPK implements Serializable {
 	/**
 	 * ユーザーID
 	 */
- 	private String userId;
+	@Column(name = "user_id")
+	@NotNull
+	@Size(max = 8)
+	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+	private String userId;
 	/**
 	 * グループID
 	 */
- 	private String groupId;
+	@Column(name = "group_id")
+	@NotNull
+	@Size(max = 8, min = 8)
+	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+	private String groupId;
 
 	public UserGroupEntityPK() {
 		super();
@@ -28,7 +38,7 @@ public class UserGroupEntityPK implements Serializable {
 		this.userId = userId;
 		this.groupId = groupId;
 	}
-	
+
 	/**
 	 * ユーザーIDを返却する。
 	 * @return ユーザーID
@@ -69,8 +79,8 @@ public class UserGroupEntityPK implements Serializable {
 			return false;
 		}
 		UserGroupEntityPK castOther = (UserGroupEntityPK)other;
-		return  this.userId.equals(castOther.userId) 
-			&&  this.groupId.equals(castOther.groupId) 
+		return  this.userId.equals(castOther.userId)
+			&&  this.groupId.equals(castOther.groupId)
  			;
 	}
 

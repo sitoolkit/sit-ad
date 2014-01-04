@@ -15,7 +15,7 @@ import ${clazz.appRootPkg}.infra.code.*;
 	/**
 	 * $field.name
 	 */
-#if ($type == "jpa") #jpaAnnotation($field) #elseif ($type == "jsf") #jsfAnnotation($field) #end
+#if ($type == "jpa")#jpaAnnotation($field)#elseif ($type == "jsf")#jsfAnnotation($field)#end
 	private $field.type $field.pname;
 #end
 ## + + + + + + + + + + + + + + + + + + + + + + + + + +

@@ -20,7 +20,7 @@ public class GroupInputModel extends AbstractBaseInputModel<GroupEntity, String,
 	 */
 	@Inject
 	@RequestParam
- 	private String groupId;
+	private String groupId;
 
 	/**
 	 * グループIDを返却する。

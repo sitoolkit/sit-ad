@@ -22,11 +22,11 @@
 					</h:panelGroup>
  				</h:panelGrid>
 				<h:panelGroup styleClass="form-footer" layout="block">
-					<h:commandButton id="user-search" action="#{userListModel.search}" 
+					<h:commandButton id="user-search" action="#{userListModel.search}"
 						value="検索"  immediate="false">
 						<f:ajax execute="@form" render="@form"/>
 					</h:commandButton>
-					<h:commandButton id="user-clear" action="#{userListModel.clear}" 
+					<h:commandButton id="user-clear" action="#{userListModel.clear}"
 						value="クリア"  immediate="true">
 						<f:ajax execute="@form" render="@form"/>
 					</h:commandButton>
@@ -40,7 +40,7 @@
 					<f:facet name="caption">
 						<cmp:pageCtrl model="#{userListModel}"/>
 					</f:facet>
-				
+
 					<h:column>
 						<f:facet name="header">
 							表示

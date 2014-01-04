@@ -2,12 +2,14 @@ package jp.monocrea.sitoolkit.archetype.domain.group;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import javax.validation.Valid;
 
 import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
 
 /**
  * このクラスは、グループマスターを表すエンティティです。
- * @author 
+ * @author
  */
 @Entity
 @Table(name="m_group")
@@ -17,14 +19,18 @@ public class GroupEntity extends AbstractBaseEntity implements Serializable {
 	 * グループID
 	 */
 	@Id
-	@Column(name="group_id")
- 	private String groupId;
+	@Column(name = "group_id")
+	@NotNull
+	@Size(max = 8, min = 8)
+	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+	private String groupId;
 
 	/**
 	 * グループ名
 	 */
-	@Column(name="group_name")
- 	private String groupName;
+	@Column(name = "group_name")
+	@Size(max = 64)
+	private String groupName;
 
 	/**
 	 * グループ名を返却する。
@@ -67,7 +73,7 @@ public class GroupEntity extends AbstractBaseEntity implements Serializable {
 			return false;
 		}
 		GroupEntity castOther = (GroupEntity)other;
-		return  this.groupId.equals(castOther.groupId) 
+		return  this.groupId.equals(castOther.groupId)
  			;
 	}
 

@@ -16,7 +16,6 @@
 					<h:outputLabel for="user-userId" value="ユーザーID" styleClass="requred "/>
 					<h:panelGroup>
 						<h:inputText id="user-userId" value="#{userInputModel.entity.userId}" label="ユーザーID" disabled="#{userInputModel.mode.update}" styleClass="ime-disabled" maxlength="8">
-							<f:validateRequired />
 						</h:inputText>
 						<h:message for="user-userId" errorClass="errmsg" showDetail="true" showSummary="false"/>
 						<div class="guidance"></div>
@@ -25,7 +24,6 @@
 					<h:outputLabel for="user-password" value="パスワード" styleClass="requred "/>
 					<h:panelGroup>
 						<h:inputSecret id="user-password" value="#{userInputModel.entity.password}" label="パスワード"  styleClass="ime-disabled" maxlength="127" redisplay="true">
-							<f:validateRequired />
 							<f:converter converterId="passwordConverter"/>
 						</h:inputSecret>
 						<h:message for="user-password" errorClass="errmsg" showDetail="true" showSummary="false"/>
@@ -58,13 +56,13 @@
 					</h:panelGroup>
  				</h:panelGrid>
 				<h:panelGroup styleClass="form-footer" layout="block">
-					<h:commandButton id="user-create" action="#{userInputModel.create}" 
+					<h:commandButton id="user-create" action="#{userInputModel.create}"
 						value="作成" rendered="#{userInputModel.mode.create}" immediate="false">
 					</h:commandButton>
-					<h:commandButton id="user-update" action="#{userInputModel.update}" 
+					<h:commandButton id="user-update" action="#{userInputModel.update}"
 						value="更新" rendered="#{userInputModel.mode.update}" immediate="false">
 					</h:commandButton>
-					<h:commandButton id="user-delete" action="#{userInputModel.delete}" 
+					<h:commandButton id="user-delete" action="#{userInputModel.delete}"
 						value="削除" rendered="#{userInputModel.mode.update}" immediate="false">
 					</h:commandButton>
 					<h:link outcome="userList" value="一覧へ戻る">
