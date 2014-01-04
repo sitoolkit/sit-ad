@@ -15,16 +15,22 @@
  */
 package org.sitoolkit.core.domain.java;
 
+import javax.annotation.Resource;
 import org.sitoolkit.core.infra.util.SitStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.sitoolkit.core.domain.data.ColumnDef;
+import org.sitoolkit.core.domain.format.FormatDef;
+import org.sitoolkit.core.domain.format.FormatDefCatalog;
 
 /**
- * このクラスは、クラスのフィールドを表すVOです。
+ * このクラスは、クラスのフィールドを表すエンティティです。
  * @author Yuichi Kuwahara
  *
  */
 public class FieldDef {
 
+	@Resource
+	protected FormatDefCatalog formatDefCatalog;
 	/**
 	 * フィールド名
 	 */
@@ -42,13 +48,24 @@ public class FieldDef {
 	 * データ型(厳密名)
 	 */
 	private String fullType;
-	
-	private String column;
+
+	private ColumnDef column;
 	private String codeSpec;
 	private boolean isId;
 	private boolean isEmbeddedId;
 	private boolean isBooled;
 	private EntityDef entity;
+	private boolean required;
+	private int maxLength = -1;
+	private int minLength = -1;
+
+	public FormatDef getFormat() {
+		if (getColumn() == null) {
+			return null;
+		}
+		return formatDefCatalog.getByName(getColumn().getFormat());
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -64,10 +81,10 @@ public class FieldDef {
 	public String getType() {
 		return type;
 	}
-	public String getColumn() {
+	public ColumnDef getColumn() {
 		return column;
 	}
-	public void setColumn(String column) {
+	public void setColumn(ColumnDef column) {
 		this.column = column;
 	}
 	/**
@@ -108,15 +125,15 @@ public class FieldDef {
 	public void setBooled(boolean isBooled) {
 		this.isBooled = isBooled;
 	}
-	
+
 	public String getPnamePascal() {
 		return SitStringUtils.toPascal(getPname());
 	}
-	
+
 	public boolean isArrayType() {
 		return StringUtils.contains(getType(), "[]");
 	}
-	
+
 	public boolean isCoded() {
 		return StringUtils.isNotEmpty(getCodeSpec());
 	}
@@ -129,7 +146,7 @@ public class FieldDef {
 		this.fullType = fullType;
 		this.type = fullTypeToSimpleType(fullType);
 	}
-	
+
 	String fullTypeToSimpleType(String fullType) {
 		String simpleType = "";
 		if (fullType.contains(".")) {
@@ -138,5 +155,29 @@ public class FieldDef {
 			simpleType = fullType;
 		}
 		return simpleType;
+	}
+
+	public boolean isRequired() {
+		return required;
+	}
+
+	public void setRequired(boolean required) {
+		this.required = required;
+	}
+
+	public int getMaxLength() {
+		return maxLength;
+	}
+
+	public void setMaxLength(int maxLength) {
+		this.maxLength = maxLength;
+	}
+
+	public int getMinLength() {
+		return minLength;
+	}
+
+	public void setMinLength(int minLength) {
+		this.minLength = minLength;
 	}
 }

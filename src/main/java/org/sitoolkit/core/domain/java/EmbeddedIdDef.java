@@ -22,7 +22,7 @@ import java.util.List;
  * このクラスは、エンティティの組み込みIDを表すVOです。
  * 組み込みIDとは、主キーが2カラム以上で構成されるテーブルに対応する
  * エンティティのIDとして使用するクラスです。
- * 
+ *
  * @author Yuichi Kuwahara
  * @since 1.0
  * @version 1.0
@@ -32,19 +32,23 @@ public class EmbeddedIdDef extends ClassDef {
 	public EmbeddedIdDef() {
 		super();
 	}
-	
+
 	public void load(EntityDef entity, List<FieldDef> ids) {
 		setName(entity.getName());
 		setPname(entity.getPname() + "PK");
 		addIds(ids);
+		notId(ids);
 		setPkg(entity.getPkg());
 		setOutDir(entity.getOutDir());
 	}
-		
+
 	@Override
 	public void addFields(Collection<FieldDef> fields) {
 		super.addFields(fields);
-		
+		notId(fields);
+	}
+
+	private void notId(Collection<FieldDef> fields) {
 		for (FieldDef field : fields) {
 			field.setId(false);
 		}

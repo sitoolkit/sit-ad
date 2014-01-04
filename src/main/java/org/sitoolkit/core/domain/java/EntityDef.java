@@ -26,12 +26,14 @@ import org.sitoolkit.core.domain.format.FormatDefCatalog;
 import org.sitoolkit.core.infra.srccd.SourceCode;
 import org.sitoolkit.core.infra.util.SitStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.context.ApplicationContext;
 
 /**
  * このクラスは、エンティティクラスの定義情報を表すVOです。
- * 
+ *
  * @author Yuichi Kuwahara
- * 
+ *
  */
 public class EntityDef extends ClassDef {
 
@@ -44,7 +46,7 @@ public class EntityDef extends ClassDef {
 	 */
 	private EmbeddedIdDef embeddedId;
 	/**
-	 * 
+	 *
 	 */
 	private String parentPname;
 	/**
@@ -68,7 +70,10 @@ public class EntityDef extends ClassDef {
 
 	@Resource
 	FormatDefCatalog formatDefCatalog;
-	
+
+	@Resource
+	ApplicationContext appCtx;
+
 	public EntityDef() {
 		super();
 	}
@@ -140,7 +145,7 @@ public class EntityDef extends ClassDef {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return 親テーブル物理名
 	 */
 	public String getParentPname() {
@@ -157,14 +162,14 @@ public class EntityDef extends ClassDef {
 
 	/**
 	 * テーブル定義情報からエンティティの定義を初期化します。
-	 * 
-	 * @param table 
+	 *
+	 * @param table
 	 */
 	public void load(TableDef table) {
 		setTable(table);
 		setName(table.getName());
-		setDomain(isDependent() ? 
-					SitStringUtils.table2entity(getTable().getParentPname()) : 
+		setDomain(isDependent() ?
+					SitStringUtils.table2entity(getTable().getParentPname()) :
 					SitStringUtils.table2entity(getTable().getPname()));
 		setPname((table.isDependent() ? SitStringUtils.table2entity(table.getPname()) : getDomain()) + "Entity");
 
@@ -189,7 +194,8 @@ public class EntityDef extends ClassDef {
 			embeddedIdField.setName(table.getName() + "の主キー");
 			embeddedIdField.setEmbeddedId(true);
 			embeddedIdField.setEntity(this);
-            
+			embeddedIdField.setRequired(true);
+
 			addId(embeddedIdField);
 		}
 	}
@@ -200,14 +206,21 @@ public class EntityDef extends ClassDef {
 	 * @return フィールド定義情報
 	 */
 	protected FieldDef column2field(ColumnDef column) {
-		FieldDef field = new FieldDef();
+		FieldDef field = appCtx.getBean(FieldDef.class);
 		field.setEntity(this);
 		field.setPname(SitStringUtils.toCamel(column.getPname()));
 		field.setName(column.getName());
 		field.setFullType(toJavaType(column));
-		field.setColumn(column.getPname());
+		field.setColumn(column);
 		field.setId(column.isPrimaryKey());
 		field.setCodeSpec(column.getCodeSpec());
+		field.setRequired(column.isNotnull());
+		if ("String".equals(field.getType())) {
+			field.setMaxLength(NumberUtils.toInt(column.getLength()));
+			if ("char".equalsIgnoreCase(column.getType())) {
+				field.setMinLength(field.getMaxLength());
+			}
+		}
 		if ("boolean".equalsIgnoreCase(column.getType())) {
 			field.setBooled(true);
 		}
@@ -261,7 +274,7 @@ public class EntityDef extends ClassDef {
 			javaType = "java.lang.String";
 		} else {
 			FormatDef format = formatDefCatalog.getByName(column.getFormat());
-			
+
 			if (format == null) {
 				javaType = "java.lang.String";
 			} else {

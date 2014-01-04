@@ -15,34 +15,45 @@ import ${clazz.appRootPkg}.infra.code.*;
 	/**
 	 * $field.name
 	 */
-#annotation($field $type)
+#if ($type == "jpa") #jpaAnnotation($field) #elseif ($type == "jsf") #jsfAnnotation($field) #end
 	private $field.type $field.pname;
 #end
 ## + + + + + + + + + + + + + + + + + + + + + + + + + +
 ##
 ##
 ## + + + + + + + + + + + + + + + + + + + + + + + + + +
-#macro(annotation $field $type)
-#if ($type == "jpa")
-## type = jpa
+#macro(jpaAnnotation $field $type)
 #if ($field.embeddedId)
 	@EmbeddedId
+	@Valid
+	@NotNull
 #else
-#### type = jpa & !field.embeddedId
-#if ($field.id) 
+#if ($field.id)
 	@Id
 #end
-#### type = jpa & !field.embeddedId
+	@Column(name = "$field.column.pname")
 #if ($field.type == "Date")
 	@Temporal(TemporalType.DATE)
 #end
-	@Column(name="$field.column")
+#if ($field.required)
+	@NotNull
 #end
-#elseif ($type == "jsf")
+#if ($field.maxLength > 0)
+	@Size(max = ${field.maxLength}#if ($field.minLength > 0), min = ${field.minLength}#end)
+#end
+#if ($field.format.validator == "AlphaNumeric")
+	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+#end
+#end##if ($field.embeddedId)
+#end
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+##
+##
+## + + + + + + + + + + + + + + + + + + + + + + + + + +
+#macro(jsfAnnotation $field $type)
 	@Inject
 	@RequestParam
-#end ## if type = jpa
-#end## macro annotation
+#end
 ## + + + + + + + + + + + + + + + + + + + + + + + + + +
 ##
 ##
@@ -116,10 +127,10 @@ import ${clazz.appRootPkg}.infra.code.*;
 		}
 		$clazz.pname castOther = ($clazz.pname)other;
 		return #foreach ($field in $clazz.ids)
-#if ($velocityCount > 1) 
+#if ($velocityCount > 1)
 			&& #end
 #if ($field.primitiveType) this.$field.pname == castOther.$field.pname
-#else this.${field.pname}.equals(castOther.$field.pname) 
+#else this.${field.pname}.equals(castOther.$field.pname)
 #end
 #end ## foreach clazz.ids
 			;
@@ -146,17 +157,17 @@ import ${clazz.appRootPkg}.infra.code.*;
 ##
 ## + + + + + + + + + + + + + + + + + + + + + + + + + +
 #macro (hash $field)
- #if ($field.type == "boolean") 
+ #if ($field.type == "boolean")
 (this.$field.pname ? 0 : 1);
  #elseif ($field.type == "byte" || $field.type == "char" || $field.type == "short" || $field.type == "int")
 (int)this.$field.pname;
- #elseif ($field.type == "long") 
+ #elseif ($field.type == "long")
 (int)(this.$field.pname ^ (this.$field.pname >>> 32));
  #elseif ($field.type == "float")
 Float.floatToIntBits(this.$field.pname);
  #elseif ($field.type == "double")
 (int)(this.Double.doubleToLongBits(this.$field.pname) ^ (this.Double.doubleToLongBits(this.$field.pname) >>> 32);
- #elseif ($field.arrayType) 
+ #elseif ($field.arrayType)
 java.util.Arrays.hashCode(this.$field.pnme);
  #else
 (this.$field.pname != null ? this.${field.pname}.hashCode() : 0);

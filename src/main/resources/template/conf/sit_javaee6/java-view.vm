@@ -47,7 +47,7 @@
 #macro(viewAreaForm $area)
 				<h:panelGrid styleClass="formtable" columns="$area.formColumns" columnClasses="header data">
 #foreach ($item in $area.items)
-#set ($item.contextVar = $view.pname + "Model") 
+#set ($item.contextVar = $view.pname + "Model")
 
 					<h:outputLabel for="$item.id" value="$item.name" styleClass="#if ($item.required)requred #end"/>
 					<h:panelGroup>
@@ -75,9 +75,9 @@
 					<f:facet name="caption">
 						<cmp:pageCtrl model="#{${view.pname}Model}"/>
 					</f:facet>
-				
+
 #foreach ($item in $area.items)
-#set ($item.repeatVar = $area.repeatVar) 
+#set ($item.repeatVar = $area.repeatVar)
 					<h:column>
 						<f:facet name="header">
 #if ($item.hasDesignInfo("Sortable"))
@@ -115,7 +115,7 @@ $indent</h:link>
 ## switch item.control
 #elseif ($item.control == "ボタン")
 #if ($item.actionButton)
-$indent<h:commandButton id="${item.domain}-${item.actionButton.id}" action="#{${view.pname}Model.${item.actionButton.id}}" 
+$indent<h:commandButton id="${item.domain}-${item.actionButton.id}" action="#{${view.pname}Model.${item.actionButton.id}}"
 ${indent1}value="$item.name" #modeRenderd($item) immediate="$item.actionButton.immediate">
 #viewItemChildren($item $indentCount)
 $indent</h:commandButton>
@@ -132,20 +132,20 @@ $indent</h:outputText>
 ## switch item.control
 #elseif ($item.control == "テキストボックス")
 $indent<h:inputText id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass" maxlength="$item.inputLength">
-#viewItemChildren($item $indentCount) 
+#viewItemChildren($item $indentCount)
 $indent</h:inputText>
 ##
 ## switch item.control
 #elseif ($item.control == "パスワード")
 $indent<h:inputSecret id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass" maxlength="$item.inputLength" redisplay="true">
-#viewItemChildren($item $indentCount) 
+#viewItemChildren($item $indentCount)
 $indent1<f:converter converterId="passwordConverter"/>
 $indent</h:inputSecret>
 ##
 ## switch item.control
 #elseif ($item.control == "テキストエリア")
 $indent<h:inputTextarea id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass" maxlength="$item.inputLength" cols="50" rows="5">
-#viewItemChildren($item $indentCount) 
+#viewItemChildren($item $indentCount)
 $indent</h:inputTextarea>
 ##
 ## switch item.control
@@ -209,11 +209,11 @@ $indent</h:inputHidden>
 ##
 #define ($childIndent)#indent($parentIndent)#indent(1)#end
 ##
-#if ($item.required) 
-$childIndent<f:validateRequired />
-#end 
+##if ($item.required)
+##$childIndent<f:validateRequired />
+##end
 ##
-#if ($item.ioformatObj.converter == "DateConverter") 
+#if ($item.ioformatObj.converter == "DateConverter")
 $childIndent<f:convertDateTime pattern="yyyy/MM/dd"/>
 #end
 ##

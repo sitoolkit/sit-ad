@@ -147,6 +147,8 @@
 		</property>
 	</bean>
 
+	<bean id="fieldDef" class="org.sitoolkit.core.domain.java.FieldDef" scope="prototype"></bean>
+
 	<bean id="pageSpecGen" class="org.sitoolkit.core.app.PageSpecGenerator">
 		<property name="name" value="画面定義書"/>
 		<property name="pageDefCatalog" ref="pageDefCatalog"/>

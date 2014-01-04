@@ -3,6 +3,8 @@ package $embeddedId.pkg;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import javax.validation.Valid;
 #import($embeddedId)
 
 /**
@@ -13,7 +15,7 @@ import javax.persistence.*;
 public class $embeddedId.pname implements Serializable {
 
 #foreach ($field in $embeddedId.ids)
-#field($field)
+#field($field "jpa")
 #end
 
 	public ${embeddedId.pname}() {
@@ -26,7 +28,7 @@ public class $embeddedId.pname implements Serializable {
 		this.$field.pname = $field.pname;
 #end
 	}
-	
+
 #foreach ($field in $embeddedId.ids)
 #accessor($field)
 #end
