@@ -1,7 +1,7 @@
 #top-back {
 	display: block;
 	color: white;
-	background-image: url("../img/menu_top_back.gif");
+	background-image: url("img/menu_top_back.gif");
 	padding-top: 8px;
 	padding-left: 25px;
 	height: 28px;
@@ -33,13 +33,14 @@ span.menubtn, span.menuspace{
 }
 
 span.menubtn {
-	background-image: url("../img/menu_arrow_close.gif");
-	vertical-align: middle;
+	background-image: url("img/menu_arrow_close.gif");
 	background-repeat: no-repeat;
+	cursor: pointer;
+	vertical-align: middle;
 }
 
 span.menuopen {
-	background-image: url("../img/menu_arrow_open.gif");
+	background-image: url("img/menu_arrow_open.gif");
 	vertical-align: middle;
 	background-repeat: no-repeat;
 }

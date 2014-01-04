@@ -20,7 +20,8 @@
 				<prop key="docdir.pagespec">doc</prop>
 				<prop key="docdir.dbdef">doc</prop>
 				<prop key="resdir.mockup">conf/mockup</prop>
-				<prop key="outdir.mockup">out/mockup</prop>
+				<prop key="outdir.mockup">out/mockup/resources/pages</prop>
+				<prop key="outdir.mockupres">out/mockup/resources</prop>
 				<prop key="outdir.db">out/db/script</prop>
 				<prop key="dbdef.file">テーブル定義書.xlsx</prop>
 				<prop key="pagelist.file">画面一覧定義書.xlsx</prop>

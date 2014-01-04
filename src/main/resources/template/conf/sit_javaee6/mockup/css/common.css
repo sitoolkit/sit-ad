@@ -1,5 +1,5 @@
 body {
-	background-image: url("../img/head_back.gif");
+	background-image: url("img/head_back.gif");
 	margin: 0;
 }
 
@@ -13,7 +13,7 @@ h1 {
 	border-bottom: solid 2px #000000;
 	padding-left: 1em;
 	padding-bottom: 0.5em;
-	background-image: url("../img/title_arrow.gif");
+	background-image: url("img/title_arrow.gif");
 	background-repeat: no-repeat;
 }
 
@@ -26,19 +26,19 @@ a img {
 	border: none;
 }
 
-table.form, table.datatable {
+table.formtable, table.datatable {
 	width: 100%;
 	border: solid 0 #000000;
 	border-width: 1px 0 0 1px;
 	border-collapse: collapse;
 }
 
-th{
+th, td.header {
 	background-color: #efefef;
 	font-weight: normal;
 }
 
-table.form tbody tr th, table.form tbody tr td.header {
+table.formtable tbody tr th, table.formtable tbody tr td.header {
 	text-align: left;
 }
 
@@ -46,8 +46,8 @@ table.datatable thead tr th {
 	text-align: center;
 }
 
-table.form tbody tr th, table.form * tr td, 
-table.datatable thead tr th, table.datatable tbody tr td {
+table.formtable > tbody > tr > th, table.formtable > * > tr > td,
+table.datatable > thead > tr > th, table.datatable > tbody > tr > td {
 	border: solid 0 #000000;
 	border-width: 0 1px 1px 0;
 	padding: 0.5em;
@@ -85,25 +85,16 @@ input[type='text']:focus, select:focus {
 	border: dashed 2px green;
 }
 */
-
 .guidance {
 	font-size: smaller;
 	color: gray;
 }
-/*
-.guidance:before {
-	content: "(";
-}
 
-.guidance:after {
-	content: ")";
-}
-*/
-.paging {
+.pageCtrl {
 	padding: 0.5em;
 	text-align: right;
 }
-.paging span, .paging a {
+.pageCtrl span, .pageCtrl a {
 	margin: 0 0.5em;
 }
 
@@ -139,16 +130,18 @@ input[type='text']:focus, select:focus {
 	text-decoration: inherit;
 }
 
-#submenu {
-	background-image: url('../img/head_submenu_back.gif');
-	width: 290px;
+.submenu {
+	background-image: url('img/head_submenu_back.gif');
 	height: 28px;
 	float:right;
+	display: block;
+	text-align: center;
 }
 
-#submenu a {
+.submenu, .submenu a {
 	color: #ffffff;
 }
+
 
 #footer {
 	font-size: x-small;
@@ -160,6 +153,8 @@ input[type='text']:focus, select:focus {
 
 #content {
 	background-color: #ffffff;
+	border : solid 1px black;
+	border-width: 0 1px;
 }
 
 #side-nav {
@@ -179,6 +174,17 @@ div.container:after {
 	clear:both;
 }
 
+div.msg-area {
+	padding: 5px 5px 0 5px;
+	width: 600px;
+	float: right;
+}
+
+div.msg-area ul {
+	margin: 0;
+	padding: 0 0 0 20px;
+}
+
 div.area {
 	padding: 10px;
 	width: 600px;
@@ -190,3 +196,28 @@ hr.full {
 	margin: 0;
 }
 
+span.login-user {
+	float: right;
+
+}
+
+#jsfAjaxLoading {
+	background-color: #ffffff;
+	box-shadow: 1px 1px 3px gray;
+	border : solid 1px black;
+	cursor: pointer;
+	margin: 10px auto auto auto;
+	padding : 10px 0;
+	text-align: center;
+	width:100px;
+}
+
+#glassPane {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	top: 0;
+	left: 0;
+}

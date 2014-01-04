@@ -2,34 +2,34 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<link rel="stylesheet" href="${mock.base}css/style.css"/>
-<link rel="stylesheet" href="${mock.base}css/side-nav.css"/>
-<link rel="stylesheet" href="${mock.base}css/mockup.css"/>
-<link rel="stylesheet" href="${mock.base}css/${mock.pname}.css"/>
+<link rel="stylesheet" href="${mock.base}../css/common.css"/>
+<link rel="stylesheet" href="${mock.base}../css/side-nav.css"/>
+<link rel="stylesheet" href="${mock.base}../css/mockup.css"/>
+<link rel="stylesheet" href="${mock.base}../css/${mock.pname}.css"/>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script src="${mock.base}js/menu.js"></script>
-<script src="${mock.base}js/mockup.js"></script>
-<script src="${mock.base}js/reload.js"></script>
-<script src="${mock.base}js/${mock.pname}.js"></script>
+<script src="${mock.base}../js/menu.js"></script>
+<script src="${mock.base}../js/mockup.js"></script>
+<script src="${mock.base}../js/reload.js"></script>
+<script src="${mock.base}../js/${mock.pname}.js"></script>
 <title>$mock.name</title>
 </head>
 <body>
 <hr class="full"/>
 <div id="header" class="container">
-	<img id="logo" src="${mock.base}img/logo.png" alt="SIToolkit" style="margin: 1em;"/>
-	<table id="submenu">
+	<img id="logo" src="${mock.base}../img/logo.png" alt="SIToolkit" style="margin: 1em;"/>
+	<table class="submenu">
 		<tr>
 			<td>
-				<a href="">
-					<img src="${mock.base}img/head_submenu_manual.png" alt="マニュアルダウンロード" style="vertical-align:-4px;"/>
+				<a href="https://github.com/sitoolkit/sit-archetype/wiki/_pages">
+					<img src="${mock.base}../img/head_submenu_manual.png" alt="マニュアルダウンロード" style="vertical-align:-4px;"/>
 					マニュアルダウンロード
 				</a>
 			</td>
 			<td>
 				<a href="">
-					<img src="${mock.base}img/head_submenu_loagin.png" alt="ログアウト" style="vertical-align:-4px;"/>
+					<img src="${mock.base}../img/head_submenu_loagin.png" alt="ログアウト" style="vertical-align:-4px;"/>
 					<span>ログアウト</span>
 				</a>
 			</td>
@@ -78,7 +78,7 @@
 		<p></p>
 	#if ($area.type == "フォーム")
 		<form action="#">
-			<table class="form">
+			<table class="formtable">
 				<tbody>
 					<tr>
 		#set ($lane = 0)
@@ -195,7 +195,7 @@
 		<a id="$item.id" href="" class="documented">$item.label</a>
 
 	#elseif ($item.control == "イメージ")
-		<img id="$item.id" src="${mock.base}${item.designInfoMap.File.value}" class="documented" alt="$item.label" title="$item.label"/>
+		<img id="$item.id" src="${mock.base}../${item.designInfoMap.File.value}" class="documented" alt="$item.label" title="$item.label"/>
 
 	#else
 

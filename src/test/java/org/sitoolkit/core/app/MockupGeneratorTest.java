@@ -42,7 +42,7 @@ public class MockupGeneratorTest {
 
 	@Autowired
 	ApplicationContext appCtx;
-	
+
 	/**
 	 * <dl>
 	 * <dt>コンディション
@@ -61,7 +61,7 @@ public class MockupGeneratorTest {
 
 		MockupGenerator mockupGen = appCtx.getBean(MockupGenerator.class);
 		String[] fileNames = new String[]{"モックアップデモ.html"};
-		String outDir = "out/mockup/デモ";
+		String outDir = "out/mockup/resources/pages/デモ";
 		GeneratorTestHelper.execAndAssert(mockupGen, outDir , fileNames, "モックアップデモ");
 	}
 

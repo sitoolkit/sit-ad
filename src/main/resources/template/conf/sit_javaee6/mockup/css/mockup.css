@@ -1,3 +1,27 @@
+body {
+	background-image: url("../img/head_back.gif");
+}
+
+h1 {
+	background-image: url("../img/title_arrow.gif");
+}
+
+.submenu {
+	background-image: url('../img/head_submenu_back.gif');
+}
+
+#top-back {
+	background-image: url("../img/menu_top_back.gif");
+}
+
+span.menubtn {
+	background-image: url("../img/menu_arrow_close.gif");
+}
+
+span.menuopen {
+	background-image: url("../img/menu_arrow_open.gif");
+}
+
 .numberingTooltip {
 	opacity : 0.6;
 }

@@ -23,7 +23,7 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * このクラスは、モックアップを出力する{@link SourceCodeGenerator}の拡張です。
- * 
+ *
  * @author Yuichi Kuwahara
  * @since 1.0
  * @version 1.0
@@ -31,14 +31,14 @@ import org.apache.commons.io.FileUtils;
 public class MockupGenerator extends SourceCodeGenerator {
 
 	/**
-	 * 
+	 *
 	 */
 	@Resource
 	PropertyManager pm;
-	
+
 	@Override
 	public void generate(String... names) {
-		String outFolderPath = pm.getProperty("outdir.mockup");
+		String outFolderPath = pm.getMockupResOutputDir();
 
         setupResource(outFolderPath);
 
@@ -47,7 +47,7 @@ public class MockupGenerator extends SourceCodeGenerator {
 
 	private void setupResource(String outFolderPath) {
         File outDir = new File(outFolderPath);
-        
+
         File resDir = new File(pm.getProperty("resdir.mockup"));
         try {
 			log.info("モックアップ用資源を出力フォルダにコピーします。資源フォルダ：{}、出力フォルダ:{}",
@@ -57,9 +57,9 @@ public class MockupGenerator extends SourceCodeGenerator {
             log.error(ex.getMessage(), ex);
         }
     }
-	
+
 	/**
-	 * 
+	 *
 	 * @param args コマンドライン引数
 	 */
 	public static void main(final String[] args) {

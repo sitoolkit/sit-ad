@@ -196,10 +196,21 @@ public class PropertyManager {
 		return getPath("docdir.dbdef", getSysProp("codespec.file"));
 	}
 
+	/**
+	 * モックアップ資源(htmlファイル)の出力ディレクトリを取得します。
+	 * @return モックアップ資源(htmlファイル)の出力ディレクトリ
+	 */
 	public String getMockupOutputDir() {
 		return getSysProp("outdir.mockup");
 	}
 
+	/**
+	 * モックアップ資源(css、js、imageファイル)の出力ディレクトリを取得します。
+	 * @return モックアップ資源((css、js、imageファイル))の出力ディレクトリ
+	 */
+	public String getMockupResOutputDir() {
+		return getSysProp("outdir.mockupres");
+	}
 	/**
 	 * プロパティを取得します。
 	 * プロパティの取得先の優先度は以下の通りです。
