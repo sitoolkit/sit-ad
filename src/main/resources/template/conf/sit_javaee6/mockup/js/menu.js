@@ -1,6 +1,8 @@
 $(function() {
 	$("#menu").find("li ul").hide();
-	$("#menu").find("li:has(ul) > a").prepend("<span class='menubtn'></span>");
+	$("#menu").find("li:has(ul) > a").each(function() {
+		$(this).prepend("<span class='menubtn " + $(this).text() + "'></span>");
+	});
 	$("#menu").find("li:not(:has(ul)) > a").prepend("<span class='menuspace'></span>");
 
 	$("span.menubtn").click(function() {
@@ -17,7 +19,7 @@ $(function() {
 
 		return false;
 	});
-	
+
 	$("a[href='']").click(function() {
 		$(this).blur().find("span.menubtn").click();
 		return false;

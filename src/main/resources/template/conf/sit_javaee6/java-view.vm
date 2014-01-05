@@ -125,32 +125,32 @@ $indent</h:commandButton>
 ##
 ## switch item.control
 #elseif ($item.control == "テキスト")
-$indent<h:outputText id="$item.id" #itemValue($item) styleClass="$item.cssClass">
+$indent<h:outputText id="$item.id" #itemValue($item) styleClass="$item.id $item.cssClass">
 #viewItemChildren($item $indentCount)
 $indent</h:outputText>
 ##
 ## switch item.control
 #elseif ($item.control == "テキストボックス")
-$indent<h:inputText id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass" maxlength="$item.inputLength">
+$indent<h:inputText id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.id $item.cssClass" maxlength="$item.inputLength">
 #viewItemChildren($item $indentCount)
 $indent</h:inputText>
 ##
 ## switch item.control
 #elseif ($item.control == "パスワード")
-$indent<h:inputSecret id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass" maxlength="$item.inputLength" redisplay="true">
+$indent<h:inputSecret id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.id $item.cssClass" maxlength="$item.inputLength" redisplay="true">
 #viewItemChildren($item $indentCount)
 $indent1<f:converter converterId="passwordConverter"/>
 $indent</h:inputSecret>
 ##
 ## switch item.control
 #elseif ($item.control == "テキストエリア")
-$indent<h:inputTextarea id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass" maxlength="$item.inputLength" cols="50" rows="5">
+$indent<h:inputTextarea id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.id $item.cssClass" maxlength="$item.inputLength" cols="50" rows="5">
 #viewItemChildren($item $indentCount)
 $indent</h:inputTextarea>
 ##
 ## switch item.control
 #elseif ($item.control == "ラジオボタン")
-$indent<h:selectOneRadio id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.cssClass">
+$indent<h:selectOneRadio id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="$item.id $item.cssClass">
 #viewItemChildren($item $indentCount)
 $indent</h:selectOneRadio>
 ##
@@ -161,13 +161,13 @@ $indent<h:outputLabel for="$item.id" value="$item.name"/>
 ##
 ## switch item.control
 #elseif ($item.control.template == "multiCheck")
-$indent<h:selectManyCheckbox id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="jsf-select $item.cssClass">
+$indent<h:selectManyCheckbox id="$item.id" #itemValue($item) label="$item.name" #disabledOnUpdate($item) styleClass="jsf-select $item.id $item.cssClass">
 #viewItemChildren($item $indentCount)
 $indent</h:selectManyCheckbox>
 ##
 ## switch item.control
 #elseif ($item.control.template == "selectBox")
-$indent<h:selectOneMenu id="$item.id" #itemValue($item) label="$item.name">
+$indent<h:selectOneMenu id="$item.id" #itemValue($item) label="$item.name" styleClass="$item.id $item.cssClass">
 #viewItemChildren($item $indentCount)
 $indent</h:selectOneMenu>
 ##
