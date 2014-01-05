@@ -42,7 +42,7 @@ import ${clazz.appRootPkg}.infra.code.*;
 	@Size(max = ${field.maxLength}#if ($field.minLength > 0), min = ${field.minLength}#end)
 #end
 #if ($field.format.validator == "AlphaNumeric")
-	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+	@Pattern(regexp = "[a-zA-Z0-9]*", message = "{AlphaNumeric}")
 #end
 #end##if ($field.embeddedId)
 #end
