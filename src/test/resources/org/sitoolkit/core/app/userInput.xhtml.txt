@@ -15,7 +15,7 @@
 
 					<h:outputLabel for="user-userId" value="ユーザーID" styleClass="requred "/>
 					<h:panelGroup>
-						<h:inputText id="user-userId" value="#{userInputModel.entity.userId}" label="ユーザーID" disabled="#{userInputModel.mode.update}" styleClass="ime-disabled" maxlength="8">
+						<h:inputText id="user-userId" value="#{userInputModel.entity.userId}" label="ユーザーID" disabled="#{userInputModel.mode.update}" styleClass="user-userId ime-disabled" maxlength="8">
 						</h:inputText>
 						<h:message for="user-userId" errorClass="errmsg" showDetail="true" showSummary="false"/>
 						<div class="guidance"></div>
@@ -23,7 +23,7 @@
 
 					<h:outputLabel for="user-password" value="パスワード" styleClass="requred "/>
 					<h:panelGroup>
-						<h:inputSecret id="user-password" value="#{userInputModel.entity.password}" label="パスワード"  styleClass="ime-disabled" maxlength="127" redisplay="true">
+						<h:inputSecret id="user-password" value="#{userInputModel.entity.password}" label="パスワード"  styleClass="user-password ime-disabled" maxlength="127" redisplay="true">
 							<f:converter converterId="passwordConverter"/>
 						</h:inputSecret>
 						<h:message for="user-password" errorClass="errmsg" showDetail="true" showSummary="false"/>
@@ -32,7 +32,7 @@
 
 					<h:outputLabel for="user-lastName" value="姓" styleClass=""/>
 					<h:panelGroup>
-						<h:inputText id="user-lastName" value="#{userInputModel.entity.lastName}" label="姓"  styleClass="ime-on" maxlength="32">
+						<h:inputText id="user-lastName" value="#{userInputModel.entity.lastName}" label="姓"  styleClass="user-lastName ime-on" maxlength="32">
 						</h:inputText>
 						<h:message for="user-lastName" errorClass="errmsg" showDetail="true" showSummary="false"/>
 						<div class="guidance"></div>
@@ -40,7 +40,7 @@
 
 					<h:outputLabel for="user-firstName" value="名" styleClass=""/>
 					<h:panelGroup>
-						<h:inputText id="user-firstName" value="#{userInputModel.entity.firstName}" label="名"  styleClass="ime-on" maxlength="32">
+						<h:inputText id="user-firstName" value="#{userInputModel.entity.firstName}" label="名"  styleClass="user-firstName ime-on" maxlength="32">
 						</h:inputText>
 						<h:message for="user-firstName" errorClass="errmsg" showDetail="true" showSummary="false"/>
 						<div class="guidance"></div>
@@ -48,7 +48,7 @@
 
 					<h:outputLabel for="user-gender" value="性別" styleClass=""/>
 					<h:panelGroup>
-						<h:selectOneMenu id="user-gender" value="#{userInputModel.entity.gender}" label="性別">
+						<h:selectOneMenu id="user-gender" value="#{userInputModel.entity.gender}" label="性別" styleClass="user-gender ">
 							<f:selectItems var="cd" value="#{codeService.values('性別Vo')}" itemValue="#{cd.value}" itemLabel="#{cd.label}"/>
 						</h:selectOneMenu>
 						<h:message for="user-gender" errorClass="errmsg" showDetail="true" showSummary="false"/>

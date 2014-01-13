@@ -15,7 +15,7 @@
 
 					<h:outputLabel for="user-userId" value="ユーザーID" styleClass=""/>
 					<h:panelGroup>
-						<h:inputText id="user-userId" value="#{userListModel.condition.params.sw_userId}" label="ユーザーID"  styleClass="" maxlength="8">
+						<h:inputText id="user-userId" value="#{userListModel.condition.params.sw_userId}" label="ユーザーID"  styleClass="user-userId " maxlength="8">
 						</h:inputText>
 						<h:message for="user-userId" errorClass="errmsg" showDetail="true" showSummary="false"/>
 						<div class="guidance"></div>
@@ -57,7 +57,7 @@
 								<f:ajax render="@form"/>
 							</h:commandLink>
 						</f:facet>
-						<h:outputText id="user-userId" value="#{u.userId}" styleClass="">
+						<h:outputText id="user-userId" value="#{u.userId}" styleClass="user-userId ">
 						</h:outputText>
 					</h:column>
 
@@ -67,7 +67,7 @@
 								<f:ajax render="@form"/>
 							</h:commandLink>
 						</f:facet>
-						<h:outputText id="user-lastName" value="#{u.lastName}" styleClass="">
+						<h:outputText id="user-lastName" value="#{u.lastName}" styleClass="user-lastName ">
 						</h:outputText>
 					</h:column>
 
@@ -77,7 +77,7 @@
 								<f:ajax render="@form"/>
 							</h:commandLink>
 						</f:facet>
-						<h:outputText id="user-firstName" value="#{u.firstName}" styleClass="">
+						<h:outputText id="user-firstName" value="#{u.firstName}" styleClass="user-firstName ">
 						</h:outputText>
 					</h:column>
 
@@ -87,7 +87,7 @@
 								<f:ajax render="@form"/>
 							</h:commandLink>
 						</f:facet>
-						<h:outputText id="user-gender" value="#{u.genderVo}" styleClass="">
+						<h:outputText id="user-gender" value="#{u.genderVo}" styleClass="user-gender ">
 						</h:outputText>
 					</h:column>
 
