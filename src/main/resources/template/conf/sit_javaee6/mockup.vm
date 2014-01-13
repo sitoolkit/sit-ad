@@ -11,7 +11,9 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="${mock.base}../js/menu.js"></script>
 <script src="${mock.base}../js/mockup.js"></script>
+#if ($watcher.continue)
 <script src="${mock.base}../js/reload.js"></script>
+#end
 <script src="${mock.base}../js/${mock.pname}.js"></script>
 <title>$mock.name</title>
 </head>

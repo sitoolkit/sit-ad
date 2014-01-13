@@ -16,11 +16,10 @@
 
 package org.sitoolkit.core.infra.repository;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.annotation.Resource;
 import org.sitoolkit.core.infra.util.PropertyManager;
-import org.sitoolkit.core.infra.util.SitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,11 +32,6 @@ public abstract class InputSourceWatcher {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	@Resource
 	protected PropertyManager pm;
-	/**
-	 * 監視中ファイル
-	 * このファイルが存在する間は監視が継続していることを意味します。
-	 */
-	protected final File continueFile = new File(".cg");
 
 	/**
 	 * 入力ソースを監視対象に追加します。
@@ -50,18 +44,11 @@ public abstract class InputSourceWatcher {
 	 * @see PropertyManager#isCGMode()
 	 */
 	public void watch(String inputSource) {
-		if (!pm.isCGMode()) {
+		if (!isContinue()) {
 			return;
 		}
 
 		watchInputSource(inputSource);
-		try {
-			if (!continueFile.exists()) {
-				continueFile.createNewFile();
-			}
-		} catch (IOException e) {
-			throw new SitException(e);
-		}
 	}
 
 	/**
@@ -72,14 +59,33 @@ public abstract class InputSourceWatcher {
 	 * @param cg 繰り返し生成インターフェース
 	 * @see #watchStart(org.sitoolkit.core.infra.repository.ContinuousGeneratable)
 	 */
-	public void start(ContinuousGeneratable cg) {
-		if (!pm.isCGMode()) {
+	public void start(final ContinuousGeneratable cg) {
+		if (!isContinue()) {
 			return;
 		}
 
-		watchStart(cg);
+		ExecutorService executor = Executors.newCachedThreadPool();
+		executor.submit(new Runnable() {
+			@Override
+			public void run() {
+				while(isContinue()) {
+					watching(cg);
+				}
+			}
+		});
+		while(isContinue()) {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				log.warn("スレッドの待機に失敗しました", e);
+			}
+		}
+		end(cg);
 	}
 
+	public boolean isContinue() {
+		return pm.isContinue();
+	}
 	/**
 	 * 入力ソースを監視対象に追加する実際の処理を実装します。
 	 * @param inputSource 入力ソース
@@ -92,11 +98,12 @@ public abstract class InputSourceWatcher {
 	 * <ul>
 	 * <li>入力ソースの変更の監視
 	 * <li>変更を検知した入力ソースで繰り返しインターフェースの再生成メソッドを実行
-	 * <li>プロセスの常駐(監視中ファイルが無くなったら終了)
 	 * </ul>
 	 *
 	 * @param cg 繰り返し生成インターフェース
 	 * @see ContinuousGeneratable#regenerate(java.lang.String)
 	 */
-	protected abstract void watchStart(ContinuousGeneratable cg);
+	protected abstract void watching(ContinuousGeneratable cg);
+
+	protected abstract void end(ContinuousGeneratable cg);
 }

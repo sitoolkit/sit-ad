@@ -15,6 +15,7 @@
  */
 package org.sitoolkit.core.infra.util;
 
+import java.io.File;
 import java.util.MissingFormatArgumentException;
 import java.util.Properties;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -50,6 +51,7 @@ public class PropertyManager {
 	private static final String WEBCMP = "outdir.webcmp";
 	private static final Logger LOG = LoggerFactory.getLogger(PropertyManager.class);
 
+	public static final String CONTINUE_FILE_NAME = ".cg";
 	private Properties prop = new Properties();
 
 	public Properties getProp() {
@@ -258,11 +260,8 @@ public class PropertyManager {
 		return "true".equalsIgnoreCase(getSysProp("rebuild", "false"));
 	}
 
-	/**
-	 * 繰り返し生成モードである場合にtrueを返します。
-	 * @return 繰り返し生成モードである場合にtrue
-	 */
-	public boolean isCGMode() {
-		return "true".equalsIgnoreCase(System.getProperty("sit.cg"));
+	public boolean isContinue() {
+		// TODO ファイル監視方式の統一
+		return new File(System.getProperty("cc.cgfile", ".cg")).exists();
 	}
 }

@@ -198,6 +198,7 @@
 				</property>
 			</bean>
 		</property>
+		<property name="watcher" ref="watcher"/>
 	</bean>
 
 	<bean id="viewPageDef" class="org.sitoolkit.core.domain.view.PageDef" scope="prototype">
@@ -207,6 +208,11 @@
 		<property name="fileExt" value="xhtml"/>
 		<property name="template" value="/java-view.vm"/>
 		<property name="var" value="view"/>
+		<property name="contextParam">
+			<map>
+				<entry key="watcher" value-ref="watcher"/>
+			</map>
+		</property>
 	</bean>
 
 	<bean id="viewAreaDef" class="org.sitoolkit.core.domain.view.ViewAreaDef" scope="prototype">
@@ -231,6 +237,7 @@
 				</property>
 			</bean>
 		</property>
+		<property name="watcher" ref="watcher"/>
 	</bean>
 
 	<bean id="mockupPageDef" class="org.sitoolkit.core.domain.view.PageDef" scope="prototype">
@@ -240,6 +247,11 @@
 		<property name="fileExt" value="html"/>
 		<property name="template" value="/mockup.vm"/>
 		<property name="var" value="mock"/>
+		<property name="contextParam">
+			<map>
+				<entry key="watcher" value-ref="watcher"/>
+			</map>
+		</property>
 	</bean>
 
 	<bean id="nodeDef" class="org.sitoolkit.core.domain.view.nav.NodeDef" scope="prototype"/>

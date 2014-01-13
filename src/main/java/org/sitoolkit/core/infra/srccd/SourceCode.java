@@ -224,4 +224,12 @@ public abstract class SourceCode extends DocumentElement {
 	public void setOverwrite(boolean overwrite) {
 		this.overwrite = overwrite;
 	}
+
+	public Map<String, Object> getContextParam() {
+		return contextParam;
+	}
+
+	public void setContextParam(Map<String, Object> contextParam) {
+		this.contextParam = contextParam;
+	}
 }

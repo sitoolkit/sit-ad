@@ -18,6 +18,7 @@ package org.sitoolkit.core.infra.repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.StandardWatchEventKinds;
@@ -70,6 +71,7 @@ public class FileInputSourceWatcher extends InputSourceWatcher {
 
 		try {
 			if (watcher == null) {
+				// TODO ファイル監視方式の統一
 				watcher = FileSystems.getDefault().newWatchService();
 			}
 			WatchKey watchKey = dirPath.register(watcher, StandardWatchEventKinds.ENTRY_MODIFY);
@@ -80,27 +82,44 @@ public class FileInputSourceWatcher extends InputSourceWatcher {
 	}
 
 	@Override
-	public void watchStart(ContinuousGeneratable cg) {
+	public void watching(ContinuousGeneratable cg) {
 		WatchKey watchKey;
 		try {
 			watchKey = watcher.take();
 		} catch (InterruptedException e) {
 			throw new SitException(e);
+		} catch (ClosedWatchServiceException e) {
+			if (isContinue()) {
+			throw new SitException(e);
+			} else {
+				return;
+			}
 		}
 
-		while(continueFile.exists()) {
-			for (WatchEvent<?> event : watchKey.pollEvents()) {
-				Path dir = pathMap.get(watchKey);
-				File changedFile = dir.resolve((Path)event.context()).toFile();
-				log.debug("変更イベントを検知しました。{}", changedFile.getAbsolutePath());
+		for (WatchEvent<?> event : watchKey.pollEvents()) {
+			Path dir = pathMap.get(watchKey);
+			File changedFile = dir.resolve((Path)event.context()).toFile();
+			log.debug("変更イベントを検知しました。{}", changedFile.getAbsolutePath());
 
-				InputSource inputSource = watchingFileMap.get(changedFile.getAbsolutePath());
-				if (inputSource != null && inputSource.lastModified != changedFile.lastModified()) {
-					log.info("再生成を実行します。{}", changedFile.getAbsolutePath());
-					cg.regenerate(inputSource.name);
-					inputSource.lastModified = changedFile.lastModified();
-				}
+			InputSource inputSource = watchingFileMap.get(changedFile.getAbsolutePath());
+			if (inputSource != null && inputSource.lastModified != changedFile.lastModified()) {
+				log.info("再生成を実行します。{}", changedFile.getAbsolutePath());
+				cg.regenerate(inputSource.name);
+				inputSource.lastModified = changedFile.lastModified();
 			}
+		}
+		watchKey.reset();
+	}
+
+	@Override
+	protected void end(ContinuousGeneratable cg) {
+		try {
+			watcher.close();
+		} catch (IOException e) {
+			log.warn("例外が発生しました", e);
+		}
+		for (InputSource inputSource : watchingFileMap.values()) {
+			cg.regenerate(inputSource.name);
 		}
 	}
 

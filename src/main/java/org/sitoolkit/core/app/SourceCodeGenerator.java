@@ -54,8 +54,7 @@ public class SourceCodeGenerator implements ContinuousGeneratable {
 	 */
 	private String[] includes = new String[0];
 
-	@Resource
-	protected InputSourceWatcher watcher;
+	private InputSourceWatcher watcher;
 
 	public SourceCodeGenerator() {
 		super();
@@ -69,9 +68,12 @@ public class SourceCodeGenerator implements ContinuousGeneratable {
 		Collection<? extends SourceCode> sources = getCatalog().getAll();
 		log.info("{}本の{}ソースコードを生成します。", sources.size(), getName());
 		generate(sources);
-		watcher.start(this);
+		if (watcher != null) {
+			watcher.start(this);
+		}
 	}
 
+	@Override
 	public void regenerate(String inputSource) {
 		Collection<? extends SourceCode> sources = getCatalog().reload(inputSource);
 		log.info("{}本の{}ソースコードを再生成します。", sources.size(), getName());
@@ -135,5 +137,13 @@ public class SourceCodeGenerator implements ContinuousGeneratable {
 
 	public void setIncludes(String str) {
 		includes = StringUtils.isEmpty(str) ? new String[0] : str.split(",");
+	}
+
+	public InputSourceWatcher getWatcher() {
+		return watcher;
+	}
+
+	public void setWatcher(InputSourceWatcher watcher) {
+		this.watcher = watcher;
 	}
 }

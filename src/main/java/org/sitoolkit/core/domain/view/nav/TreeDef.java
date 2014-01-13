@@ -28,9 +28,9 @@ import org.sitoolkit.core.infra.util.PropertyManager;
  * @author yuichi.kuwahara
  */
 public class TreeDef extends SourceCode {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final NodePathComparator PATH_COMP = new NodePathComparator();
 
@@ -39,15 +39,15 @@ public class TreeDef extends SourceCode {
 
 	@Resource
 	DocumentMapper dm;
-	
+
 	private List<NodeDef> list = new ArrayList<NodeDef>();
-	
+
 	private List<NodeDef> nodeList = new ArrayList<NodeDef>();
 	/**
 	 * ソースコードとして出力する場合にtrue
 	 */
 	private boolean output;
-	
+
 	public void load(TableData pageListData) {
 		for (RowData rowData : pageListData.getRows()) {
 //			NodeDef node = new NodeDef();
@@ -63,7 +63,7 @@ public class TreeDef extends SourceCode {
 		Collections.sort(nodeList, PATH_COMP);
 		Map<String, NodeDef> nodeMap = new LinkedHashMap<String, NodeDef>();
 		List<NodeDef> result = new ArrayList<NodeDef>();
-		
+
 		for (NodeDef node : nodeList) {
 			NodeDef parentNode = nodeMap.get(node.getParentPath());
 			if (parentNode == null) {
@@ -74,9 +74,9 @@ public class TreeDef extends SourceCode {
 			}
 			nodeMap.put(node.getPath(), node);
 		}
-		
+
 		return result;
-		
+
 	}
 
 	/**
@@ -93,18 +93,13 @@ public class TreeDef extends SourceCode {
 		}
 
 	}
-	
+
 	public List<NodeDef> getNodeList() {
 		return Collections.unmodifiableList(nodeList);
 	}
-	
+
 	public List<NodeDef> getList() {
 		return list;
-	}
-
-	@Override
-	public String getOutDir() {
-		return pm.getWebCmpDir();
 	}
 
 	public boolean isOutput() {
@@ -114,5 +109,5 @@ public class TreeDef extends SourceCode {
 	public void setOutput(boolean output) {
 		this.output = output;
 	}
-	
+
 }

@@ -17,7 +17,6 @@ mockup.vm
 velocity.properties
 mockup/css/mockup.css
 mockup/css/side-nav.css
-mockup/css/style.css
 mockup/img/head_back.gif
 mockup/img/head_submenu_back.gif
 mockup/img/head_submenu_loagin.png
@@ -32,3 +31,4 @@ mockup/img/title_arrow.gif
 mockup/img/title_line.gif
 mockup/js/menu.js
 mockup/js/mockup.js
+mockup/js/reload.js

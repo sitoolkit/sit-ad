@@ -17,6 +17,9 @@
 #end
 #end
 		<ui:define name="content">
+#if ($watcher.continue)
+		<h:outputScript library="js" name="reload.js" target="head"/>
+#end
 
 #foreach ($area in $view.areas)
 #if ($area.type != "メタ情報")
