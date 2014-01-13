@@ -24,7 +24,7 @@ public class UserEntity extends AbstractBaseEntity implements Serializable {
 	@Column(name = "user_id")
 	@NotNull
 	@Size(max = 8)
-	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+	@Pattern(regexp = "[a-zA-Z0-9]*", message = "{AlphaNumeric}")
 	private String userId;
 
 	/**
@@ -33,7 +33,7 @@ public class UserEntity extends AbstractBaseEntity implements Serializable {
 	@Column(name = "password")
 	@NotNull
 	@Size(max = 127)
-	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+	@Pattern(regexp = "[a-zA-Z0-9]*", message = "{AlphaNumeric}")
 	private String password;
 	/**
 	 * 姓

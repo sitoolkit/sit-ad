@@ -18,7 +18,7 @@ public class UserGroupEntityPK implements Serializable {
 	@Column(name = "user_id")
 	@NotNull
 	@Size(max = 8)
-	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+	@Pattern(regexp = "[a-zA-Z0-9]*", message = "{AlphaNumeric}")
 	private String userId;
 	/**
 	 * グループID
@@ -26,7 +26,7 @@ public class UserGroupEntityPK implements Serializable {
 	@Column(name = "group_id")
 	@NotNull
 	@Size(max = 8, min = 8)
-	@Pattern(regexp = "[a-zA-Z_0-9]", message = "{AlphaNumeric}")
+	@Pattern(regexp = "[a-zA-Z0-9]*", message = "{AlphaNumeric}")
 	private String groupId;
 
 	public UserGroupEntityPK() {
