@@ -62,6 +62,8 @@
 		</property>
 	</bean>
 
+
+	<bean id="fileOverwriteChecker" class="org.sitoolkit.core.infra.util.FileOverwriteChecker"/>
 	<bean id="stringLoadableConverter" class="org.sitoolkit.core.infra.repository.StringLoadableConverter"/>
 	<bean id="enumConverter" class="org.sitoolkit.core.infra.repository.EnumConverter"/>
 

@@ -21,8 +21,11 @@ import org.sitoolkit.core.infra.repository.TableDataCatalog;
 import org.sitoolkit.core.infra.util.SitFileUtils;
 import org.junit.*;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.sitoolkit.core.infra.repository.FileInputSourceWatcher;
+import org.sitoolkit.core.infra.util.FileOverwriteChecker;
 
 /**
  *
@@ -35,6 +38,8 @@ public class ExcelRepositoryTest {
 	@Before
 	public void setUp() {
 		repo.watcher = mock(FileInputSourceWatcher.class);
+		repo.fileOverwriteChecker = mock(FileOverwriteChecker.class);
+		when(repo.fileOverwriteChecker.isWritable(any(File.class))).thenReturn(true);
 	}
 
 	/**

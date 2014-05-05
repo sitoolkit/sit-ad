@@ -41,6 +41,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.sitoolkit.core.infra.repository.FileInputSourceWatcher;
+import org.sitoolkit.core.infra.util.FileOverwriteChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +52,9 @@ import org.slf4j.LoggerFactory;
 public class ExcelRepository implements DocumentRepository {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ExcelRepository.class);
+
+	@Resource
+	FileOverwriteChecker fileOverwriteChecker;
 
 	/**
 	 * コーナーセルのパターン(正規表現)
@@ -121,6 +125,9 @@ public class ExcelRepository implements DocumentRepository {
 	}
 
 	public void write(String templateFile, File targetFile, TableDataCatalog catalog) {
+		if (!fileOverwriteChecker.isWritable(targetFile)) {
+			return;
+		}
 		LOG.info("Excelファイルに書き込みます。{}", targetFile.getAbsolutePath());
 		FileOutputStream fos = null;
 		try {

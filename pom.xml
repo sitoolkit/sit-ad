@@ -231,6 +231,9 @@
 							<additionalClasspathElement>${basedir}/conf</additionalClasspathElement>
 						</additionalClasspathElements>
 						<argLine>-XX:-UseSplitVerifier</argLine>
+						<systemProperties>
+							<rebuild>true</rebuild>
+						</systemProperties>
 					</configuration>
 				</plugin>
 				<plugin>

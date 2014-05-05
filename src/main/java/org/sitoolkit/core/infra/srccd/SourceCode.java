@@ -31,7 +31,7 @@ import org.sitoolkit.core.infra.util.TextFile;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.sitoolkit.core.infra.util.PropertyManager;
+import org.sitoolkit.core.infra.util.FileOverwriteChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +46,7 @@ public abstract class SourceCode extends DocumentElement {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Resource
-	PropertyManager pm;
+	FileOverwriteChecker fileOverwriteChecker;
 
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 	/**
@@ -74,23 +74,16 @@ public abstract class SourceCode extends DocumentElement {
 	 */
 	private Map<String, Object> contextParam = new HashMap<String, Object>();
 	/**
-	 * 既存のソースファイルを上書きする場合にtrue
-	 */
-	private boolean overwrite = true;
-	/**
 	 * テキストファイルオブジェクトを構築して返します。
 	 * テキストファイルの内容は、{@link #buildSrcCd()}の結果の文字列です。
 	 * @return テキストファイルオブジェクト
 	 */
 	public TextFile toFile() {
 		TextFile file = new TextFile(getOutDir(), getFileName());
-		if (pm.isRebuild() || isOverwrite() || !file.exists()) {
+		if (fileOverwriteChecker.isWritable(file)) {
 			log.info("ソースコードを構築します。テンプレート：「{}」、出力ファイル名：「{}」"
 					,getTemplate(), getFileName());
 			file.setText(build());
-		} else {
-			log.info("ソースコードは既に存在します。{}",
-					file.getAbsolutePath());
 		}
 		return file;
 	}
@@ -215,14 +208,6 @@ public abstract class SourceCode extends DocumentElement {
 
 	public void addContextParam(String name, Object obj) {
 		contextParam.put(name, obj);
-	}
-
-	public boolean isOverwrite() {
-		return overwrite;
-	}
-
-	public void setOverwrite(boolean overwrite) {
-		this.overwrite = overwrite;
 	}
 
 	public Map<String, Object> getContextParam() {
