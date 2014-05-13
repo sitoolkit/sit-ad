@@ -70,13 +70,20 @@ public class PageDefCatalog implements ApplicationContextAware, SourceCodeCatalo
 	private TreeDef tree;
 
 	/**
+	 * 初期化時に画面定義書の読み込みをスキップする場合にtrue
+	 */
+	private boolean skipPageSpecLoad;
+
+	/**
 	 * 画面一覧と画面仕様書を読み込み、
 	 * ツリー定義エンティティ、ツリー定義エンティティに変換して内部に保持します。
 	 */
 	@PostConstruct
 	public void load() {
 		loadPageList();
-		loadPage();
+		if (!isSkipPageSpecLoad()) {
+			loadPage();
+		}
 	}
 
 	@Override
@@ -203,6 +210,14 @@ public class PageDefCatalog implements ApplicationContextAware, SourceCodeCatalo
 
 	public void setPageDefId(String pageDefId) {
 		this.pageDefId = pageDefId;
+	}
+
+	public boolean isSkipPageSpecLoad() {
+		return skipPageSpecLoad;
+	}
+
+	public void setSkipPageSpecLoad(boolean skipPageSpecLoad) {
+		this.skipPageSpecLoad = skipPageSpecLoad;
 	}
 
 }

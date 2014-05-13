@@ -154,7 +154,7 @@
 
 	<bean id="pageSpecGen" class="org.sitoolkit.core.app.PageSpecGenerator">
 		<property name="name" value="画面定義書"/>
-		<property name="pageDefCatalog" ref="pageDefCatalog"/>
+		<property name="pageDefCatalog" ref="pageDefCatalogForGen"/>
 		<property name="dbDefCatalog" ref="dbDefCatalog"/>
 		<property name="converterList">
 			<list>
@@ -165,6 +165,14 @@
 	</bean>
 
 	<bean id="pageDefCatalog" class="org.sitoolkit.core.domain.view.PageDefCatalog" scope="singleton">
+		<property name="pageDefId" value="pageDef"/>
+		<property name="tree">
+			<bean class="org.sitoolkit.core.domain.view.nav.TreeDef"></bean>
+		</property>
+	</bean>
+
+	<bean id="pageDefCatalogForGen" class="org.sitoolkit.core.domain.view.PageDefCatalog" scope="singleton">
+		<property name="skipPageSpecLoad" value="true"/>
 		<property name="pageDefId" value="pageDef"/>
 		<property name="tree">
 			<bean class="org.sitoolkit.core.domain.view.nav.TreeDef"></bean>
