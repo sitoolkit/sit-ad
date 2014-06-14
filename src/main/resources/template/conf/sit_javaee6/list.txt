@@ -1,5 +1,6 @@
 /logback.xml
 sitoolkit-conf.xml
+db-db2.vm
 db-derby.vm
 db-mysql.vm
 documentMapping.xml

@@ -94,7 +94,7 @@
 	<bean id="dbDefCatalog" class="org.sitoolkit.core.domain.data.DBDefCatalog" scope="singleton"/>
 
 	<bean id="tableDef" class="org.sitoolkit.core.domain.data.TableDef" scope="prototype">
-		<property name="template" value="/db-derby.vm"/>
+		<property name="template" value="/db-#{pm.dbms}.vm"/>
 		<property name="var" value="table"/>
 		<property name="fileExt" value="sql"/>
 	</bean>

@@ -90,6 +90,17 @@ public class PropertyManager {
 	}
 
 	/**
+	 * アプリケーションが使用するDBMSの識別子を取得します。
+	 * 結果にはJVMのシステムプロパティdbmsの値を返却します。
+	 * 設定されていない場合は"derby"を返却します。
+	 * 
+	 * @return アプリケーションが使用するDBMSの識別子
+	 */
+	public String getDbms() {
+		return getSysProp("dbms", "derby");
+	}
+
+	/**
 	 * 画面仕様書のファイルパスを取得します。
 	 * @param pageName 画面名
 	 * @return 画面仕様書のファイルパス
