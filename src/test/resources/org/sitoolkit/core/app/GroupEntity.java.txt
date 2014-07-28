@@ -5,7 +5,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
-import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
+import jp.monocrea.sitoolkit.archetype.infra.layer.BaseEntity;
 
 /**
  * このクラスは、グループマスターを表すエンティティです。
@@ -13,7 +13,7 @@ import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
  */
 @Entity
 @Table(name="m_group")
-public class GroupEntity extends AbstractBaseEntity implements Serializable {
+public class GroupEntity extends BaseEntity implements Serializable {
 
 	/**
 	 * グループID

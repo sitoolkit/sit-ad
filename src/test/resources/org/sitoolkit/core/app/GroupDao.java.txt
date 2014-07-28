@@ -1,14 +1,14 @@
 package jp.monocrea.sitoolkit.archetype.domain.group;
 
-import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseDao;
+import jp.monocrea.sitoolkit.archetype.infra.layer.BaseDao;
 import jp.monocrea.sitoolkit.archetype.infra.layer.Dao;
 
 /**
  * このクラスは、グループマスターのDAOです。
- * @author 
+ * @author
  */
 @Dao
-public class GroupDao extends AbstractBaseDao<GroupEntity, String> {
+public class GroupDao extends BaseDao<GroupEntity, String> {
 
 	@Override
 	public Class<GroupEntity> getEntityType() {

@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 
 #import($entity)
-import ${entity.appRootPkg}.infra.layer.AbstractBaseEntity;
+import ${entity.appRootPkg}.infra.layer.BaseEntity;
 
 /**
  * このクラスは、$entity.nameを表すエンティティです。
@@ -15,7 +15,7 @@ import ${entity.appRootPkg}.infra.layer.AbstractBaseEntity;
  */
 @Entity
 @Table(name="$entity.tablePname")
-public class $entity.pname extends AbstractBaseEntity implements Serializable {
+public class $entity.pname extends BaseEntity implements Serializable {
 
 #foreach ($field in $entity.ids)
 #field($field "jpa")

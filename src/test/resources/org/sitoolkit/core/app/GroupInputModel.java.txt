@@ -5,12 +5,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import jp.monocrea.sitoolkit.archetype.domain.group.*;
-import jp.monocrea.sitoolkit.archetype.web.infra.AbstractBaseInputModel;
+import jp.monocrea.sitoolkit.archetype.web.infra.BaseInputModel;
 import jp.monocrea.sitoolkit.archetype.web.infra.RequestParam;
 
 @ManagedBean
 @ViewScoped
-public class GroupInputModel extends AbstractBaseInputModel<GroupEntity, String, GroupService> implements Serializable {
+public class GroupInputModel extends BaseInputModel<GroupEntity, String, GroupService> implements Serializable {
 
 	@Inject
 	GroupService service;

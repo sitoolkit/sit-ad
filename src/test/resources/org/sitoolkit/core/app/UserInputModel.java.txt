@@ -5,12 +5,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import jp.monocrea.sitoolkit.archetype.domain.user.*;
-import jp.monocrea.sitoolkit.archetype.web.infra.AbstractBaseInputModel;
+import jp.monocrea.sitoolkit.archetype.web.infra.BaseInputModel;
 import jp.monocrea.sitoolkit.archetype.web.infra.RequestParam;
 
 @ManagedBean
 @ViewScoped
-public class UserInputModel extends AbstractBaseInputModel<UserEntity, String, UserService> implements Serializable {
+public class UserInputModel extends BaseInputModel<UserEntity, String, UserService> implements Serializable {
 
 	@Inject
 	UserService service;

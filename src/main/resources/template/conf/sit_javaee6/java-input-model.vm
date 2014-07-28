@@ -6,12 +6,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import ${model.appRootPkg}.domain.${model.entity.domainPkg}.*;
-import ${model.appRootPkg}.web.infra.AbstractBaseInputModel;
+import ${model.appRootPkg}.web.infra.BaseInputModel;
 import ${model.appRootPkg}.web.infra.RequestParam;
 
 @ManagedBean
 @ViewScoped
-public class $model.pname extends AbstractBaseInputModel<${model.entity.domain}Entity, $model.entity.idType, ${model.entity.domain}Service> implements Serializable {
+public class $model.pname extends BaseInputModel<${model.entity.domain}Entity, $model.entity.idType, ${model.entity.domain}Service> implements Serializable {
 
 	@Inject
 	${model.entity.domain}Service service;

@@ -1,14 +1,14 @@
 package $dao.pkg;
 
-import ${dao.appRootPkg}.infra.layer.AbstractBaseDao;
+import ${dao.appRootPkg}.infra.layer.BaseDao;
 import ${dao.appRootPkg}.infra.layer.Dao;
 
 /**
  * このクラスは、$dao.entity.nameのDAOです。
- * @author 
+ * @author
  */
 @Dao
-public class $dao.pname extends AbstractBaseDao<$dao.entity.pname, $dao.entity.idType> {
+public class $dao.pname extends BaseDao<$dao.entity.pname, $dao.entity.idType> {
 
 	@Override
 	public Class<$dao.entity.pname> getEntityType() {

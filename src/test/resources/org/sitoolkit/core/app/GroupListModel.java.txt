@@ -4,11 +4,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import jp.monocrea.sitoolkit.archetype.domain.group.*;
-import jp.monocrea.sitoolkit.archetype.web.infra.AbstractBaseListModel;
+import jp.monocrea.sitoolkit.archetype.web.infra.BaseListModel;
 
 @ManagedBean
 @RequestScoped
-public class GroupListModel extends AbstractBaseListModel<GroupEntity, String, GroupService> {
+public class GroupListModel extends BaseListModel<GroupEntity, String, GroupService> {
 
 	@Inject
 	GroupService service;

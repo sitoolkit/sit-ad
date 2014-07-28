@@ -6,23 +6,23 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import ${service.appRootPkg}.infra.layer.AbstractBaseDao;
-import ${service.appRootPkg}.infra.layer.AbstractBaseService;
+import ${service.appRootPkg}.infra.layer.BaseDao;
+import ${service.appRootPkg}.infra.layer.BaseService;
 
 /**
  * このクラスは、$service.entity.nameのサービスです。
- * @author 
+ * @author
  **/
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class $service.pname extends AbstractBaseService<$service.entity.pname, $service.entity.idType> {
+public class $service.pname extends BaseService<$service.entity.pname, $service.entity.idType> {
 
 	@Inject
 	${service.entity.domain}Dao dao;
 
 	@Override
-	public AbstractBaseDao<$service.entity.pname, $service.entity.idType> getDao() {
+	public BaseDao<$service.entity.pname, $service.entity.idType> getDao() {
 		return dao;
 	}
 

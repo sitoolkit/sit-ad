@@ -6,23 +6,23 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseDao;
-import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseService;
+import jp.monocrea.sitoolkit.archetype.infra.layer.BaseDao;
+import jp.monocrea.sitoolkit.archetype.infra.layer.BaseService;
 
 /**
  * このクラスは、ユーザーマスターのサービスです。
- * @author 
+ * @author
  **/
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class UserService extends AbstractBaseService<UserEntity, String> {
+public class UserService extends BaseService<UserEntity, String> {
 
 	@Inject
 	UserDao dao;
 
 	@Override
-	public AbstractBaseDao<UserEntity, String> getDao() {
+	public BaseDao<UserEntity, String> getDao() {
 		return dao;
 	}
 

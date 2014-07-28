@@ -5,7 +5,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
-import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
+import jp.monocrea.sitoolkit.archetype.infra.layer.BaseEntity;
 
 /**
  * このクラスは、ユーザーグループ関連を表すエンティティです。
@@ -13,7 +13,7 @@ import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
  */
 @Entity
 @Table(name="m_user_group")
-public class UserGroupEntity extends AbstractBaseEntity implements Serializable {
+public class UserGroupEntity extends BaseEntity implements Serializable {
 
 	/**
 	 * ユーザーグループ関連の主キー

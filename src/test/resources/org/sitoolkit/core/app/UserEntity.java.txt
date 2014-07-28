@@ -7,7 +7,7 @@ import javax.validation.Valid;
 
 import jp.monocrea.sitoolkit.archetype.domain.code.*;
 import jp.monocrea.sitoolkit.archetype.infra.code.*;
-import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
+import jp.monocrea.sitoolkit.archetype.infra.layer.BaseEntity;
 
 /**
  * このクラスは、ユーザーマスターを表すエンティティです。
@@ -15,7 +15,7 @@ import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseEntity;
  */
 @Entity
 @Table(name="m_user")
-public class UserEntity extends AbstractBaseEntity implements Serializable {
+public class UserEntity extends BaseEntity implements Serializable {
 
 	/**
 	 * ユーザーID

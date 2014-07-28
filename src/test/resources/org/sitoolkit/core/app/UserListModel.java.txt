@@ -4,11 +4,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import jp.monocrea.sitoolkit.archetype.domain.user.*;
-import jp.monocrea.sitoolkit.archetype.web.infra.AbstractBaseListModel;
+import jp.monocrea.sitoolkit.archetype.web.infra.BaseListModel;
 
 @ManagedBean
 @RequestScoped
-public class UserListModel extends AbstractBaseListModel<UserEntity, String, UserService> {
+public class UserListModel extends BaseListModel<UserEntity, String, UserService> {
 
 	@Inject
 	UserService service;

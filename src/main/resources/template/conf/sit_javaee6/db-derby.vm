@@ -2,7 +2,7 @@ CREATE TABLE $table.pname (
 #foreach ($column in $table.columns)
 	$column.pname $column.type #declareLength($column) $column.delareNotNull,
 #end
-	deleted SMALLINT NOT NULL DEFAULT 0,
+	deleted_flg SMALLINT NOT NULL DEFAULT 0,
 	version INTEGER NOT NULL DEFAULT 0,
 	created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	created_by CHAR(8) NOT NULL DEFAULT 'system',

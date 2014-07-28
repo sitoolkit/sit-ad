@@ -1,14 +1,14 @@
 package jp.monocrea.sitoolkit.archetype.domain.user;
 
-import jp.monocrea.sitoolkit.archetype.infra.layer.AbstractBaseDao;
+import jp.monocrea.sitoolkit.archetype.infra.layer.BaseDao;
 import jp.monocrea.sitoolkit.archetype.infra.layer.Dao;
 
 /**
  * このクラスは、ユーザーマスターのDAOです。
- * @author 
+ * @author
  */
 @Dao
-public class UserDao extends AbstractBaseDao<UserEntity, String> {
+public class UserDao extends BaseDao<UserEntity, String> {
 
 	@Override
 	public Class<UserEntity> getEntityType() {

@@ -5,11 +5,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import ${model.appRootPkg}.domain.${model.entity.domainPkg}.*;
-import ${model.appRootPkg}.web.infra.AbstractBaseListModel;
+import ${model.appRootPkg}.web.infra.BaseListModel;
 
 @ManagedBean
 @RequestScoped
-public class $model.pname extends AbstractBaseListModel<${model.entity.domain}Entity, $model.entity.idType, ${model.entity.domain}Service> {
+public class $model.pname extends BaseListModel<${model.entity.domain}Entity, $model.entity.idType, ${model.entity.domain}Service> {
 
 	@Inject
 	${model.entity.domain}Service service;
