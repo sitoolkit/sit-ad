@@ -3,6 +3,7 @@ sitoolkit-conf.xml
 db-db2.vm
 db-derby.vm
 db-mysql.vm
+db-oracle.vm
 documentMapping.xml
 java-class.vm
 java-code.vm

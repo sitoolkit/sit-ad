@@ -1,0 +1,24 @@
+CREATE TABLE $table.pname (
+#foreach ($column in $table.columns)
+	$column.pname $column.type #declareLength($column) $column.delareNotNull,
+#end
+	deleted_flg SMALLINT DEFAULT 0 NOT NULL,
+	version NUMBER(10) DEFAULT 0 NOT NULL,
+	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	created_by CHAR(8) DEFAULT 'system' NOT NULL,
+	updated TIMESTAMP NOT NULL ,
+	updated_by CHAR(8) DEFAULT 'system',
+#foreach ($fk in $table.fkMap.entrySet())
+	FOREIGN KEY ($fk.value.srcCols) REFERENCES $fk.value.dstTable ($fk.value.dstCols) ,
+#end
+	PRIMARY KEY (#foreach ($column in $table.pks) #if ($velocityCount > 1), #end $column.pname #end)
+);
+#*****************************************************
+ *
+ *
+ ****************************************************#
+#macro (declareLength $column)
+#set ($type = $column.type.toUpperCase())
+#if ($type == "VARCHAR" || $type == "CHAR" || $type == "DECIMAL" || $type == "BLOB" || $type == "CLOB")($column.length)#end
+#end
+
