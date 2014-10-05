@@ -4,8 +4,6 @@
 /.settings
 /.cg
 /.checkstyle
-/.classpath
-/.project
 /bin/as/log/
 /bin/as/script/
 /bin/dev/log/

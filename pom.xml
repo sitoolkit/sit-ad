@@ -355,7 +355,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<packageName>org.sitoolkit.core.infra.repository.schema</packageName>>
+					<packageName>org.sitoolkit.core.infra.repository.schema</packageName>
 				</configuration>
 			</plugin>
 		</plugins>
