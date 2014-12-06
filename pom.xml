@@ -116,7 +116,7 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
 						<configuration>
-							<argLine>-Dfile.encoding=${project.report.encoding} -XX:-UseSplitVerifier</argLine>
+							<argLine>-Dfile.encoding=${file.encoding} -XX:-UseSplitVerifier</argLine>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -124,7 +124,7 @@
 						<artifactId>maven-javadoc-plugin</artifactId>
 						<configuration>
 							<additionalJOptions>
-								<additionalJOption>-J-Dfile.encoding=${project.report.encoding}</additionalJOption>
+								<additionalJOption>-J-Dfile.encoding=${file.encoding}</additionalJOption>
 							</additionalJOptions>
 						</configuration>
 					</plugin>
