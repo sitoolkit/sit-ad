@@ -43,9 +43,10 @@
 	</developers>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.report.encoding>UTF-8</project.report.encoding>
-		<poi.version>3.9</poi.version>
-		<spring.version>3.2.5.RELEASE</spring.version>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<poi.version>3.10.1</poi.version>
+		<spring.version>3.2.12.RELEASE</spring.version>
+		<slf4j.version>1.7.7</slf4j.version>
 	</properties>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -192,17 +193,17 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.5</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.7.5</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.0.12</version>
+			<version>1.1.2</version>
 		</dependency>
 	</dependencies>
 
@@ -225,7 +226,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.16</version>
+					<version>2.18</version>
 					<configuration>
 						<additionalClasspathElements>
 							<additionalClasspathElement>${basedir}/conf</additionalClasspathElement>
@@ -239,15 +240,15 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9</version>
+					<version>2.10.1</version>
 					<configuration>
-						<docencoding>${project.report.encoding}</docencoding>
-						<charset>${project.report.encoding}</charset>
-						<encoding>${project.build.sourceEncoding}</encoding>
+						<additionalJOptions>
+							<additionalJOption>-J-Dfile.encoding=${file.encoding}</additionalJOption>
+						</additionalJOptions>
 						<bottom>
-		<![CDATA[
-		&copy; 2013 Monocre Inc. AllRights Reserved.
-		]]>
+    <![CDATA[
+    &copy; 2013 Monocre Inc. AllRights Reserved.
+    ]]>
 						</bottom>
 					</configuration>
 				</plugin>
@@ -257,9 +258,8 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.2</version>
 				<configuration>
-					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
@@ -267,11 +267,9 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.4</version>
 				<configuration>
 					<locales>ja</locales>
-					<inputEncoding>${project.build.sourceEncoding}}</inputEncoding>
-					<outputEncoding>${project.report.encoding}</outputEncoding>
 					<reportPlugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
@@ -280,11 +278,7 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-jxr-plugin</artifactId>
-							<version>2.3</version>
-							<configuration>
-								<inputEncoding>${project.report.encoding}</inputEncoding>
-								<outputEncoding>${project.report.encoding}</outputEncoding>
-							</configuration>
+							<version>2.5</version>
 						</plugin>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
@@ -294,17 +288,12 @@
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>taglist-maven-plugin</artifactId>
 							<version>2.4</version>
-							<configuration>
-								<inputEncoding>${project.report.encoding}</inputEncoding>
-								<outputEncoding>${project.report.encoding}</outputEncoding>
-							</configuration>
 						</plugin>
 						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>cobertura-maven-plugin</artifactId>
-							<version>2.5</version>
+							<version>2.5.2</version>
 							<configuration>
-								<encoding>${project.build.sourceEncoding}</encoding>
 								<instrumentation>
 									<excludes>
 										<exclude>**/*Test.class</exclude>
@@ -324,21 +313,21 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-checkstyle-plugin</artifactId>
-							<version>2.9.1</version>
+							<version>2.13</version>
 							<configuration>
 								<configLocation>config/sun_checks.xml</configLocation>
 							</configuration>
 						</plugin>
-<!--						<plugin>
+						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>javancss-maven-plugin</artifactId>
-							<version>2.0</version>
+							<version>2.1</version>
 							<configuration>
 								<includes>
 									<include>**/*.java</include>
 								</includes>
 							</configuration>
-						</plugin>-->
+ 						</plugin>
 					</reportPlugins>
 				</configuration>
 			</plugin>
