@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.sitoolkit</groupId>
-	<artifactId>sit-core</artifactId>
-	<version>0.12</version>
+	<groupId>org.sitoolkit.ad</groupId>
+	<artifactId>sit-ad</artifactId>
+	<version>0.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>sit-core</name>
-	<description>SIToolkit core module</description>
-	<url>https://github.com/sitoolkit</url>
+	<name>sit-ad</name>
+	<description>SIToolkit for Application Develepment</description>
+	<url>http://sitoolkit.org</url>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -18,9 +18,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:git:git//github.com/sitoolkit/sit-core.git</connection>
-		<developerConnection>scm:git:git//github.com/sitoolkit/sit-core.git</developerConnection>
-		<url>https://github.com/sitoolkit/sit-core.git</url>
+		<connection>scm:git:git//github.com/sitoolkit/sit-ad.git</connection>
+		<developerConnection>scm:git:git//github.com/sitoolkit/sit-ad.git</developerConnection>
+		<url>https://github.com/sitoolkit/sit-ad.git</url>
 	</scm>
 	<distributionManagement>
 		<snapshotRepository>
