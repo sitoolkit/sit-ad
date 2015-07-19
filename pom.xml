@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.sitoolkit.ad</groupId>
 	<artifactId>sit-ad</artifactId>
-	<version>0.5.2-SNAPSHOT</version>
+	<version>0.5.2</version>
 	<packaging>jar</packaging>
 	<name>sit-ad</name>
 	<description>SIToolkit for Application Develepment</description>
